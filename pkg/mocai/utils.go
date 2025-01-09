@@ -7,8 +7,8 @@ import (
 
 // GenerateRandomNumber generates a random number between min and max.
 func GenerateRandomNumber(min, max int) int {
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max-min+1) + min
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r.Intn(max-min+1) + min
 }
 
 // FormatCPF formats a CPF number.
