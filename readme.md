@@ -25,84 +25,65 @@ O nome Mocai é uma homenagem à iniciativa brasileira por trás da biblioteca. 
 - Flexibilidade: Adapte os mocks às necessidades específicas do seu projeto.
 - Comunidade: Faça parte de uma comunidade open-source que valoriza a colaboração e a inovação.
 
-## 📂 Estrutura do Projeto
-Aqui está a estrutura de pastas do projeto:
 
-````
-mocai/
+## 🚀 Como Começar
+### Instalação
+Para começar a usar o Mocai, instale a biblioteca com o seguinte comando:
 
-├── .github/
+```
+go get github.com/wellfernandes/mocai
+```
 
-│ └── workflows/
+Uso Básico
+Importe a biblioteca em seu projeto e comece a gerar mocks:
 
-│ └── workflow_dev.yaml
+```
+package main
 
-├── pkg/
+import (
+    "fmt"
+    "github.com/wellfernandes/mocai/pkg/mocai"
+)
 
-│ ├── mocai/
+func main() {
+    // Gerar um mock em português (pt-br)
+    mock := mocai.GenerateMocai("pt-br")
 
-│ │ ├── person.go
+    fmt.Println("Pessoa:", mock.Person.FirstName, mock.Person.LastName)
+    fmt.Println("Endereço:", mock.Address.Street, mock.Address.Number)
+    fmt.Println("Telefone:", mock.Phone.AreaCode, mock.Phone.Number)
+}
+```
 
-│ │ ├── address.go
+### Exemplos
+A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta e execute:
 
-│ │ ├── phone.go
+```
+cd examples
+go run main.go
+```
 
-│ │ ├── mocai.go
+## 🤝 Contribua
+O Mocai é um projeto open-source, e sua contribuição é muito bem-vinda! Seja reportando bugs, sugerindo novas funcionalidades ou enviando pull requests, sua participação ajuda a melhorar a biblioteca para todos.
 
-│ │ └── utils.go
+### Como Contribuir
+1. **Reporte Problemas:** Encontrou um bug ou tem uma sugestão? Abra uma issue.
 
-│ └── locale/
+2. **Envie Pull Requests:** Siga as diretrizes de contribuição e envie suas melhorias.
 
-│ ├── pt-br/
+3. **Discuta Ideias:** Participe das discussões e compartilhe suas ideias para o projeto.
 
-│ │ ├── constants/
+### Diretrizes de Contribuição
+1. Siga o padrão de código do projeto.
+2. Adicione testes para novas funcionalidades.
+3. Documente suas alterações no **README.md**.
 
-│ │ │ ├── streets.go
+## 📄 Licença
+O Mocai é distribuído sob a **licença MIT**.
 
-│ │ │ ├── cities.go
+### 🌟 Mocai: Gerando mocks, simplificando testes, acelerando desenvolvimento.
+Seja bem-vindo ao projeto e sinta-se à vontade para explorar, usar e contribuir!
 
-│ │ │ ├── states.go
-
-│ │ │ └── zipcodes.go
-
-│ │ ├── person.go
-
-│ │ ├── address.go
-
-│ │ └── phone.go
-
-│ └── en-us/
-
-│ ├── constants/
-
-│ │ ├── streets.go
-
-│ │ ├── cities.go
-
-│ │ ├── states.go
-
-│ │ └── zipcodes.go
-
-│ ├── person.go
-
-│ ├── address.go
-
-│ └── phone.go
-
-├── examples/
-
-│ ├── main.go
-
-│ ├── mock_ptbr.go
-
-│ └── mock_enus.go
-
-├── go.mod
-
-├── go.sum
-
-└── README.md
-
-````
-
----
+## 🌐 Servidor no Discord
+Participe do canal **Mocai** no Discord:
+[Clique aqui e junte-se a nós!](https://discord.gg/ANNh7NSv)
