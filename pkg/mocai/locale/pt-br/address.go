@@ -2,11 +2,13 @@ package ptbr
 
 import (
 	"math/rand"
+
+	"github.com/wellfernandes/mocai/pkg/mocai/locale/pt-br/constants"
 )
 
 // GenerateStreet generates a random street name in Portuguese.
 func GenerateStreet() string {
-	streets := []string{"Rua A", "Rua B", "Rua C", "Rua D", "Rua E"}
+	streets := constants.Streets
 	return streets[rand.Intn(len(streets))]
 }
 
