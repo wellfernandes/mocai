@@ -86,4 +86,4 @@ Seja bem-vindo ao projeto e sinta-se à vontade para explorar, usar e contribuir
 
 ## 🌐 Servidor no Discord
 Participe do canal **Mocai** no Discord:
-[Clique aqui e junte-se a nós!](https://discord.gg/ANNh7NSv)
+[Clique aqui e junte-se a nós!](https://discord.gg/TFRnQBkAMt)
