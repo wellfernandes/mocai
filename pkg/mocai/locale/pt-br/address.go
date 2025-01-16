@@ -20,8 +20,14 @@ func GenerateCity() string {
 
 // GenerateState generates a random state abbreviation in Portuguese.
 func GenerateState() string {
-	states := []string{"SP", "RJ", "MG", "PR", "RS"}
+	states := constants.States
 	return states[rand.Intn(len(states))]
+}
+
+// GenerateUF returns the UF (Unidade Federativa) abbreviation for a given state name in Portuguese.
+func GenerateUF(state string) string {
+	uf := constants.UF[state]
+	return uf
 }
 
 // GenerateZIPCode generates a random ZIP code in Portuguese.
