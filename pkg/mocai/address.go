@@ -13,18 +13,20 @@ type Address struct {
 	Number  int
 	City    string
 	State   string
+	UF      string
 	ZIPCode string
 }
 
 // GenerateAddress generates a mock address with random data.
 func GenerateAddress(locale string) Address {
-	var street, city, state, zipCode string
+	var street, city, state, uf, zipCode string
 
 	switch locale {
 	case "pt-br":
 		street = ptbr.GenerateStreet()
 		city = ptbr.GenerateCity()
 		state = ptbr.GenerateState()
+		uf = ptbr.GenerateUF(state)
 		zipCode = ptbr.GenerateZIPCode()
 	case "en-us":
 		street = enus.GenerateStreet()
@@ -43,6 +45,7 @@ func GenerateAddress(locale string) Address {
 		Number:  rand.Intn(1000) + 1,
 		City:    city,
 		State:   state,
+		UF:      uf,
 		ZIPCode: zipCode,
 	}
 }
