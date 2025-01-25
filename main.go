@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/wellfernandes/mocai/examples"
-)
+import "github.com/brazzcore/mocai/examples"
 
 func main() {
 	// 	Generate mock in Brazilian Portuguese (pt-br)
