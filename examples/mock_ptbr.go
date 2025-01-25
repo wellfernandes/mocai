@@ -17,7 +17,7 @@ func GenerateMockPTBR() {
 
 	fmt.Println("\nEndereço:")
 	fmt.Printf("  Rua: %s, %d\n", mock.Address.Street, mock.Address.Number)
-	fmt.Printf("  Cidade: %s, %s\n", mock.Address.City, mock.Address.State)
+	fmt.Printf("  Cidade: %s, %s "+"("+"%s)\n", mock.Address.City, mock.Address.State, mock.Address.UF)
 	fmt.Printf("  CEP: %s\n", mock.Address.ZIPCode)
 
 	fmt.Println("\nTelefone:")
