@@ -1,8 +1,8 @@
 package mocai
 
 import (
-	enus "github.com/wellfernandes/mocai/pkg/mocai/locale/en-us"
-	ptbr "github.com/wellfernandes/mocai/pkg/mocai/locale/pt-br"
+	enus "github.com/brazzcore/mocai/pkg/mocai/locale/en-us"
+	ptbr "github.com/brazzcore/mocai/pkg/mocai/locale/pt-br"
 )
 
 // Phone represents a mock phone entity.

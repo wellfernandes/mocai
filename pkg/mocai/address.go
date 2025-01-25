@@ -3,8 +3,8 @@ package mocai
 import (
 	"math/rand"
 
-	enus "github.com/wellfernandes/mocai/pkg/mocai/locale/en-us"
-	ptbr "github.com/wellfernandes/mocai/pkg/mocai/locale/pt-br"
+	enus "github.com/brazzcore/mocai/pkg/mocai/locale/en-us"
+	ptbr "github.com/brazzcore/mocai/pkg/mocai/locale/pt-br"
 )
 
 // Address represents a mock address entity.
