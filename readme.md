@@ -31,7 +31,7 @@ O nome Mocai é uma homenagem à iniciativa brasileira por trás da biblioteca. 
 Para começar a usar o Mocai, instale a biblioteca com o seguinte comando:
 
 ```
-go get github.com/wellfernandes/mocai
+go get github.com/brazzcore/mocai
 ```
 
 Uso Básico
@@ -42,7 +42,8 @@ package main
 
 import (
     "fmt"
-    "github.com/wellfernandes/mocai/pkg/mocai"
+    "github.com/brazzcore/mocai/pkg/mocai"
+
 )
 
 func main() {

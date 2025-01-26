@@ -3,7 +3,7 @@ package examples
 import (
 	"fmt"
 
-	"github.com/wellfernandes/mocai/pkg/mocai"
+	"github.com/brazzcore/mocai/pkg/mocai"
 )
 
 // GenerateMockPTBR generates a mock in Portuguese.

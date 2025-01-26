@@ -3,7 +3,7 @@ package ptbr
 import (
 	"math/rand"
 
-	"github.com/wellfernandes/mocai/pkg/mocai/locale/pt-br/constants"
+	"github.com/brazzcore/mocai/pkg/mocai/locale/pt-br/constants"
 )
 
 // GenerateStreet generates a random street name in Portuguese.
