@@ -7,11 +7,11 @@ import (
 )
 
 // GenerateMockPTBR generates a mock in Portuguese.
-func GenerateMockPTBR() {
+func GenerateMockExample() {
 	mock := mocai.GenerateMocai("pt-br")
 	fmt.Println("=== Mock em Português (pt-br) ===")
 	fmt.Println("Pessoa:")
-	fmt.Printf("  Nome: %s %s\n", mock.Person.FirstName, mock.Person.LastName)
+	fmt.Printf("  Nome: %s %s\n", mock.Person.FirstNameMale, mock.Person.LastName)
 	fmt.Printf("  Idade: %d\n", mock.Person.Age)
 	fmt.Printf("  CPF: %s\n", mock.Person.CPF)
 
