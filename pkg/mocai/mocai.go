@@ -9,9 +9,27 @@ type Mocai struct {
 
 // GenerateMocai generates a complete mock entity with random data.
 func GenerateMocai(locale string) Mocai {
-	return Mocai{
-		Person:  GeneratePerson(locale),
-		Address: GenerateAddress(locale),
-		Phone:   GeneratePhone(locale),
+
+	person, err := GeneratePerson(locale)
+	if err != nil {
+		panic(err)
 	}
+
+	address, err := GenerateAddress(locale)
+	if err != nil {
+		panic(err)
+	}
+
+	phone, err := GeneratePhone(locale)
+	if err != nil {
+		panic(err)
+	}
+
+	mocai := Mocai{
+		Person:  person,
+		Address: address,
+		Phone:   phone,
+	}
+
+	return mocai
 }
