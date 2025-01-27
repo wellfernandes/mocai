@@ -2,6 +2,8 @@
 
 ![mocai](img/mocai-mascot.png)
 
+#### [README-PT](/docs/localization/pt/README-PT.md)
+
 A Go library for generating test data, allowing for the simple and efficient creation of mocks for entities.
 
 ## 📖 Description
