@@ -2,9 +2,10 @@ package mocai
 
 // Mocai represents a complete mock entity.
 type Mocai struct {
-	Person  Person
-	Address Address
-	Phone   Phone
+	Person         Person
+	Address        Address
+	Phone          Phone
+	RegistrationID RegistrationID
 }
 
 // GenerateMocai generates a complete mock entity with random data.
@@ -25,10 +26,16 @@ func GenerateMocai(locale string) Mocai {
 		panic(err)
 	}
 
+	registrationID, err := GenerateRegistrationID(locale)
+	if err != nil {
+		panic(err)
+	}
+
 	mocai := Mocai{
-		Person:  person,
-		Address: address,
-		Phone:   phone,
+		Person:         person,
+		Address:        address,
+		Phone:          phone,
+		RegistrationID: registrationID,
 	}
 
 	return mocai

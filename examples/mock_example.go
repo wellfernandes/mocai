@@ -23,4 +23,8 @@ func GenerateMockExample() {
 	fmt.Println("\nTelefone:")
 	fmt.Printf("  Código de Área: %s\n", mock.Phone.AreaCode)
 	fmt.Printf("  Número: %s\n", mock.Phone.Number)
+
+	fmt.Println("\nID de Registro:")
+	fmt.Printf("  ID: %s\n", mock.RegistrationID.ID)
+
 }
