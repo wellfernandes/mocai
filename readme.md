@@ -2,40 +2,38 @@
 
 ![mocai](img/mocai-mascot.png)
 
-Uma biblioteca Go para geração de dados de teste, permitindo criar mocks de entidades de forma simples e eficiente.
- 
-## 📖 Descrição
+A Go library for generating test data, allowing for the simple and efficient creation of mocks for entities.
 
-**Mocaí** é uma biblioteca open-source em Go projetada para simplificar a geração de mocks de entidades como Pessoa, Endereço, Telefone e muitas outras. Nosso objetivo é tornar o desenvolvimento e teste de aplicações mais eficiente, fornecendo dados aleatórios, porém consistentes, que simulam cenários reais de forma prática e confiável.
+## 📖 Description
+**Mocaí** is an open-source library in Go designed to simplify the generation of mocks for entities such as Person, Address, Phone, and many others. Our goal is to make the development and testing of applications more efficient by providing random yet consistent data that simulates real-world scenarios in a practical and reliable manner.
 
-## 🌟 Curiosidade sobre o Nome
-O nome Mocai é uma homenagem à iniciativa brasileira por trás da biblioteca. Ele surgiu da combinação de "mock" (termo em inglês para simulação ou dados fictícios) com "açaí", uma fruta típica da Amazônia brasileira, conhecida por sua energia e versatilidade. Assim como o açaí é essencial para muitos brasileiros, o Mocai busca ser uma ferramenta essencial para desenvolvedores que precisam de dados de teste eficientes e de qualidade. 🇧🇷
+## 🌟 Curiosity about the Name
+The name Mocaí is a tribute to the Brazilian initiative behind the library. It originated from the combination of "mock" (the English term for simulation or fictitious data) with "açaí," a typical fruit from the Brazilian Amazon, known for its energy and versatility. Just as açaí is essential for many Brazilians, Mocaí aims to be an essential tool for developers who need efficient and high-quality test data. 🇧🇷
 
-## 🛠️ Principais Recursos
+## 🛠️ Main Features
+- **Random Data Generation:** Create mocks of entities with varied and realistic data.
+- **Consistency:** Ensure that the generated data is consistent and suitable for testing.
+- **Ease of Use:** Simple and intuitive interface for quick integration into your projects.
+- **Extensibility:** Add new entities or customize existing ones according to your needs.
+- **Open Source:** Collaborate, suggest improvements, and contribute to the growth of the library.
 
-- Geração de Dados Aleatórios: Crie mocks de entidades com dados variados e realistas.
-- Consistência: Garanta que os dados gerados sejam consistentes e adequados para testes.
-- Facilidade de Uso: Interface simples e intuitiva para integração rápida em seus projetos.
-- Extensibilidade: Adicione novas entidades ou personalize as existentes conforme suas necessidades.
-- Open Source: Colabore, sugira melhorias e contribua para o crescimento da biblioteca.
-
-## 🚀 Por que usar o Mocai?
-- Produtividade: Reduza o tempo gasto na criação de dados de teste.
-- Qualidade: Melhore a cobertura e a eficácia dos seus testes com dados realistas.
-- Flexibilidade: Adapte os mocks às necessidades específicas do seu projeto.
-- Comunidade: Faça parte de uma comunidade open-source que valoriza a colaboração e a inovação.
+## 🚀 Why Use Mocaí?
+- **Productivity:** Reduce the time spent on creating test data.
+- **Quality:** Improve the coverage and effectiveness of your tests with realistic data.
+- **Flexibility:** Adapt the mocks to the specific needs of your project.
+- **Community:** Be part of an open-source community that values collaboration and innovation.
 
 
-## 🚀 Como Começar
-### Instalação
-Para começar a usar o Mocai, instale a biblioteca com o seguinte comando:
+## 🚀 How to Get Started
+### Installation
+To start using Mocaí, install the library with the following command:
 
 ```
 go get github.com/brazzcore/mocai
 ```
 
-Uso Básico
-Importe a biblioteca em seu projeto e comece a gerar mocks:
+Basic Usage
+Import the library into your project and start generating mocks:
 
 ```
 package main
@@ -47,7 +45,7 @@ import (
 )
 
 func main() {
-    // Gerar um mock em português (pt-br)
+    // Generate a mock in Portuguese (pt-br)
     mock := mocai.GenerateMocai("pt-br")
 
     fmt.Println("Pessoa:", mock.Person.FirstName, mock.Person.LastName)
@@ -56,35 +54,35 @@ func main() {
 }
 ```
 
-### Exemplos
-A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta e execute:
+### Examples
+The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the folder and execute:
 
 ```
 cd examples
 go run main.go
 ```
 
-## 🤝 Contribua
-O Mocai é um projeto open-source, e sua contribuição é muito bem-vinda! Seja reportando bugs, sugerindo novas funcionalidades ou enviando pull requests, sua participação ajuda a melhorar a biblioteca para todos.
+## 🤝 Contribute
+Mocaí is an open-source project, and your contribution is very welcome! Whether it's reporting bugs, suggesting new features, or submitting pull requests, your participation helps improve the library for everyone.
 
-### Como Contribuir
-1. **Reporte Problemas:** Encontrou um bug ou tem uma sugestão? Abra uma issue.
+### How to Contribute
+1. **Report Issues:** Found a bug or have a suggestion? Open an issue.
 
-2. **Envie Pull Requests:** Siga as diretrizes de contribuição e envie suas melhorias.
+2. **Submit Pull Requests:** Follow the contribution guidelines and submit your improvements.
 
-3. **Discuta Ideias:** Participe das discussões e compartilhe suas ideias para o projeto.
+3. **Discuss Ideas:** Join discussions and share your ideas for the project.
 
-### Diretrizes de Contribuição
-1. Siga o padrão de código do projeto.
-2. Adicione testes para novas funcionalidades.
-3. Documente suas alterações no **README.md**.
+### Contribution Guidelines
+1. Follow the project's coding standards.
+2. Add tests for new features.
+3. If necessary, document your changes in the **README.md**.
 
-## 📄 Licença
-O Mocai é distribuído sob a **licença MIT**.
+## 📄 Licence
+Mocaí is distributed under the **MIT License**.
 
-### 🌟 Mocai: Gerando mocks, simplificando testes, acelerando desenvolvimento.
-Seja bem-vindo ao projeto e sinta-se à vontade para explorar, usar e contribuir!
+### 🌟 Mocaí: Generating mocks, simplifying tests, accelerating development.
+Welcome to the project, and feel free to explore, use, and contribute!
 
-## 🌐 Servidor no Discord
-Participe do servidor **Mocai** no Discord:
-[Clique aqui e junte-se a nós!](https://discord.gg/TFRnQBkAMt)
+## 🌐 Discord Server
+Join the **Mocai** server on Discord:
+[Click here and join us!](https://discord.gg/TFRnQBkAMt)
