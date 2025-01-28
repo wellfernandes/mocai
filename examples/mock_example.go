@@ -27,4 +27,7 @@ func GenerateMockExample() {
 	fmt.Println("\nID de Registro:")
 	fmt.Printf("  ID: %s\n", mock.RegistrationID.ID)
 
+	fmt.Println("\nCPF:")
+	fmt.Printf("  CPF: %s\n", mock.CpfNumber.Number)
+
 }

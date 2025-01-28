@@ -7,14 +7,12 @@ import (
 	"time"
 )
 
-// Phone represents a mock phone entity.
 type RegistrationID struct {
 	ID string
 }
 
-// GeneratePhone generates a mock phone number with random data.
 func GenerateRegistrationID(locale string) (RegistrationID, error) {
-	id, _, err := GenerateID(locale, 8)
+	id, err := GenerateID(locale, 8)
 	if err != nil {
 		return RegistrationID{}, err
 	}
@@ -26,8 +24,8 @@ func GenerateRegistrationID(locale string) (RegistrationID, error) {
 	return registrationID, nil
 }
 
-// GeneratePhoneNumber generates a random registration number in Portuguese.
-func GenerateID(locale string, length int) (string, int, error) {
+// generates a random registration number in Portuguese.
+func GenerateID(locale string, length int) (string, error) {
 	switch locale {
 	case "pt-br":
 		if length < 2 {
@@ -58,8 +56,8 @@ func GenerateID(locale string, length int) (string, int, error) {
 			idStr += strconv.Itoa(digit)
 		}
 
-		return idStr, checksum, nil
+		return idStr, nil
 	default:
-		return "", 0, errors.New("unsupported locale")
+		return "", errors.New("unsupported locale")
 	}
 }

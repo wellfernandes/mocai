@@ -6,6 +6,7 @@ type Mocai struct {
 	Address        Address
 	Phone          Phone
 	RegistrationID RegistrationID
+	CpfNumber      CpfNumber
 }
 
 // GenerateMocai generates a complete mock entity with random data.
@@ -31,11 +32,17 @@ func GenerateMocai(locale string) Mocai {
 		panic(err)
 	}
 
+	cpf, err := GenerateValidCPF(locale)
+	if err != nil {
+		panic(err)
+	}
+
 	mocai := Mocai{
 		Person:         person,
 		Address:        address,
 		Phone:          phone,
 		RegistrationID: registrationID,
+		CpfNumber:      cpf,
 	}
 
 	return mocai
