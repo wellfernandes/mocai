@@ -3,6 +3,7 @@ package examples
 import (
 	"fmt"
 
+	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
@@ -18,7 +19,12 @@ func GenerateMockExample() {
 	address_mock := address.GenerateAddress()
 	phone_mock := phone.GeneratePhone()
 
-	fmt.Println("Pessoa:", person_mock)
-	fmt.Println("Endereço:", address_mock)
-	fmt.Println("Telefone:", phone_mock)
+	fmt.Println(constants.HeaderMain)
+	fmt.Println(constants.SubHeader)
+
+	fmt.Println("Person:", person_mock)
+	fmt.Println("Address:", address_mock)
+	fmt.Println("Phone:", phone_mock)
+
+	fmt.Println(constants.Footer)
 }
