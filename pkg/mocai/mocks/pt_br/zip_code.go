@@ -1,4 +1,4 @@
-package constants
+package mocks
 
 // ZIPCodes contains a list of 200 distinct Brazilian ZIP codes.
 var ZIPCodes = []string{

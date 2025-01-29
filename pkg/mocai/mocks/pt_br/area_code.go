@@ -1,4 +1,4 @@
-package constants
+package mocks
 
 // AreaCode contains a list of all Brazilian telephone area codes.
 var AreaCodes = []string{

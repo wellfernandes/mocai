@@ -1,4 +1,4 @@
-package constants
+package mocks
 
 // LastNames contains a list of 300 distinct Brazilian last names.
 var LastNames = []string{
