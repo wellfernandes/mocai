@@ -1,5 +1,8 @@
+// Package errors provides standardized error messages for the mocai package.
+// These messages are used across different mock data generation operations.
 package constants
 
+// Error messages for mock data generation operations.
 const (
 	ERROR_GENERATING_ADDRESS = "error generating address"
 	ERROR_GENERATING_PERSON  = "error generating person"
