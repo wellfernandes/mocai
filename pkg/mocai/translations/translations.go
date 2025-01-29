@@ -39,6 +39,8 @@ func SetLanguage(lang string) error {
 
 // GetLanguage returns the current language.
 func GetLanguage() string {
+	mu.RLock()
+	defer mu.RUnlock()
 	return currentLang
 }
 
