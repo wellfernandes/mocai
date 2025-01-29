@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"strings"
 
+	mocks "github.com/brazzcore/mocai/pkg/mocai/mocks/pt_br"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -23,11 +24,15 @@ func GenerateAddress() interface{} {
 	state := states[rand.Intn(len(states))]
 	zip := zips[rand.Intn(len(zips))]
 
+	// Get the UF from the state name
+	uf := mocks.UF[state]
+
 	createdAddress := map[string]interface{}{
 		"street": street,
 		"number": rand.Intn(1000) + 1,
 		"city":   city,
 		"state":  state,
+		"uf":     uf,
 		"zip":    zip,
 	}
 
