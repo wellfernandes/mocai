@@ -5,11 +5,19 @@ import (
 	"math/rand"
 	"strings"
 
+	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// Phone represents a phone number with area code and number.
+type Phone struct {
+	AreaCode string
+	Number   string
+}
+
 // GeneratePhone generates a mock phone number with random data.
-func GeneratePhone() interface{} {
+// It returns a pointer to a Phone and an error if the generation fails.
+func GeneratePhone() (*Phone, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of area codes
@@ -21,11 +29,16 @@ func GeneratePhone() interface{} {
 	// Generate a random phone number
 	number := fmt.Sprintf("9%08d", rand.Intn(100000000))
 
-	createdPhone := map[string]interface{}{
-		"area_code": areaCode,
-		"number":    number,
+	if areaCode == "" || number == "" {
+		return nil, fmt.Errorf("%s: missing required data (areaCode: %s, number: %s)",
+			constants.ErrorGeneratingPhone, areaCode, number)
 	}
 
-	return createdPhone
+	createdPhone := &Phone{
+		AreaCode: areaCode,
+		Number:   number,
+	}
+
+	return createdPhone, nil
 
 }

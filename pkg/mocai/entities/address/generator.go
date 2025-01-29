@@ -1,15 +1,28 @@
 package address
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 
+	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	mocks "github.com/brazzcore/mocai/pkg/mocai/mocks/pt_br"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// Address represents a mock address with street, number, city, state, UF, and ZIP code.
+type Address struct {
+	Street string
+	Number int
+	City   string
+	State  string
+	UF     string
+	ZIP    string
+}
+
 // GenerateAddress generates a mock address with random data.
-func GenerateAddress() interface{} {
+// It returns a pointer to an Address and an error if the generation fails.
+func GenerateAddress() (*Address, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of streets, cities, states, and ZIP codes
@@ -27,14 +40,19 @@ func GenerateAddress() interface{} {
 	// Get the UF from the state name
 	uf := mocks.UF[state]
 
-	createdAddress := map[string]interface{}{
-		"street": street,
-		"number": rand.Intn(1000) + 1,
-		"city":   city,
-		"state":  state,
-		"uf":     uf,
-		"zip":    zip,
+	if street == "" || city == "" || state == "" || zip == "" || uf == "" {
+		return nil, fmt.Errorf("%s: missing required data (street: %s, city: %s, state: %s, zip: %s, uf: %s)",
+			constants.ErrorGeneratingAddress, street, city, state, zip, uf)
 	}
 
-	return createdAddress
+	createdAddress := &Address{
+		Street: street,
+		Number: rand.Intn(9999),
+		City:   city,
+		State:  state,
+		UF:     uf,
+		ZIP:    zip,
+	}
+
+	return createdAddress, nil
 }
