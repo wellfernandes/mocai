@@ -1,7 +1,17 @@
 package translations
 
-var registry = make(map[string]map[string]string) // Registry stores translations for each language
-var currentLang = "pt"                            // Default language
+import (
+	"fmt"
+	"sync"
+
+	"github.com/brazzcore/mocai/pkg/mocai/constants"
+)
+
+var (
+	registry    = make(map[string]map[string]string) // Registry stores translations for each language
+	currentLang = "pt"                               // Default language
+	mu          sync.RWMutex                         // Mutex to protect the registry
+)
 
 // Register adds translations for a specific language.
 func Register(lang string, messages map[string]string) {
@@ -14,8 +24,17 @@ func Register(lang string, messages map[string]string) {
 }
 
 // SetLanguage sets the current language for translations.
-func SetLanguage(lang string) {
+func SetLanguage(lang string) error {
+	mu.RLock()
+	_, exists := registry[lang]
+	mu.RUnlock()
+	if !exists {
+		return fmt.Errorf(constants.ERROR_UNSUPPORTED_LANGUAGE+" %s", lang)
+	}
+	mu.Lock()
 	currentLang = lang
+	mu.Unlock()
+	return nil
 }
 
 // GetLanguage returns the current language.
