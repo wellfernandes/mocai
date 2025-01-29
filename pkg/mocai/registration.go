@@ -2,6 +2,7 @@ package mocai
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -29,15 +30,17 @@ func GenerateID(locale string, length int) (string, error) {
 	switch locale {
 	case "pt-br":
 		if length < 2 {
-			panic("Length must be at least 2 to include the checksum")
+			return "", fmt.Errorf("length must be at least 2 to include the checksum")
 		}
 
-		rand.Seed(time.Now().UnixNano())
+		// Create a local random source
+		source := rand.NewSource(time.Now().UnixNano())
+		rng := rand.New(source)
 
 		// Generate random digits for the ID, leaving room for a checksum digit
 		id := make([]int, length-1)
 		for i := 0; i < length-1; i++ {
-			id[i] = rand.Intn(10) // Random digit between 0-9
+			id[i] = rng.Intn(10) // Random digit between 0-9
 		}
 
 		// Calculate checksum (mod 10 of sum of digits for simplicity)

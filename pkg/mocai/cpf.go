@@ -1,7 +1,8 @@
 package mocai
 
 import (
-	"math/rand"
+	cryptoRand "crypto/rand"
+	"fmt"
 	"strconv"
 )
 
@@ -11,11 +12,29 @@ type CpfNumber struct {
 
 // GenerateCPF generates a valid CPF
 func GenerateValidCPF(local string) (CpfNumber, error) {
-	// Generate the first 9 digits randomly
+	// Generate the first 9 digits using crypto/rand
 	cpfDigits := make([]int, 9)
-	for i := range cpfDigits {
-		cpfDigits[i] = rand.Intn(10)
+	randomBytes := make([]byte, 9)
+	if _, err := cryptoRand.Read(randomBytes); err != nil {
+		return CpfNumber{}, fmt.Errorf("failed to generate random digits: %w", err)
 	}
+	for i, b := range randomBytes {
+		cpfDigits[i] = int(b) % 10
+	}
+
+	// Validate that not all digits are the same
+	allSame := true
+	for i := 1; i < len(cpfDigits); i++ {
+		if cpfDigits[i] != cpfDigits[0] {
+			allSame = false
+			break
+		}
+	}
+	if allSame {
+		return GenerateValidCPF(local) // Recursively try again
+	}
+
+	//fmt.Println("cpfDigits: ", cpfDigits)
 
 	// Calculate the first check digit
 	checkDigit, err := calculateCheckDigit(cpfDigits, 10)
