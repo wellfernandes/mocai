@@ -31,6 +31,23 @@ func GenerateAddress() (*Address, error) {
 	states := strings.Split(translations.Get(lang, "address_state"), ",")
 	zips := strings.Split(translations.Get(lang, "address_zip"), ",")
 
+	// Validate data
+	if len(streets) == 0 {
+		return nil, fmt.Errorf(constants.ERROR_NO_STREETS)
+	}
+
+	if len(cities) == 0 {
+		return nil, fmt.Errorf(constants.ERROR_NO_CITIES)
+	}
+
+	if len(states) == 0 {
+		return nil, fmt.Errorf(constants.ERROR_NO_STATES)
+	}
+
+	if len(zips) == 0 {
+		return nil, fmt.Errorf(constants.ERROR_NO_ZIPS)
+	}
+
 	// Choose random values
 	street := streets[rand.Intn(len(streets))]
 	city := cities[rand.Intn(len(cities))]
@@ -38,11 +55,14 @@ func GenerateAddress() (*Address, error) {
 	zip := zips[rand.Intn(len(zips))]
 
 	// Get the UF from the state name
-	uf := mocks.UF[state]
+	uf, exists := mocks.UF[state]
+	if !exists {
+		return nil, fmt.Errorf("%s: UF not found for state '%s'", constants.ERROR_GENERATING_ADDRESS, state)
+	}
 
 	if street == "" || city == "" || state == "" || zip == "" || uf == "" {
 		return nil, fmt.Errorf("%s: missing required data (street: %s, city: %s, state: %s, zip: %s, uf: %s)",
-			constants.ErrorGeneratingAddress, street, city, state, zip, uf)
+			constants.ERROR_GENERATING_ADDRESS, street, city, state, zip, uf)
 	}
 
 	createdAddress := &Address{
