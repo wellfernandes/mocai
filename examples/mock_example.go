@@ -15,16 +15,29 @@ func GenerateMockExample() {
 	translations.SetLanguage("pt")
 
 	// Generate mock data
-	person_mock := person.GeneratePerson()
-	address_mock := address.GenerateAddress()
-	phone_mock := phone.GeneratePhone()
+	person_mock, err := person.GeneratePerson()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	address_mock, err := address.GenerateAddress()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	phone_mock, err := phone.GeneratePhone()
+	if err != nil {
+		fmt.Print(err)
+	}
 
 	fmt.Println(constants.HeaderMain)
 	fmt.Println(constants.SubHeader)
 
-	fmt.Println("Person:", person_mock)
-	fmt.Println("Address:", address_mock)
-	fmt.Println("Phone:", phone_mock)
+	fmt.Printf("Person: %s %s, %d years old\n",
+		person_mock.FirstNameMale, person_mock.LastName, person_mock.Age)
+	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
+		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
+	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
 
 	fmt.Println(constants.Footer)
 }
