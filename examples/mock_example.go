@@ -3,24 +3,22 @@ package examples
 import (
 	"fmt"
 
-	"github.com/brazzcore/mocai/pkg/mocai"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-// GenerateMockPTBR generates a mock in Portuguese.
 func GenerateMockExample() {
-	mock := mocai.GenerateMocai("pt-br")
-	fmt.Println("=== Mock em Português (pt-br) ===")
-	fmt.Println("Pessoa:")
-	fmt.Printf("  Nome: %s %s\n", mock.Person.FirstNameMale, mock.Person.LastName)
-	fmt.Printf("  Idade: %d\n", mock.Person.Age)
-	fmt.Printf("  CPF: %s\n", mock.Person.CPF)
+	// Set the language to pt-BR
+	translations.SetLanguage("pt")
 
-	fmt.Println("\nEndereço:")
-	fmt.Printf("  Rua: %s, %d\n", mock.Address.Street, mock.Address.Number)
-	fmt.Printf("  Cidade: %s, %s "+"("+"%s)\n", mock.Address.City, mock.Address.State, mock.Address.UF)
-	fmt.Printf("  CEP: %s\n", mock.Address.ZIPCode)
+	// Generate mock data
+	person_mock := person.GeneratePerson()
+	address_mock := address.GenerateAddress()
+	phone_mock := phone.GeneratePhone()
 
-	fmt.Println("\nTelefone:")
-	fmt.Printf("  Código de Área: %s\n", mock.Phone.AreaCode)
-	fmt.Printf("  Número: %s\n", mock.Phone.Number)
+	fmt.Println("Pessoa:", person_mock)
+	fmt.Println("Endereço:", address_mock)
+	fmt.Println("Telefone:", phone_mock)
 }
