@@ -21,7 +21,11 @@ func GeneratePhone() (*Phone, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of area codes
-	areaCodes := strings.Split(translations.Get(lang, "phone_area_code"), ",")
+	area_code_str := translations.Get(lang, "phone_area_code")
+	if area_code_str == "" {
+		return nil, fmt.Errorf(constants.ERROR_NO_AREA_CODES+" for: %s", lang)
+	}
+	areaCodes := strings.Split(area_code_str, ",")
 
 	// Validate data
 	if len(areaCodes) == 0 {
