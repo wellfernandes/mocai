@@ -1,14 +1,24 @@
 package mocai
 
 import (
-	"math/rand"
-	"time"
+	"os"
+	"runtime"
 )
 
-// GenerateRandomNumber generates a random number between min and max.
-func GenerateRandomNumber(min, max int) int {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	return r.Intn(max-min+1) + min
+// SupportsANSI checks if the terminal supports ANSI escape codes.
+func SupportsANSI() bool {
+	// Check if the output is a terminal
+	fileInfo, err := os.Stdout.Stat()
+	if err != nil || (fileInfo.Mode()&os.ModeCharDevice) == 0 {
+		return false // Not a terminal
+	}
+
+	// Check for Windows (cmd.exe or PowerShell without ANSI support)
+	if runtime.GOOS == "windows" && os.Getenv("ANSICON") == "" && os.Getenv("ConEmuANSI") == "" {
+		return false
+	}
+
+	return true
 }
 
 // FormatCPF formats a CPF number.
