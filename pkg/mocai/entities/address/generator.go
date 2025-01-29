@@ -55,9 +55,9 @@ func GenerateAddress() (*Address, error) {
 	zip := zips[rand.Intn(len(zips))]
 
 	// Get the UF from the state name
-	uf, exists := mocks.UF[state]
+	uf, exists := mocks.UFs[state]
 	if !exists {
-		return nil, fmt.Errorf("%s: UF not found for state '%s'", constants.ERROR_GENERATING_ADDRESS, state)
+		return nil, fmt.Errorf(constants.ERROR_NO_UFS)
 	}
 
 	if street == "" || city == "" || state == "" || zip == "" || uf == "" {
