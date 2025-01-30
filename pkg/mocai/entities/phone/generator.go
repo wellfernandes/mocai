@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -23,13 +22,13 @@ func GeneratePhone() (*Phone, error) {
 	// Get the list of area codes
 	area_code_str := translations.Get(lang, "phone_area_code")
 	if area_code_str == "" {
-		return nil, fmt.Errorf(constants.ERROR_NO_AREA_CODES+" for: %s", lang)
+		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
 	}
 	areaCodes := strings.Split(area_code_str, ",")
 
 	// Validate data
 	if len(areaCodes) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_AREA_CODES+" for: %s", lang)
+		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
 	}
 
 	// Choose a random area code
@@ -40,7 +39,7 @@ func GeneratePhone() (*Phone, error) {
 
 	if areaCode == "" || number == "" {
 		return nil, fmt.Errorf("%s: missing required data (areaCode: %s, number: %s)",
-			constants.ERROR_GENERATING_PHONE, areaCode, number)
+			ERROR_GENERATING_PHONE, areaCode, number)
 	}
 
 	createdPhone := &Phone{
