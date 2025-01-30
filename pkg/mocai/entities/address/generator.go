@@ -1,11 +1,11 @@
 package address
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
 
-	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -35,25 +35,24 @@ func GenerateAddress() (*Address, error) {
 	// Validate data
 	for _, slice := range [][]string{streets, cities, states, zips} {
 		if len(slice) == 0 {
-			return nil, fmt.Errorf("%s: empty data slice",
-				constants.ERROR_GENERATING_ADDRESS)
+			return nil, fmt.Errorf("%s: empty data slice", ERROR_GENERATING_ADDRESS)
 		}
 	}
 
 	if len(streets) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_STREETS)
+		return nil, errors.New(ERROR_NO_STREETS)
 	}
 
 	if len(cities) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_CITIES)
+		return nil, errors.New(ERROR_NO_CITIES)
 	}
 
 	if len(states) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_STATES)
+		return nil, errors.New(ERROR_NO_STATES)
 	}
 
 	if len(zips) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_ZIPS)
+		return nil, errors.New(ERROR_NO_ZIPS)
 	}
 
 	// Choose random values
@@ -65,12 +64,12 @@ func GenerateAddress() (*Address, error) {
 	// Get the UF from the state name
 	uf, exists := address_mocks.UFs[state]
 	if !exists {
-		return nil, fmt.Errorf(constants.ERROR_NO_UFS)
+		return nil, errors.New(ERROR_NO_UFS)
 	}
 
 	if street == "" || city == "" || state == "" || zip == "" || uf == "" {
 		return nil, fmt.Errorf("%s: missing required data (street: %s, city: %s, state: %s, zip: %s, uf: %s)",
-			constants.ERROR_GENERATING_ADDRESS, street, city, state, zip, uf)
+			ERROR_GENERATING_ADDRESS, street, city, state, zip, uf)
 	}
 
 	createdAddress := &Address{
