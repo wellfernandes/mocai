@@ -6,6 +6,7 @@
 // is provided during the mock data generation process.
 package translations
 
-const (
-	ERROR_UNSUPPORTED_LANGUAGE = "unsupported language"
-)
+import "errors"
+
+// ErrUnsupportedLanguage indicates that the requested language is not supported.
+var ErrUnsupportedLanguage = errors.New("unsupported language")
