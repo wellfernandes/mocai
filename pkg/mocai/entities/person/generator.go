@@ -1,11 +1,11 @@
 package person
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
 
-	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -29,11 +29,11 @@ func GeneratePerson() (*Person, error) {
 
 	// Validate data
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_FIRST_NAMES)
+		return nil, errors.New(ERROR_NO_FIRST_NAMES)
 	}
 
 	if len(lastNames) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_LAST_NAMES)
+		return nil, errors.New(ERROR_NO_LAST_NAMES)
 	}
 
 	// Choose random values
@@ -44,7 +44,7 @@ func GeneratePerson() (*Person, error) {
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
 		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
-			constants.ERROR_GENERATING_PERSON, firstNameMale, firstNameFemale, lastName)
+			ERROR_GENERATING_PERSON, firstNameMale, firstNameFemale, lastName)
 	}
 
 	createdPerson := &Person{
