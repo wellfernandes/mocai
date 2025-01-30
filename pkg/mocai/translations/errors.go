@@ -5,7 +5,7 @@
 // Example usage:
 //
 //	if !isSupported(lang) {
-//	  return nil, errors.New(translations.ERROR_UNSUPPORTED_LANGUAGE)
+//	  return nil, translations.ErrUnsupportedLanguage
 //	}
 package translations
 
