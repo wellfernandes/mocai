@@ -6,7 +6,8 @@ import (
 	"strings"
 
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
-	mocks "github.com/brazzcore/mocai/pkg/mocai/mocks/pt_br"
+	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
+
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -55,7 +56,7 @@ func GenerateAddress() (*Address, error) {
 	zip := zips[rand.Intn(len(zips))]
 
 	// Get the UF from the state name
-	uf, exists := mocks.UFs[state]
+	uf, exists := address_mocks.UFs[state]
 	if !exists {
 		return nil, fmt.Errorf(constants.ERROR_NO_UFS)
 	}

@@ -3,25 +3,27 @@ package translations
 import (
 	"math/rand"
 
-	mocks "github.com/brazzcore/mocai/pkg/mocai/mocks/pt_br"
+	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
+	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/person_mocks/pt_br"
+	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/phone_mocks/pt_br"
 )
 
 func init() {
 	// Choose a random state
-	state := mocks.States[rand.Intn(len(mocks.States))]
+	state := address_mocks.States[rand.Intn(len(address_mocks.States))]
 
 	// Gets the UF corresponding to the selected state
-	uf := mocks.UFs[state]
+	uf := address_mocks.UFs[state]
 
 	Register("pt", map[string]string{
-		"person_first_name_male":   mocks.FirstNamesMale[rand.Intn(len(mocks.FirstNamesMale))],
-		"person_first_name_female": mocks.FirstNamesFemale[rand.Intn(len(mocks.FirstNamesFemale))],
-		"person_last_name":         mocks.LastNames[rand.Intn(len(mocks.LastNames))],
-		"address_street":           mocks.Streets[rand.Intn(len(mocks.Streets))],
-		"address_city":             mocks.Cities[rand.Intn(len(mocks.Cities))],
+		"person_first_name_male":   person_mocks.FirstNamesMale[rand.Intn(len(person_mocks.FirstNamesMale))],
+		"person_first_name_female": person_mocks.FirstNamesFemale[rand.Intn(len(person_mocks.FirstNamesFemale))],
+		"person_last_name":         person_mocks.LastNames[rand.Intn(len(person_mocks.LastNames))],
+		"address_street":           address_mocks.Streets[rand.Intn(len(address_mocks.Streets))],
+		"address_city":             address_mocks.Cities[rand.Intn(len(address_mocks.Cities))],
 		"address_state":            state,
 		"address_uf":               uf,
-		"address_zip":              mocks.ZIPCodes[rand.Intn(len(mocks.ZIPCodes))],
-		"phone_area_code":          mocks.AreaCodes[rand.Intn(len(mocks.AreaCodes))],
+		"address_zip":              address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
+		"phone_area_code":          phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
 	})
 }
