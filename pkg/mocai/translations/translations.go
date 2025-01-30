@@ -54,9 +54,17 @@ func GetLanguage() string {
 
 // Get retrieves a translation for a specific key in a given language.
 func Get(lang, key string) string {
+	if lang == "" || key == "" {
+		return key
+	}
+
+	mu.RLock()
+	defer mu.RUnlock()
+
 	if val, ok := registry[lang][key]; ok {
 		return val
 	}
+
 	return key // Return the key itself if the translation is not found
 }
 
