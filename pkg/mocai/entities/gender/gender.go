@@ -1,6 +1,10 @@
 package gender
 
-import "github.com/brazzcore/mocai/pkg/mocai/translations"
+import (
+	"errors"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
+)
 
 // Gender represents a person's gender identity.
 type Gender string
@@ -17,8 +21,13 @@ const (
 )
 
 // GenerateRandomGender generates a random gender based on the current language.
-func GenerateRandomGender() Gender {
+func GenerateRandomGender() (Gender, error) {
 	lang := translations.GetLanguage()
 	genderStr := translations.Get(lang, "gender")
-	return Gender(genderStr)
+
+	if genderStr == "" {
+		return "", errors.New(ErrNoGenders.Error() + " for: %s" + lang)
+	}
+
+	return Gender(genderStr), nil
 }
