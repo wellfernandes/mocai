@@ -6,10 +6,9 @@ import "errors"
 // These errors represent specific failure scenarios and should be wrapped with additional
 // context when returned.
 var (
-	ErrGeneratingAddress = errors.New("error generating address")
-	ErrNoStreets         = errors.New("no data available for streets")
-	ErrNoCities          = errors.New("no data available for cities")
-	ErrNoStates          = errors.New("no data available for states")
-	ErrNoUFs             = errors.New("no data available for UFs")
-	ErrNoZips            = errors.New("no data available for zips")
+	ErrNoStreets = errors.New("no data available for streets")
+	ErrNoCities  = errors.New("no data available for cities")
+	ErrNoStates  = errors.New("no data available for states")
+	ErrNoUFs     = errors.New("no data available for UFs")
+	ErrNoZips    = errors.New("no data available for zips")
 )
