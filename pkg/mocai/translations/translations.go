@@ -35,15 +35,13 @@ func Register(lang string, messages map[string]string) {
 
 // SetLanguage sets the current language for translations.
 func SetLanguage(lang string) error {
-	mu.RLock()
-	_, exists := registry[lang]
-	mu.RUnlock()
-	if !exists {
+
+	mu.Lock()
+	defer mu.Unlock()
+	if _, exists := registry[lang]; !exists {
 		return fmt.Errorf(constants.ERROR_UNSUPPORTED_LANGUAGE+" %s", lang)
 	}
-	mu.Lock()
 	currentLang = lang
-	mu.Unlock()
 	return nil
 }
 
