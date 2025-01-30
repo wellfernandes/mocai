@@ -15,6 +15,16 @@ var (
 
 // Register adds translations for a specific language.
 func Register(lang string, messages map[string]string) {
+	if lang == "" {
+		return
+	}
+	if messages == nil {
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
 	if registry[lang] == nil {
 		registry[lang] = make(map[string]string)
 	}
