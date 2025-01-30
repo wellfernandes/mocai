@@ -44,7 +44,10 @@ func GeneratePerson() (*Person, error) {
 	lastName := lastNames[rand.Intn(len(lastNames))]
 
 	// Generate a random gender
-	gender := gender.GenerateRandomGender()
+	gender, err := gender.GenerateRandomGender()
+	if err != nil {
+		return nil, err
+	}
 
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
