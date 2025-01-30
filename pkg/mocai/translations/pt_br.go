@@ -4,6 +4,7 @@ import (
 	"math/rand"
 
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
+	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/gender_mocks/pt_br"
 	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/person_mocks/pt_br"
 	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/phone_mocks/pt_br"
 )
@@ -19,6 +20,7 @@ func init() {
 		"person_first_name_male":   person_mocks.FirstNamesMale[rand.Intn(len(person_mocks.FirstNamesMale))],
 		"person_first_name_female": person_mocks.FirstNamesFemale[rand.Intn(len(person_mocks.FirstNamesFemale))],
 		"person_last_name":         person_mocks.LastNames[rand.Intn(len(person_mocks.LastNames))],
+		"gender":                   gender_mocks.Genders[rand.Intn(len(gender_mocks.Genders))],
 		"address_street":           address_mocks.Streets[rand.Intn(len(address_mocks.Streets))],
 		"address_city":             address_mocks.Cities[rand.Intn(len(address_mocks.Cities))],
 		"address_state":            state,
