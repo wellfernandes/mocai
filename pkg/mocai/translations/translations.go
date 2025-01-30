@@ -64,5 +64,8 @@ func Get(lang, key string) string {
 
 // Translate retrieves a translation for a specific key in the current language.
 func Translate(key string) string {
-	return Get(currentLang, key)
+	mu.RLock()
+	lang := currentLang
+	mu.RUnlock()
+	return Get(lang, key)
 }
