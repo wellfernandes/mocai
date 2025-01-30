@@ -29,7 +29,7 @@ func GeneratePhone() (*Phone, error) {
 
 	// Validate data
 	if len(areaCodes) == 0 {
-		return nil, fmt.Errorf(constants.ERROR_NO_AREA_CODES)
+		return nil, fmt.Errorf(constants.ERROR_NO_AREA_CODES+" for: %s", lang)
 	}
 
 	// Choose a random area code
@@ -49,5 +49,4 @@ func GeneratePhone() (*Phone, error) {
 	}
 
 	return createdPhone, nil
-
 }
