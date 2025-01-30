@@ -1,12 +1,9 @@
 package address
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
-
-	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -21,6 +18,11 @@ type Address struct {
 	ZIP    string
 }
 
+type SlicesToCheck struct {
+	data []string
+	err  error
+}
+
 // GenerateAddress generates a mock address with random data.
 // It returns a pointer to an Address and an error if the generation fails.
 func GenerateAddress() (*Address, error) {
@@ -30,29 +32,33 @@ func GenerateAddress() (*Address, error) {
 	streets := strings.Split(translations.Get(lang, "address_street"), ",")
 	cities := strings.Split(translations.Get(lang, "address_city"), ",")
 	states := strings.Split(translations.Get(lang, "address_state"), ",")
+	uf := translations.Get(lang, "address_uf")
 	zips := strings.Split(translations.Get(lang, "address_zip"), ",")
 
-	// Validate data
-	for _, slice := range [][]string{streets, cities, states, zips} {
-		if len(slice) == 0 {
-			return nil, fmt.Errorf("%s: empty data slice", ERROR_GENERATING_ADDRESS)
+	// slicesToCheck defines validation groups for related address components.
+	// Each entry contains the data slice to validate and its specific error.
+	slicesToCheck := []SlicesToCheck{
+		{streets, ErrNoStreets},
+		{cities, ErrNoCities},
+		{states, ErrNoStates},
+		{[]string{uf}, ErrNoUFs},
+		{zips, ErrNoZips},
+	}
+
+	// Validate all required data slices
+	// - Checks for empty slices
+	// - Verifies each item isn't just whitespace
+	for _, s := range slicesToCheck {
+		if len(s.data) == 0 {
+			return nil, s.err
 		}
-	}
 
-	if len(streets) == 0 {
-		return nil, errors.New(ERROR_NO_STREETS)
-	}
-
-	if len(cities) == 0 {
-		return nil, errors.New(ERROR_NO_CITIES)
-	}
-
-	if len(states) == 0 {
-		return nil, errors.New(ERROR_NO_STATES)
-	}
-
-	if len(zips) == 0 {
-		return nil, errors.New(ERROR_NO_ZIPS)
+		// Individual item validation (prevent empty values)
+		for _, item := range s.data {
+			if strings.TrimSpace(item) == "" {
+				return nil, fmt.Errorf("%w: empty value in slice", s.err)
+			}
+		}
 	}
 
 	// Choose random values
@@ -60,17 +66,6 @@ func GenerateAddress() (*Address, error) {
 	city := cities[rand.Intn(len(cities))]
 	state := states[rand.Intn(len(states))]
 	zip := zips[rand.Intn(len(zips))]
-
-	// Get the UF from the state name
-	uf, exists := address_mocks.UFs[state]
-	if !exists {
-		return nil, errors.New(ERROR_NO_UFS)
-	}
-
-	if street == "" || city == "" || state == "" || zip == "" || uf == "" {
-		return nil, fmt.Errorf("%s: missing required data (street: %s, city: %s, state: %s, zip: %s, uf: %s)",
-			ERROR_GENERATING_ADDRESS, street, city, state, zip, uf)
-	}
 
 	createdAddress := &Address{
 		Street: street,
