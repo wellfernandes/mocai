@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"strings"
 
+	"github.com/brazzcore/mocai/pkg/mocai/entities/gender"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -14,6 +15,7 @@ type Person struct {
 	FirstNameMale   string
 	FirstNameFemale string
 	LastName        string
+	Gender          gender.Gender
 	Age             int
 }
 
@@ -41,6 +43,9 @@ func GeneratePerson() (*Person, error) {
 	firstNameFemale := firstNamesFemale[rand.Intn(len(firstNamesFemale))]
 	lastName := lastNames[rand.Intn(len(lastNames))]
 
+	// Generate a random gender
+	gender := gender.GenerateRandomGender()
+
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
 		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
@@ -51,6 +56,7 @@ func GeneratePerson() (*Person, error) {
 		FirstNameMale:   firstNameMale,
 		FirstNameFemale: firstNameFemale,
 		LastName:        lastName,
+		Gender:          gender,
 		Age:             rand.Intn(80) + 18,
 	}
 
