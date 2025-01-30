@@ -3,8 +3,6 @@ package translations
 import (
 	"fmt"
 	"sync"
-
-	"github.com/brazzcore/mocai/pkg/mocai/constants"
 )
 
 var (
@@ -39,7 +37,7 @@ func SetLanguage(lang string) error {
 	mu.Lock()
 	defer mu.Unlock()
 	if _, exists := registry[lang]; !exists {
-		return fmt.Errorf(constants.ERROR_UNSUPPORTED_LANGUAGE+" %s", lang)
+		return fmt.Errorf(ERROR_UNSUPPORTED_LANGUAGE+" %s", lang)
 	}
 	currentLang = lang
 	return nil
