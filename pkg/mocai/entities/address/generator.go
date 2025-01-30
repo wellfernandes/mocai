@@ -33,6 +33,13 @@ func GenerateAddress() (*Address, error) {
 	zips := strings.Split(translations.Get(lang, "address_zip"), ",")
 
 	// Validate data
+	for _, slice := range [][]string{streets, cities, states, zips} {
+		if len(slice) == 0 {
+			return nil, fmt.Errorf("%s: empty data slice",
+				constants.ERROR_GENERATING_ADDRESS)
+		}
+	}
+
 	if len(streets) == 0 {
 		return nil, fmt.Errorf(constants.ERROR_NO_STREETS)
 	}
