@@ -1,0 +1,45 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+ .heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Adicionando estilos personalizados para o botão */
+.customButton {
+  background: linear-gradient(60deg, #ffaf37, #ffaf37);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.customButton:hover {
+  background: linear-gradient(90deg, #fd9700, #fd9700);
+  transform: translateY(-5px);
+}
+
+.customButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 126, 95, 0.5);
+}
