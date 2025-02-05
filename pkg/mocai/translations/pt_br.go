@@ -3,10 +3,10 @@ package translations
 import (
 	"math/rand"
 
-	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/address_mocks/pt_br"
-	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/gender_mocks/pt_br"
-	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/person_mocks/pt_br"
-	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/phone_mocks/pt_br"
+	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
+	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/mocks/ptbr"
+	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/mocks/ptbr"
+	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/mocks/ptbr"
 )
 
 func init() {
