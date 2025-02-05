@@ -8,7 +8,7 @@ import (
 
 var (
 	registry    = make(map[string]map[string]string) // Registry stores translations for each language
-	currentLang = "pt"                               // Default language
+	currentLang = "ptbr"                             // Default language
 	mu          sync.RWMutex                         // Mutex to protect the registry
 )
 

@@ -12,7 +12,7 @@ import (
 
 func GenerateMockExample() {
 	// Set the language to pt-BR
-	translations.SetLanguage("pt")
+	translations.SetLanguage("ptbr")
 
 	// Generate mock data
 	person_mock, err := person.GeneratePerson()

@@ -16,7 +16,7 @@ func init() {
 	// Gets the UF corresponding to the selected state
 	uf := address_mocks.UFs[state]
 
-	Register("pt", map[string]string{
+	Register("ptbr", map[string]string{
 		"person_first_name_male":   person_mocks.FirstNamesMale[rand.Intn(len(person_mocks.FirstNamesMale))],
 		"person_first_name_female": person_mocks.FirstNamesFemale[rand.Intn(len(person_mocks.FirstNamesFemale))],
 		"person_last_name":         person_mocks.LastNames[rand.Intn(len(person_mocks.LastNames))],
