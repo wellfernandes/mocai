@@ -1,7 +1,6 @@
 package translations
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 )
@@ -38,7 +37,7 @@ func SetLanguage(lang string) error {
 	mu.Lock()
 	defer mu.Unlock()
 	if _, exists := registry[lang]; !exists {
-		return errors.New(ErrUnsupportedLanguage.Error() + fmt.Sprintf("for: %s", lang))
+		return fmt.Errorf("%w: %s", ErrUnsupportedLanguage, lang)
 	}
 	currentLang = lang
 	return nil
