@@ -20,18 +20,16 @@ func GeneratePhone() (*Phone, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of area codes
-	area_code_str := translations.Get(lang, "phone_area_code")
-	if area_code_str == "" {
+	areaCodeStr := translations.Get(lang, "phone_area_code")
+	if areaCodeStr == "" {
 		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
 	}
-	areaCodes := strings.Split(area_code_str, ",")
+	areaCodes := strings.Split(areaCodeStr, ",")
 
 	// Validate data
 	if len(areaCodes) == 0 {
 		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
 	}
-
-	// Choose a random area code
 	areaCode := areaCodes[rand.Intn(len(areaCodes))]
 
 	// Generate a random phone number
