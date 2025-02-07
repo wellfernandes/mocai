@@ -1,7 +1,7 @@
-package constants
+package ptbr
 
 // UF maps Brazilian state names to their respective UFs (Unidades Federativas).
-var UF = map[string]string{
+var UFs = map[string]string{
 	"Acre":                "AC",
 	"Alagoas":             "AL",
 	"Amapá":               "AP",
