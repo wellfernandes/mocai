@@ -1,4 +1,4 @@
-package constants
+package ptbr
 
 // Streets contains a list of 200 distinct street names in Brazil.
 var Streets = []string{

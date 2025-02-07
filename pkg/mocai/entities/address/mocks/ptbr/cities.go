@@ -1,4 +1,4 @@
-package constants
+package ptbr
 
 // Cities contains a list of 200 distinct cities names in Brazil (excluding capitals).
 var Cities = []string{

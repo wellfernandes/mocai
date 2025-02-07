@@ -1,4 +1,4 @@
-package constants
+package ptbr
 
 // States contains a list of all Brazilian states and the Federal District.
 var States = []string{

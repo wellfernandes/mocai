@@ -1,4 +1,4 @@
-package constants
+package ptbr
 
 // FirstNameMale contains a list of 200 distinct Brazilian first names male.
 var FirstNamesMale = []string{
