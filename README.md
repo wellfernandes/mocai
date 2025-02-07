@@ -41,18 +41,42 @@ Import the library into your project and start generating mocks:
 package main
 
 import (
-    "fmt"
-    "github.com/brazzcore/mocai/pkg/mocai"
+	"fmt"
 
+	"github.com/brazzcore/mocai/pkg/mocai/constants"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 func main() {
-    // Generate a mock in Portuguese (pt-br)
-    mock := mocai.GenerateMocai("pt-br")
+    // Set the language to pt-BR
+	translations.SetLanguage("ptbr")
 
-    fmt.Println("Pessoa:", mock.Person.FirstName, mock.Person.LastName)
-    fmt.Println("Endereço:", mock.Address.Street, mock.Address.Number)
-    fmt.Println("Telefone:", mock.Phone.AreaCode, mock.Phone.Number)
+	// Generate mock data
+	person_mock, err := person.GeneratePerson()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	address_mock, err := address.GenerateAddress()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	phone_mock, err := phone.GeneratePhone()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+    fmt.Printf("Person: %s %s, %s, %d years old\n",
+		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age)
+
+	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
+		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
+
+	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
 }
 ```
 
@@ -60,7 +84,6 @@ func main() {
 The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the folder and execute:
 
 ```
-cd examples
 go run main.go
 ```
 
