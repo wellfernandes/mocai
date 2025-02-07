@@ -81,11 +81,10 @@ To get started with Mocaí, simply follow the steps below:
 **Pull Requests:** Submit your contributions following the contribution guidelines.
 
 ## License
-Mocaí is distributed under the **MIT License**. Please refer to the LICENSE file for more details.
+Mocaí is distributed under the [**MIT License**](https://github.com/brazzcore/mocai/blob/develop/LICENSE). Please refer to the LICENSE file for more details.
 
 **Mocaí: Generating mocks, simplifying tests, accelerating development**.
 
 ### GitHub Repository
 
-🔗 Repository on GitHub: https://github.com/brazzcore/mocai
-
+- [Repository on GitHub](https://github.com/brazzcore/mocai)
