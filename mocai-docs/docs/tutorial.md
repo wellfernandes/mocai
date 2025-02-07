@@ -51,17 +51,26 @@ To get started with Mocaí, simply follow the steps below:
 ```
    "github.com/brazzcore/mocai/pkg/mocai/entities/person"
 ```
-4. Create the entity, in this example we are creating a person:
+
+4. Set the language that will be used to generate the data:
 ```
-// Generate person mock data
+  // Set the language to pt-BR
+  translations.SetLanguage("ptbr")
+```
+
+5. Create the entity, in this example we are creating a person:
+```
+  // Generate person mock data
   person_mock, err := person.GeneratePerson()
   if err != nil {
     fmt.Print(err)
   }
 ```
-5. To use the generated data, simply select it. In this example, we will only print the person data:
+
+6. To use the generated data, simply select it. In this example, we will only print the person data:
 ```
-fmt.Print(person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age)
+  // Print a person's data
+  fmt.Print(person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age)
 ```
 
 ### How to contribute?
