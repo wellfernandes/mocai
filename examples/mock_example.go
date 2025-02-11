@@ -7,12 +7,16 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
+	"github.com/brazzcore/mocai/pkg/mocai/helper"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 func GenerateMockExample() {
-	// Set the language to pt-BR
-	translations.SetLanguage("ptbr")
+	// set the language
+	var languageID string
+	fmt.Print("Enter your language : ")
+	fmt.Scan(&languageID)
+	translations.SetLanguage(languageID) //test for : ptbr,enin
 
 	// Generate mock data
 	person_mock, err := person.GeneratePerson()
@@ -38,6 +42,13 @@ func GenerateMockExample() {
 	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
 		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
 	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
+
+	if languageID == "enin" {
+		aadhar_card := helper.GenerateAadhaarNumber()
+		pan_card := helper.GenerateRandomPAN()
+		fmt.Printf("Adhar card: %s\n", aadhar_card)
+		fmt.Printf("Pan card: %s", pan_card)
+	}
 
 	fmt.Println(constants.Footer)
 }

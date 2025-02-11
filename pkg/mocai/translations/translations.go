@@ -40,6 +40,7 @@ func SetLanguage(lang string) error {
 		return fmt.Errorf("%w: %s", ErrUnsupportedLanguage, lang)
 	}
 	currentLang = lang
+	fmt.Println("current language ", currentLang)
 	return nil
 }
 
