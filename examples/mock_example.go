@@ -5,9 +5,10 @@ import (
 
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/adhar"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/pan"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
-	"github.com/brazzcore/mocai/pkg/mocai/helper"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
@@ -44,8 +45,8 @@ func GenerateMockExample() {
 	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
 
 	if languageID == "enin" {
-		aadhar_card := helper.GenerateAadhaarNumber()
-		pan_card := helper.GenerateRandomPAN()
+		aadhar_card := adhar.GenerateAadhaarNumber()
+		pan_card := pan.GenerateRandomPAN()
 		fmt.Printf("Adhar card: %s\n", aadhar_card)
 		fmt.Printf("Pan card: %s", pan_card)
 	}
