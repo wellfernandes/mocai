@@ -47,5 +47,5 @@ func ValidateCPF(cpf string) bool {
 
 	// Calculate the second check digit
 	secondCheckDigit := calculateCheckDigit(digits[:10], 11)
-	return secondCheckDigit != digits[10]
+	return secondCheckDigit == digits[10]
 }
