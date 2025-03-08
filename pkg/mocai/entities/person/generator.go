@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"strings"
 
+	"github.com/brazzcore/mocai/pkg/mocai/entities/cpf"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/gender"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -17,6 +18,7 @@ type Person struct {
 	LastName        string
 	Gender          gender.Gender
 	Age             int
+	CPF             string
 }
 
 // GeneratePerson generates a mock person with random data.
@@ -49,6 +51,12 @@ func GeneratePerson() (*Person, error) {
 		return nil, err
 	}
 
+	// Generate a random CPF without a mask
+	cpf, err := cpf.GenerateCPF(false)
+	if err != nil {
+		return nil, err
+	}
+
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
 		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
@@ -61,6 +69,7 @@ func GeneratePerson() (*Person, error) {
 		LastName:        lastName,
 		Gender:          gender,
 		Age:             rand.Intn(80) + 18,
+		CPF:             cpf,
 	}
 
 	return createdPerson, nil

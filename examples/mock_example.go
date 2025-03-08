@@ -33,8 +33,8 @@ func GenerateMockExample() {
 	fmt.Println(constants.HeaderMain)
 	fmt.Println(constants.SubHeader)
 
-	fmt.Printf("Person: %s %s, %s, %d years old\n",
-		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age)
+	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
+		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
 	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
 		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
 	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
