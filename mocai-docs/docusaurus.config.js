@@ -93,7 +93,7 @@ const config = {
               },
               {
                 label: 'Tasks',
-                href: 'https://tree.taiga.io/project/wellfernandes-mocai/kanban',
+                href: 'https://github.com/orgs/brazzcore/projects/2',
               },
             ],
           },
