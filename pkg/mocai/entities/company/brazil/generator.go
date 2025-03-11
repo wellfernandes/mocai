@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cnpj"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
+
+var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 // BrazilianCompany represents a mock company with a name and CNPJ.
 type BrazilianCompany struct {
@@ -29,7 +32,7 @@ func GenerateCompany() (*BrazilianCompany, error) {
 	}
 
 	// Choose a random company name
-	companyName := companyNames[rand.Intn(len(companyNames))]
+	companyName := companyNames[rng.Intn(len(companyNames))]
 
 	// Generate a random CNPJ without a mask
 	cnpj, err := cnpj.GenerateCNPJ(false)
