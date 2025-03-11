@@ -32,11 +32,12 @@ func GenerateCNPJ(formatted bool) (string, error) {
 	// Convert the digits to a string
 	cnpj := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
 
+	if len(cnpj) != 14 {
+		return "", errors.New("invalid CNPJ length")
+	}
+
 	// Format the CNPJ if requested
 	if formatted {
-		if len(cnpj) != 14 {
-			return "", errors.New("invalid CNPJ length")
-		}
 		return fmt.Sprintf("%s.%s.%s/%s-%s", cnpj[:2], cnpj[2:5], cnpj[5:8], cnpj[8:12], cnpj[12:]), nil
 	}
 
