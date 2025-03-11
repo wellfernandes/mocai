@@ -4,6 +4,7 @@ import (
 	"math/rand"
 
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
+	company_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil/mocks/ptbr"
 	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/mocks/ptbr"
 	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/mocks/ptbr"
 	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/mocks/ptbr"
@@ -27,5 +28,6 @@ func init() {
 		"address_uf":               uf,
 		"address_zip":              address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
 		"phone_area_code":          phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
+		"company_name":             company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
 	})
 }
