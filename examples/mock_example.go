@@ -6,7 +6,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	brazilian_birth_certificate "github.com/brazzcore/mocai/pkg/mocai/entities/birth_certificate/brazil"
-	company "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil"
+	brazilian_company "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -32,7 +32,7 @@ func GenerateMockExample() {
 		fmt.Print(err)
 	}
 
-	company_mock, err := company.GenerateCompany()
+	company_mock, err := brazilian_company.GenerateCompany()
 	if err != nil {
 		fmt.Print(err)
 		return
