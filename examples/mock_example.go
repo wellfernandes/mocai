@@ -5,6 +5,7 @@ import (
 
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	brazilian_birth_certificate "github.com/brazzcore/mocai/pkg/mocai/entities/birth_certificate/brazil"
 	company "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
@@ -33,7 +34,13 @@ func GenerateMockExample() {
 
 	company_mock, err := company.GenerateCompany()
 	if err != nil {
-		fmt.Println("Error generating company:", err)
+		fmt.Print(err)
+		return
+	}
+
+	birth_certificate_mock, err := brazilian_birth_certificate.GenerateBirthCertificate(false)
+	if err != nil {
+		fmt.Print(err)
 		return
 	}
 
@@ -42,6 +49,8 @@ func GenerateMockExample() {
 
 	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
 		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
+
+	fmt.Printf("Birth Certificate: %s\n", birth_certificate_mock.BirthCertificateNumber)
 
 	fmt.Printf("Company: %s, CNPJ: %s\n", company_mock.CompanyName, company_mock.CNPJ)
 
