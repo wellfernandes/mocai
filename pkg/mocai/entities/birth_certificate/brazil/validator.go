@@ -2,7 +2,6 @@ package birth_certificate
 
 import (
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -11,6 +10,7 @@ import (
 func ValidateBirthCertificate(certificate string) bool {
 	// Remove any formatting
 	certificate = strings.ReplaceAll(certificate, "-", "")
+	certificate = strings.ReplaceAll(certificate, " ", "")
 
 	// Check if the certificate number has exactly 32 digits
 	if len(certificate) != 32 {
@@ -25,9 +25,11 @@ func ValidateBirthCertificate(certificate string) bool {
 
 	// Extract the number without check digits
 	number := certificate[:30]
-	informedCheckDigit, _ := strconv.Atoi(certificate[30:])
 
-	// Calculate the check digits using the validation algorithm
+	// Get the informed check digits (last 2 digits)
+	informedCheckDigit := certificate[30:]
+
+	// Calculate the expected check digits
 	calculatedCheckDigit := calculateCheckDigits(number)
 
 	// Compare the informed check digits with the calculated ones
