@@ -3,7 +3,6 @@ package birth_certificate
 import (
 	"fmt"
 	"math/rand"
-	"strconv"
 	"time"
 )
 
@@ -12,13 +11,13 @@ import (
 type BrazilianBirthCertificate struct {
 	VitalRecordsOffice     int
 	ArchiveCode            int
-	ServieType             int
+	ServiceType            int
 	BirthYear              int
 	CertificateType        int
 	BookNumber             int
 	PageNumber             int
 	TermNumber             int
-	CheckDigits            int
+	CheckDigits            string
 	BirthCertificateNumber string
 }
 
@@ -32,7 +31,7 @@ func GenerateBirthCertificate(formatted bool) (*BrazilianBirthCertificate, error
 
 	// Registry Office
 	// 1. Vital Records Office [6 digits]
-	vitalRecordsOffice := r.Intn(999999) + 1
+	vitalRecordsOffice := r.Intn(899999) + 100000
 	if vitalRecordsOffice < 0 {
 		return nil, ErrInvalidVitalRecordsOffice
 	}
@@ -41,7 +40,7 @@ func GenerateBirthCertificate(formatted bool) (*BrazilianBirthCertificate, error
 	archiveCode := 1
 
 	// 3. Civil Registry of Natural Persons [2 digits]
-	servieType := 55
+	serviceType := 55
 
 	// 4. Birth Year [4 digits]
 	currentYear := time.Now().Year()
@@ -51,43 +50,45 @@ func GenerateBirthCertificate(formatted bool) (*BrazilianBirthCertificate, error
 	certificateType := 1
 
 	// 6. Book number [5 digits]
-	bookNumber := r.Intn(99999) + 1
+	bookNumber := r.Intn(89999) + 10000
 	if bookNumber < 0 {
 		return nil, ErrInvalidBookNumber
 	}
 
 	// 7. Page number [3 digits]
-	pageNumber := r.Intn(999) + 1
+	pageNumber := r.Intn(899) + 100
 	if pageNumber < 0 {
 		return nil, ErrInvalidPageNumber
 	}
 
 	// 8. Term number [7 digits]
-	termNumber := r.Intn(9999999) + 1
+	termNumber := r.Intn(8999999) + 1000000
 	if termNumber < 0 {
 		return nil, ErrInvalidTermNumber
 	}
 
 	// Number without check digits [30 digits]
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
-		vitalRecordsOffice, archiveCode, servieType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
+		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
+		print(numberWithoutCheckDigits)
 		return nil, ErrInvalidNumberWithoutCheckDigits
 	}
 
 	// 9. Check digits calculation [2 digits]
 	checkDigits := calculateCheckDigits(numberWithoutCheckDigits)
+	print("checkDigits: ", checkDigits)
 
-	birthCertificateNumber := fmt.Sprintf("%s%02d", numberWithoutCheckDigits, checkDigits)
+	birthCertificateNumber := fmt.Sprintf("%s%02s", numberWithoutCheckDigits, checkDigits)
 	if formatted {
-		birthCertificateNumber = fmt.Sprintf("%06d %02d %02d %04d %d %05d %03d %07d-%02d",
-			vitalRecordsOffice, archiveCode, servieType, birthYear, certificateType, bookNumber, pageNumber, termNumber, checkDigits)
+		birthCertificateNumber = fmt.Sprintf("%06d %02d %02d %04d %d %05d %03d %07d-%02s",
+			vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber, checkDigits)
 	}
 
 	brazilianCertificate := &BrazilianBirthCertificate{
 		VitalRecordsOffice:     vitalRecordsOffice,
 		ArchiveCode:            archiveCode,
-		ServieType:             servieType,
+		ServiceType:            serviceType,
 		BirthYear:              birthYear,
 		CertificateType:        certificateType,
 		BookNumber:             bookNumber,
@@ -101,44 +102,47 @@ func GenerateBirthCertificate(formatted bool) (*BrazilianBirthCertificate, error
 }
 
 // calculateCheckDigits calculates the check digits for the birth certificate number
-// using a weight-based algorithm
-func calculateCheckDigits(number string) int {
-	sum := 0
-	weight := 2
-
-	for i := len(number) - 1; i >= 0; i-- {
-		digit, _ := strconv.Atoi(string(number[i]))
-		sum += digit * weight
-		weight++
-		if weight > 9 {
-			weight = 2
-		}
+// using a weight-based algorithm / using Mod 11
+func calculateCheckDigits(number string) string {
+	dv1Weights := [30]int{
+		9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
+		10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+		0, 10, 9, 8, 7, 6, 5, 4, 3, 2,
 	}
 
-	remainder := sum % 11
-	checkDigit1 := 11 - remainder
-	if checkDigit1 >= 10 {
-		checkDigit1 = 1
+	sumDV1 := 0
+	for i := 0; i < 30; i++ {
+		// reverse access: b1 = last digit [position 29], b30 = first [position 0]
+		digit := int(number[29-i] - '0')
+		sumDV1 += digit * dv1Weights[i]
 	}
 
-	numberWithFirstCheckDigit := number + strconv.Itoa(checkDigit1)
-	sum = 0
-	weight = 3
-
-	for i := len(numberWithFirstCheckDigit) - 1; i >= 0; i-- {
-		digit, _ := strconv.Atoi(string(numberWithFirstCheckDigit[i]))
-		sum += digit * weight
-		weight++
-		if weight > 9 {
-			weight = 2
-		}
+	dv1 := sumDV1 % 11
+	if dv1 == 10 {
+		dv1 = 1
 	}
 
-	remainder = sum % 11
-	checkDigit2 := 11 - remainder
-	if checkDigit2 >= 10 {
-		checkDigit2 = 1
+	dv2Weights := [31]int{
+		9, // first term: dv1 * 9
+		8, 7, 6, 5, 4, 3, 2, 1, 0,
+		10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+		0, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
 	}
 
-	return checkDigit1*10 + checkDigit2
+	sumDV2 := 0
+	// first term: dv1 * 9
+	sumDV2 += dv1 * dv2Weights[0]
+
+	// remaining terms: b1 to b30 with remaining weights
+	for i := 0; i < 30; i++ {
+		digit := int(number[29-i] - '0')
+		sumDV2 += digit * dv2Weights[i+1]
+	}
+
+	dv2 := sumDV2 % 11
+	if dv2 == 10 {
+		dv2 = 1
+	}
+
+	return fmt.Sprintf("%d%d", dv1, dv2)
 }
