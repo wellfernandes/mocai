@@ -2,7 +2,7 @@ package birth_certificate
 
 import "errors"
 
-// Package birth_certificate defines common errors used during gender generation and validation.
+// Package birth_certificate defines common errors used during birth certificate generation and validation.
 // These errors represent specific failure scenarios and should be wrapped with additional
 // context when returned.
 var (
