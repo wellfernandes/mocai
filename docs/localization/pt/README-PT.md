@@ -11,17 +11,17 @@ Uma biblioteca Go para geração de dados de teste, permitindo criar mocks de en
 O nome Mocai é uma homenagem à iniciativa brasileira por trás da biblioteca. Ele surgiu da combinação de "mock" (termo em inglês para simulação ou dados fictícios) com "açaí", uma fruta típica da Amazônia brasileira, conhecida por sua energia e versatilidade. Assim como o açaí é essencial para muitos brasileiros, o Mocai busca ser uma ferramenta essencial para desenvolvedores que precisam de dados de teste eficientes e de qualidade. 🇧🇷
 
 ## 🛠️ Principais Recursos
-- Geração de Dados Aleatórios: Crie mocks de entidades com dados variados e realistas.
-- Consistência: Garanta que os dados gerados sejam consistentes e adequados para testes.
-- Facilidade de Uso: Interface simples e intuitiva para integração rápida em seus projetos.
-- Extensibilidade: Adicione novas entidades ou personalize as existentes conforme suas necessidades.
-- Open Source: Colabore, sugira melhorias e contribua para o crescimento da biblioteca.
+- **Geração de Dados Aleatórios:** Crie mocks de entidades com dados variados e realistas.
+- **Consistência:** Garanta que os dados gerados sejam consistentes e adequados para testes.
+- **Facilidade de Uso:** Interface simples e intuitiva para integração rápida em seus projetos.
+- **Extensibilidade:** Adicione novas entidades ou personalize as existentes conforme suas necessidades.
+- **Open Source:** Colabore, sugira melhorias e contribua para o crescimento da biblioteca.
 
 ## 🚀 Por que usar o Mocai?
-- Produtividade: Reduza o tempo gasto na criação de dados de teste.
-- Qualidade: Melhore a cobertura e a eficácia dos seus testes com dados realistas.
-- Flexibilidade: Adapte os mocks às necessidades específicas do seu projeto.
-- Comunidade: Faça parte de uma comunidade open-source que valoriza a colaboração e a inovação.
+- **Produtividade:** Reduza o tempo gasto na criação de dados de teste.
+- **Qualidade:** Melhore a cobertura e a eficácia dos seus testes com dados realistas.
+- **Flexibilidade:** Adapte os mocks às necessidades específicas do seu projeto.
+- **Comunidade:** Faça parte de uma comunidade open-source que valoriza a colaboração e a inovação.
 
 
 ## 🚀 Como Começar
@@ -36,29 +36,68 @@ Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```
-package main
+package examples
 
 import (
-    "fmt"
-    "github.com/brazzcore/mocai/pkg/mocai"
+	"fmt"
 
+	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	brazilian_birth_certificate "github.com/brazzcore/mocai/pkg/mocai/entities/birth_certificate/brazil"
+	brazilian_company "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-func main() {
-    // Gerar um mock em português (pt-br)
-    mock := mocai.GenerateMocai("pt-br")
+func GenerateMockExample() {
+    // Defina o idioma para pt-BR
+	translations.SetLanguage("ptbr")
 
-    fmt.Println("Pessoa:", mock.Person.FirstName, mock.Person.LastName)
-    fmt.Println("Endereço:", mock.Address.Street, mock.Address.Number)
-    fmt.Println("Telefone:", mock.Phone.AreaCode, mock.Phone.Number)
+	// Gerar dados mock
+	person_mock, err := person.GeneratePerson()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	address_mock, err := address.GenerateAddress()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	phone_mock, err := phone.GeneratePhone()
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	company_mock, err := brazilian_company.GenerateCompany()
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	birth_certificate_mock, err := brazilian_birth_certificate.GenerateBirthCertificate(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
+		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
+
+	fmt.Printf("Birth Certificate: %s\n", birth_certificate_mock.BirthCertificateNumber)
+
+	fmt.Printf("Company: %s, CNPJ: %s\n", company_mock.CompanyName, company_mock.CNPJ)
+
+	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
+		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
+	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
 }
 ```
 
 ### Exemplos
-A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta e execute:
+A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta raiz e execute:
 
 ```
-cd examples
 go run main.go
 ```
 
