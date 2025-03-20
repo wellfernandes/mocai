@@ -7,7 +7,7 @@ type Company struct {
 	BrazilianCompany *countries.BrazilianCompany
 }
 
-// GenerateCompany generates a mock Brazilian company with a valid CNPJ.
+// GenerateCompany generates all companies available.
 func GenerateCompany() (*Company, error) {
 	createdCompanyBrazilian, err := countries.GenerateBrazilianCompany()
 
