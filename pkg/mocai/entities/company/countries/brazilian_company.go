@@ -41,7 +41,7 @@ func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 
 	// Validate required fields
 	if companyName == "" {
-		return nil, fmt.Errorf("%s: . Company Name: %s)", ErrGeneratingBrazilianCompany, companyName)
+		return nil, fmt.Errorf("%s: Company Name: %s", ErrGeneratingBrazilianCompany, companyName)
 	}
 
 	createdCompany := &BrazilianCompany{
