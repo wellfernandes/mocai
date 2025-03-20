@@ -44,6 +44,10 @@ func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 		return nil, fmt.Errorf("%s: Company Name: %s", ErrGeneratingBrazilianCompany, companyName)
 	}
 
+	if cnpj == "" {
+		return nil, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingBrazilianCompany)
+	}
+
 	createdCompany := &BrazilianCompany{
 		CompanyName: companyName,
 		CNPJ:        cnpj,
