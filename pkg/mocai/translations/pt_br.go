@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
-	company_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/company/brazil/mocks/ptbr"
+	company_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/company/mocks/ptbr"
 	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/mocks/ptbr"
 	person_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/person/mocks/ptbr"
 	phone_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/phone/mocks/ptbr"

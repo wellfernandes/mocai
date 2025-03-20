@@ -1,4 +1,4 @@
-package company
+package countries
 
 import (
 	"errors"
@@ -11,16 +11,15 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-// BrazilianCompany represents a mock company with a name and CNPJ.
+// BrazilianCompany represents a Brazilian company.
 type BrazilianCompany struct {
 	CompanyName string
 	CNPJ        string
 }
 
-// GenerateCompany generates a mock Brazilian company with a valid CNPJ.
-func GenerateCompany() (*BrazilianCompany, error) {
+var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of company names
@@ -42,7 +41,11 @@ func GenerateCompany() (*BrazilianCompany, error) {
 
 	// Validate required fields
 	if companyName == "" {
-		return nil, fmt.Errorf("%s: error generating company: missing required data (companyName: %s)", ERROR_GENERATING_BRAZILIAN_COMPANY, companyName)
+		return nil, fmt.Errorf("%s: Company Name: %s", ErrGeneratingBrazilianCompany, companyName)
+	}
+
+	if cnpj == "" {
+		return nil, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingBrazilianCompany)
 	}
 
 	createdCompany := &BrazilianCompany{

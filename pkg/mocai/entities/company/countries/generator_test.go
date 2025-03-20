@@ -1,4 +1,4 @@
-package company
+package countries
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestGenerateCompany(t *testing.T) {
-	company, err := GenerateCompany()
+	company, err := GenerateBrazilianCompany()
 	if err != nil {
 		t.Fatalf("Failed to generate company: %v", err)
 	}
@@ -18,7 +18,7 @@ func TestGenerateCompany(t *testing.T) {
 }
 
 func TestIfCompanyHasAValidCNPJ(t *testing.T) {
-	company, err := GenerateCompany()
+	company, err := GenerateBrazilianCompany()
 	if err != nil {
 		t.Fatalf("Failed to generate company: %v", err)
 	}

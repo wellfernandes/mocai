@@ -1,5 +1,6 @@
 package ptbr
 
+// CompanyNames represents a list of Brazilian company names.
 var CompanyNames = []string{
 	"Silva e Filhos Ltda",
 	"Souza e Cia",
