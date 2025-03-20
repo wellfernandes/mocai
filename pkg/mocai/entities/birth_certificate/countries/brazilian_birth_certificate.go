@@ -71,13 +71,11 @@ func GenerateBirthCertificate(formatted bool) (*BrazilianBirthCertificate, error
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
 		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
-		print(numberWithoutCheckDigits)
 		return nil, ErrInvalidNumberWithoutCheckDigits
 	}
 
 	// 9. Check digits calculation [2 digits]
 	checkDigits := calculateCheckDigits(numberWithoutCheckDigits)
-	print("checkDigits: ", checkDigits)
 
 	certificateNumber := fmt.Sprintf("%s%02s", numberWithoutCheckDigits, checkDigits)
 	if formatted {
