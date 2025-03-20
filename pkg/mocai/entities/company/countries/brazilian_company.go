@@ -19,7 +19,7 @@ type BrazilianCompany struct {
 
 var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
 
-func GenerateBrazilianCompany() (*BrazilianCompany, error) {
+func GenerateBrazilianCompany(formatted bool) (*BrazilianCompany, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of company names
@@ -34,7 +34,7 @@ func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 	companyName := companyNames[rng.Intn(len(companyNames))]
 
 	// Generate a random CNPJ without a mask
-	cnpj, err := cnpj.GenerateCNPJ(false)
+	cnpj, err := cnpj.GenerateCNPJ(formatted)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 	}
 
 	if cnpj == "" {
-		return nil, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingBrazilianCompany)
+		return nil, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingCNPJ)
 	}
 
 	createdCompany := &BrazilianCompany{
