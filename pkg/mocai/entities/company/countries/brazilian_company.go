@@ -1,4 +1,4 @@
-package company
+package countries
 
 import (
 	"errors"
@@ -11,16 +11,14 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-// BrazilianCompany represents a mock company with a name and CNPJ.
 type BrazilianCompany struct {
 	CompanyName string
 	CNPJ        string
 }
 
-// GenerateCompany generates a mock Brazilian company with a valid CNPJ.
-func GenerateCompany() (*BrazilianCompany, error) {
+var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func GenerateBrazilianCompany() (*BrazilianCompany, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of company names

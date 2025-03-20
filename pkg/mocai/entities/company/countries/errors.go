@@ -1,4 +1,4 @@
-package company
+package countries
 
 // Error constants for person-related data generation failures.
 // These errors represent specific failure scenarios and should be wrapped with additional
