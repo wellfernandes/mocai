@@ -2,6 +2,7 @@ package company
 
 import "github.com/brazzcore/mocai/pkg/mocai/entities/company/countries"
 
+// Company represents a generic company.
 type Company struct {
 	BrazilianCompany *countries.BrazilianCompany
 }
