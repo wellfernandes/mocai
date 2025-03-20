@@ -11,6 +11,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// BrazilianCompany represents a Brazilian company.
 type BrazilianCompany struct {
 	CompanyName string
 	CNPJ        string
