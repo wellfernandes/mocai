@@ -139,7 +139,7 @@ func generateCertificate(formatted bool, certificateType int) (*BaseCertificate,
 	}
 
 	if certificateNumber == "" {
-		return nil, ErrInvalidBirthCertificate
+		return nil, ErrInvalidCertificate
 	}
 
 	createdBaseCertificate := &BaseCertificate{
