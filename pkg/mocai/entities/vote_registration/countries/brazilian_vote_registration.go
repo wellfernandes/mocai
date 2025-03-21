@@ -34,14 +34,20 @@ func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistrati
 	stateCodeStr := fmt.Sprintf("%02d", stateCode)
 
 	// Calculate the first check digit
-	checkDigit1 := calculateCheckDigit1(sequenceNumberStr)
+	checkDigit1, err := calculateCheckDigit1(sequenceNumberStr)
+	if err != nil {
+		return nil, err
+	}
 
 	// Calculate the second check digit
-	checkDigit2 := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
+	checkDigit2, err := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
+	if err != nil {
+		return nil, err
+	}
 
 	// Combine everything to form the complete number
 	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
-	if number == "" {
+	if number == "" || len(number) != 12 {
 		return nil, ErrInvalidVoteRegistration
 	}
 
@@ -70,11 +76,14 @@ func randomInt3Digits() string {
 
 // calculateCheckDigit1 calculates the first check digit.
 // It depends on the sequence number.
-func calculateCheckDigit1(sequenceNumber string) string {
+func calculateCheckDigit1(sequenceNumber string) (string, error) {
 	sum := 0
 	weights := []int{2, 3, 4, 5, 6, 7, 8, 9}
 	for i := 0; i < len(sequenceNumber); i++ {
-		digit, _ := strconv.Atoi(string(sequenceNumber[i]))
+		digit, err := strconv.Atoi(string(sequenceNumber[i]))
+		if err != nil {
+			return "", ErrInvalidCheckDigit1
+		}
 		sum += digit * weights[i]
 	}
 
@@ -83,19 +92,25 @@ func calculateCheckDigit1(sequenceNumber string) string {
 		checkDigit1 = 0
 	}
 
-	return strconv.Itoa(checkDigit1)
+	return strconv.Itoa(checkDigit1), nil
 }
 
 // calculateCheckDigit2 calculates the second check digit.
 // It depends on the state code and the first check digit.
-func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) string {
+func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (string, error) {
 	sum := 0
 	weights := []int{7, 8}
 	for i := 0; i < len(stateCode); i++ {
-		digit, _ := strconv.Atoi(string(stateCode[i]))
+		digit, err := strconv.Atoi(string(stateCode[i]))
+		if err != nil {
+			return "", ErrInvalidCheckDigit2
+		}
 		sum += digit * weights[i]
 	}
-	checkDigit1Int, _ := strconv.Atoi(checkDigit1)
+	checkDigit1Int, err := strconv.Atoi(checkDigit1)
+	if err != nil {
+		return "", ErrInvalidCheckDigit2
+	}
 	sum += checkDigit1Int * 9
 
 	checkDigit2 := sum % 11
@@ -108,5 +123,5 @@ func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) strin
 		checkDigit2 = 1
 	}
 
-	return strconv.Itoa(checkDigit2)
+	return strconv.Itoa(checkDigit2), nil
 }
