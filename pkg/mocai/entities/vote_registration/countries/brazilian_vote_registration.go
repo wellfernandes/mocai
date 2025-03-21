@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+var (
+	globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
+)
+
 // BrazilianVoteRegistration represents a Brazilian vote registration.
 type BrazilianVoteRegistration struct {
 	Section string
@@ -56,13 +60,12 @@ func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistrati
 
 // randomInt generates a random integer between min and max
 func randomInt(min, max int) int {
-	return rand.Intn(max-min+1) + min
+	return globalRand.Intn(max-min+1) + min
 }
 
 // randomInt3Digits generates a random 3 digit number
 func randomInt3Digits() string {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	return fmt.Sprintf("%03d", r.Intn(1000))
+	return fmt.Sprintf("%03d", globalRand.Intn(1000))
 }
 
 // calculateCheckDigit1 calculates the first check digit.
