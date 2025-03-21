@@ -5,6 +5,7 @@ import (
 
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
@@ -31,9 +32,15 @@ func GenerateMockExample() {
 		fmt.Print(err)
 	}
 
-	company_mock, err := company.GenerateCompany()
+	company_mock, err := company.GenerateCompany(false)
 	if err != nil {
-		fmt.Println("Error generating company:", err)
+		fmt.Print(err)
+		return
+	}
+
+	certificate_mock, err := certificate.GenerateCertificate(false)
+	if err != nil {
+		fmt.Print(err)
 		return
 	}
 
@@ -42,6 +49,12 @@ func GenerateMockExample() {
 
 	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
 		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
+
+	fmt.Printf("Birth Certificate: %s\n", certificate_mock.BrazilianCertificates.BirthCertificate.CertificateNumber)
+
+	fmt.Printf("Marriage Certificate: %s\n", certificate_mock.BrazilianCertificates.MarriageCertificate.CertificateNumber)
+
+	fmt.Printf("Death Certificate: %s\n", certificate_mock.BrazilianCertificates.DeathCertificate.CertificateNumber)
 
 	fmt.Printf("Company: %s, CNPJ: %s\n", company_mock.BrazilianCompany.CompanyName, company_mock.BrazilianCompany.CNPJ)
 

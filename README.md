@@ -38,20 +38,22 @@ Basic Usage
 Import the library into your project and start generating mocks:
 
 ```
-package main
+package examples
 
 import (
 	"fmt"
 
 	"github.com/brazzcore/mocai/pkg/mocai/constants"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-func main() {
-    // Set the language to pt-BR
+func GenerateMockExample() {
+	// Set the language to pt-BR
 	translations.SetLanguage("ptbr")
 
 	// Generate mock data
@@ -70,18 +72,37 @@ func main() {
 		fmt.Print(err)
 	}
 
-    fmt.Printf("Person: %s %s, %s, %d years old\n",
-		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age)
+	company_mock, err := company.GenerateCompany(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	certificate_mock, err := certificate.GenerateCertificate(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
+		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
+
+	fmt.Printf("Birth Certificate: %s\n", certificate_mock.BrazilianCertificates.BirthCertificate.CertificateNumber)
+
+	fmt.Printf("Marriage Certificate: %s\n", certificate_mock.BrazilianCertificates.MarriageCertificate.CertificateNumber)
+
+	fmt.Printf("Death Certificate: %s\n", certificate_mock.BrazilianCertificates.DeathCertificate.CertificateNumber)
+
+	fmt.Printf("Company: %s, CNPJ: %s\n", company_mock.BrazilianCompany.CompanyName, company_mock.BrazilianCompany.CNPJ)
 
 	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
 		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
-
 	fmt.Printf("Phone: (%s) %s\n", phone_mock.AreaCode, phone_mock.Number)
 }
 ```
 
 ### Examples
-The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the folder and execute:
+The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the root folder and execute:
 
 ```
 go run main.go

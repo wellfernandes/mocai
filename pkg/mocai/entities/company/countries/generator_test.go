@@ -7,7 +7,7 @@ import (
 )
 
 func TestGenerateCompany(t *testing.T) {
-	company, err := GenerateBrazilianCompany()
+	company, err := GenerateBrazilianCompany(false)
 	if err != nil {
 		t.Fatalf("Failed to generate company: %v", err)
 	}
@@ -18,7 +18,7 @@ func TestGenerateCompany(t *testing.T) {
 }
 
 func TestIfCompanyHasAValidCNPJ(t *testing.T) {
-	company, err := GenerateBrazilianCompany()
+	company, err := GenerateBrazilianCompany(false)
 	if err != nil {
 		t.Fatalf("Failed to generate company: %v", err)
 	}
