@@ -15,6 +15,8 @@ type BrazilianVoteRegistration struct {
 }
 
 // GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number.
+// If formatted is true, the Brazilian vote registration number will be returned in the format XXX XXX XXX.
+// If formatted is false, the Brazilian vote registration number will be returned as a plain string.
 func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
 	section := randomInt3Digits()
 	zone := randomInt3Digits()
@@ -63,7 +65,8 @@ func randomInt3Digits() string {
 	return fmt.Sprintf("%03d", r.Intn(1000))
 }
 
-// calculateCheckDigit1 calculates the first check digit
+// calculateCheckDigit1 calculates the first check digit.
+// It depends on the sequence number.
 func calculateCheckDigit1(sequenceNumber string) string {
 	sum := 0
 	weights := []int{2, 3, 4, 5, 6, 7, 8, 9}
@@ -80,7 +83,8 @@ func calculateCheckDigit1(sequenceNumber string) string {
 	return strconv.Itoa(checkDigit1)
 }
 
-// calculateCheckDigit2 calculates the second check digit
+// calculateCheckDigit2 calculates the second check digit.
+// It depends on the state code and the first check digit.
 func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) string {
 	sum := 0
 	weights := []int{7, 8}

@@ -8,6 +8,8 @@ type VoteRegistration struct {
 }
 
 // GenerateVoteRegistration generates a Brazilian vote registration.
+// If formatted is true, the Brazilian vote registration will be returned in the format XXX XXX XXX.
+// If formatted is false, the Brazilian vote registration will be returned as a plain string.
 func GenerateVoteRegistration(formatted bool) (*VoteRegistration, error) {
 	brazilianVoteRegistration, err := countries.GenerateBrazilianVoteRegistration(formatted)
 	if err != nil {
