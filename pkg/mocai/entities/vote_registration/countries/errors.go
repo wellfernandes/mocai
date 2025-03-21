@@ -7,4 +7,6 @@ import "errors"
 // context when returned.
 var (
 	ErrInvalidVoteRegistration = errors.New("invalid vote registration")
+	ErrInvalidCheckDigit1      = errors.New("invalid check digit 1")
+	ErrInvalidCheckDigit2      = errors.New("invalid check digit 2")
 )
