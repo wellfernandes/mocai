@@ -17,14 +17,7 @@ type BrazilianVoteRegistration struct {
 // GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number.
 func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
 	section := randomInt3Digits()
-	if section == "" {
-		return nil, ErrInvalidSection
-	}
-
 	zone := randomInt3Digits()
-	if zone == "" {
-		return nil, ErrInvalidZone
-	}
 
 	// Generate an 8 digit sequence number
 	sequenceNumber := randomInt(1, 99999999)
@@ -36,20 +29,14 @@ func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistrati
 
 	// Calculate the first check digit
 	checkDigit1 := calculateCheckDigit1(sequenceNumberStr)
-	if checkDigit1 == "" {
-		return nil, ErrInvalidCheckDigit1
-	}
 
 	// Calculate the second check digit
 	checkDigit2 := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
-	if checkDigit2 == "" {
-		return nil, ErrInvalidCheckDigit2
-	}
 
 	// Combine everything to form the complete number
 	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
 	if number == "" {
-		return nil, ErrInvalidNumber
+		return nil, ErrInvalidVoteRegistration
 	}
 
 	if formatted {
