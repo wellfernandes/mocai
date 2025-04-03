@@ -1,6 +1,6 @@
 # Mocai
 
-![mocai](img/mocai-mascot.png)
+![mocai](img/mocai.svg)
 
 #### [README-PT](/docs/localization/pt/README-PT.md)
 
