@@ -31,6 +31,7 @@ func GenerateBrazilianNationalID(formatted bool) (*RG, error) {
 	}, nil
 }
 
+// calculateSPRGDigit generates a valid Brazilian national ID [RG] for São Paulo.
 func calculateSPRGDigit() (string, error) {
 	// generate a random base until 8 digits
 	base := globalRand.Intn(100000000)
