@@ -52,7 +52,7 @@ func calculateSPRGDigit() (string, error) {
 
 	// calculate sum
 	sum := 0
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		sum += d[7-i] * wheights[i]
 	}
 
@@ -69,9 +69,9 @@ func calculateSPRGDigit() (string, error) {
 	return full, nil
 }
 
-func formatRG(input string) string {
-	if len(input) != 9 {
-		return input
+func formatRG(rgNumber string) string {
+	if len(rgNumber) != 9 {
+		return rgNumber
 	}
-	return fmt.Sprintf("%s.%s.%s-%s", input[0:3], input[3:6], input[6:8], input[8:])
+	return fmt.Sprintf("%s.%s.%s-%s", rgNumber[0:3], rgNumber[3:6], rgNumber[6:8], rgNumber[8:])
 }
