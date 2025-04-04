@@ -1,6 +1,6 @@
 # Mocai
 
-![mocai](../../.././img/mocai-mascot.png)
+![mocai](../../.././img/mocai.svg)
 
 Uma biblioteca Go para geração de dados de teste, permitindo criar mocks de entidades de forma simples e eficiente.
  
