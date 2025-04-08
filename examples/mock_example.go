@@ -22,6 +22,7 @@ func GenerateMockExample() {
 	p, err := person.GeneratePerson()
 	if err != nil {
 		fmt.Print(err)
+		return
 	}
 
 	addr, err := address.GenerateAddress()
