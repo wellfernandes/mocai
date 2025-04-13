@@ -19,40 +19,43 @@ func GenerateMockExample() {
 	translations.SetLanguage("ptbr")
 
 	// Generate mock data
-	person_mock, err := person.GeneratePerson()
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	address_mock, err := address.GenerateAddress()
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	phone_mock, err := phone.GeneratePhone()
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	company_mock, err := company.GenerateCompany(false)
+	p, err := person.GeneratePerson()
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 
-	certificate_mock, err := certificate.GenerateCertificate(false)
+	addr, err := address.GenerateAddress()
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 
-	vote_registration_mock, err := vote_registration.GenerateVoteRegistration(false)
+	ph, err := phone.GeneratePhone()
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 
-	nationalID_mock, err := national_id.GenerateNationalID(false)
+	c, err := company.GenerateCompany(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	cert, err := certificate.GenerateCertificate(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	vr, err := vote_registration.GenerateVoteRegistration(false)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	nid, err := national_id.GenerateNationalID(false)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -62,32 +65,32 @@ func GenerateMockExample() {
 	fmt.Println(constants.SubHeader)
 
 	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
-		person_mock.FirstNameMale, person_mock.LastName, person_mock.Gender, person_mock.Age, person_mock.CPF)
+		p.FirstNameMale, p.LastName, p.Gender, p.Age, p.CPF)
 
 	fmt.Printf("RG: %s, State: %s, Issuing Body: %s\n",
-		nationalID_mock.BrazilianRG.Number, nationalID_mock.BrazilianRG.State, nationalID_mock.BrazilianRG.IssuingBody)
+		nid.BrazilianRG.Number, nid.BrazilianRG.State, nid.BrazilianRG.IssuingBody)
 
 	fmt.Printf("Birth Certificate: %s\n",
-		certificate_mock.BrazilianCertificates.BirthCertificate.CertificateNumber)
+		cert.BrazilianCertificates.BirthCertificate.CertificateNumber)
 
 	fmt.Printf("Marriage Certificate: %s\n",
-		certificate_mock.BrazilianCertificates.MarriageCertificate.CertificateNumber)
+		cert.BrazilianCertificates.MarriageCertificate.CertificateNumber)
 
 	fmt.Printf("Death Certificate: %s\n",
-		certificate_mock.BrazilianCertificates.DeathCertificate.CertificateNumber)
+		cert.BrazilianCertificates.DeathCertificate.CertificateNumber)
 
 	fmt.Printf("Company: %s, CNPJ: %s\n",
-		company_mock.BrazilianCompany.CompanyName, company_mock.BrazilianCompany.CNPJ)
+		c.BrazilianCompany.CompanyName, c.BrazilianCompany.CNPJ)
 
 	fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n",
-		address_mock.Street, address_mock.Number, address_mock.City, address_mock.State, address_mock.UF, address_mock.ZIP)
+		addr.Street, addr.Number, addr.City, addr.State, addr.UF, addr.ZIP)
 
 	fmt.Printf("Phone: (%s) %s\n",
-		phone_mock.AreaCode, phone_mock.Number)
+		ph.AreaCode, ph.Number)
 
 	fmt.Printf("Voter Registration Card: Section: %s, Zone: %s, Registration: %s\n",
-		vote_registration_mock.BrazilianVoteRegistration.Section, vote_registration_mock.BrazilianVoteRegistration.Zone,
-		vote_registration_mock.BrazilianVoteRegistration.Number)
+		vr.BrazilianVoteRegistration.Section, vr.BrazilianVoteRegistration.Zone,
+		vr.BrazilianVoteRegistration.Number)
 
 	fmt.Println(constants.Footer)
 }
