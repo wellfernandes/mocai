@@ -1,7 +1,6 @@
 package countries
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -27,7 +26,7 @@ func GenerateBrazilianCompany(formatted bool) (*BrazilianCompany, error) {
 
 	// Validate data
 	if len(companyNames) == 0 {
-		return nil, errors.New("no company names available")
+		return nil, ErrNoCompanyNamesAvailable
 	}
 
 	// Choose a random company name

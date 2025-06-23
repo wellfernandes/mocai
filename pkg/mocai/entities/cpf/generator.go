@@ -1,7 +1,6 @@
 package cpf
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -34,7 +33,7 @@ func GenerateCPF(formatted bool) (string, error) {
 	// Format the CPF if requested
 	if formatted {
 		if len(cpf) != 11 {
-			return "", errors.New(ErrInvalidCPF.Error())
+			return "", ErrInvalidCPF
 		}
 		return cpf[:3] + "." + cpf[3:6] + "." + cpf[6:9] + "-" + cpf[9:], nil
 	}
