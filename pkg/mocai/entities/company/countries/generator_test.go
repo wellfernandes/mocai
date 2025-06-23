@@ -9,7 +9,7 @@ import (
 func TestGenerateCompany(t *testing.T) {
 	company, err := GenerateBrazilianCompany(false)
 	if err != nil {
-		t.Fatalf("Failed to generate company: %v", err)
+		t.Errorf("Failed to generate company: %v", err)
 	}
 
 	if company.CompanyName == "" || company.CNPJ == "" {
@@ -20,7 +20,7 @@ func TestGenerateCompany(t *testing.T) {
 func TestIfCompanyHasAValidCNPJ(t *testing.T) {
 	company, err := GenerateBrazilianCompany(false)
 	if err != nil {
-		t.Fatalf("Failed to generate company: %v", err)
+		t.Errorf("Failed to generate company: %v", err)
 	}
 
 	if !cnpj.ValidateCNPJ(company.CNPJ) {
