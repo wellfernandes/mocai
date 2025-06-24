@@ -62,14 +62,12 @@ func GeneratePerson() (*Person, error) {
 			ErrGeneratingPerson, firstNameMale, firstNameFemale, lastName)
 	}
 
-	createdPerson := &Person{
+	return &Person{
 		FirstNameMale:   firstNameMale,
 		FirstNameFemale: firstNameFemale,
 		LastName:        lastName,
 		Gender:          gender,
 		Age:             rand.Intn(80) + 18,
 		CPF:             cpf,
-	}
-
-	return createdPerson, nil
+	}, nil
 }

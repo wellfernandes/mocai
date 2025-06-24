@@ -40,10 +40,8 @@ func GeneratePhone() (*Phone, error) {
 			ErrGeneratingPhone, areaCode, number)
 	}
 
-	createdPhone := &Phone{
+	return &Phone{
 		AreaCode: areaCode,
 		Number:   number,
-	}
-
-	return createdPhone, nil
+	}, nil
 }
