@@ -63,7 +63,7 @@ func GenerateMockExample() {
 ```
 
 ### Examples
-The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the root folder and execute:
+The ***examples*** folder contains samples of how to use the library. To run the examples, navigate to the *examples* folder and execute:
 
 ```
 go run main.go
