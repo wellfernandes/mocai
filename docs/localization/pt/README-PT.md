@@ -61,7 +61,7 @@ func GenerateMockExample() {
 ```
 
 ### Exemplos
-A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta raiz e execute:
+A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta *examples* e execute:
 
 ```
 go run main.go
