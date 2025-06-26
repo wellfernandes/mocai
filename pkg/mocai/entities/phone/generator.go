@@ -22,13 +22,13 @@ func GeneratePhone() (*Phone, error) {
 	// Get the list of area codes
 	areaCodeStr := translations.Get(lang, "phone_area_code")
 	if areaCodeStr == "" {
-		return nil, fmt.Errorf(ErrNoAreaCodes.Error()+" for: %s", lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
 	}
 	areaCodes := strings.Split(areaCodeStr, ",")
 
 	// Validate data
 	if len(areaCodes) == 0 {
-		return nil, fmt.Errorf(ErrNoAreaCodes.Error()+" for: %s", lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
 	}
 	areaCode := areaCodes[rand.Intn(len(areaCodes))]
 
