@@ -1,7 +1,7 @@
 package gender
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -21,13 +21,13 @@ const (
 )
 
 // GenerateRandomGender generates a random gender based on the current language.
-func GenerateRandomGender() (Gender, error) {
+func GenerateRandomGender() (*Gender, error) {
 	lang := translations.GetLanguage()
 	genderStr := translations.Get(lang, "gender")
 
 	if genderStr == "" {
-		return "", errors.New(ErrNoGenders.Error() + " for: %s" + lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
 	}
 
-	return Gender(genderStr), nil
+	return (*Gender)(&genderStr), nil
 }
