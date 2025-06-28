@@ -1,8 +1,6 @@
 package mocai
 
 import (
-	"fmt"
-
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
@@ -18,16 +16,15 @@ type Mocker struct {
 	lang string
 }
 
-func NewMocker(lang string) *Mocker {
-
+func NewMocker(lang string) (*Mocker, error) {
 	err := translations.SetLanguage(lang)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	return &Mocker{
 		lang: lang,
-	}
+	}, nil
 }
 
 func (m *Mocker) SetLanguage(lang string) error {
