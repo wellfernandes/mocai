@@ -41,7 +41,7 @@ Importe a biblioteca em seu projeto e comece a gerar mocks:
 	
 	addr, err := address.GenerateAddress()
 	if err != nil {
-		return err
+		log.Println(err)
 	}
 
 	addr.Street // retorna o nome da rua
@@ -49,9 +49,13 @@ Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```go
 	// mocker
-	m := mocai.NewMocker("ptbr")
+	m, err := mocai.NewMocker("ptbr")
+	if err != nil {
+		log.Println(err)
+	}
 	
 	m.Address().Street // retorna o nome da rua
+	m.Phone().Number // retorna o número de telefone
 ```
 
 ### Exemplos
