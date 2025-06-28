@@ -67,14 +67,12 @@ func GenerateAddress() (*Address, error) {
 	state := states[rand.Intn(len(states))]
 	zip := zips[rand.Intn(len(zips))]
 
-	createdAddress := &Address{
+	return &Address{
 		Street: street,
 		Number: rand.Intn(9999),
 		City:   city,
 		State:  state,
 		UF:     uf,
 		ZIP:    zip,
-	}
-
-	return createdAddress, nil
+	}, nil
 }
