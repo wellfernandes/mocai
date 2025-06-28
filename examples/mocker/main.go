@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	cli "github.com/brazzcore/mocai/cmd/mocai"
 	"github.com/brazzcore/mocai/pkg/mocai"
@@ -14,8 +15,10 @@ func main() {
 
 	// Initialize mocai and set a supported language
 	// If the language is not available, the default language pt-BR will be set
-	m := mocai.NewMocker("ptbr")
-
+	m, err := mocai.NewMocker("ptbr")
+	if err != nil {
+		log.Println(err)
+	}
 	// Generate mock data
 	// You can select which entity attributes to use
 	// by accessing the entity and its fields
