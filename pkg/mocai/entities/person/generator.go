@@ -15,7 +15,7 @@ type Person struct {
 	FirstNameMale   string
 	FirstNameFemale string
 	LastName        string
-	Gender          gender.Gender
+	Gender          *gender.Gender
 	Age             int
 	CPF             string
 }
