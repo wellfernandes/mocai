@@ -12,9 +12,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-type Mocker struct {
-	lang string
-}
+type Mocker struct{}
 
 func NewMocker(lang string) (*Mocker, error) {
 	err := translations.SetLanguage(lang)
@@ -22,13 +20,16 @@ func NewMocker(lang string) (*Mocker, error) {
 		return nil, err
 	}
 
-	return &Mocker{
-		lang: lang,
-	}, nil
+	return &Mocker{}, nil
 }
 
 func (m *Mocker) SetLanguage(lang string) error {
-	return translations.SetLanguage(lang)
+	err := translations.SetLanguage(lang)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
 func (m *Mocker) GetLanguage() string {
