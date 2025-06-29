@@ -36,26 +36,26 @@ Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```go
-	// specific
-	translations.SetLanguage("ptbr")
-	
-	addr, err := address.GenerateAddress()
-	if err != nil {
-		log.Println(err)
-	}
+// specific
+translations.SetLanguage("ptbr")
 
-	addr.Street // retorna o nome da rua
+addr, err := address.GenerateAddress()
+if err != nil {
+    log.Println(err)
+}
+
+addr.Street // retorna o nome da rua
 ```
 
 ```go
-	// mocker
-	m, err := mocai.NewMocker("ptbr")
-	if err != nil {
-		log.Println(err)
-	}
-	
-	m.Address().Street // retorna o nome da rua
-	m.Phone().Number // retorna o número de telefone
+// mocker
+m, err := mocai.NewMocker("ptbr")
+if err != nil {
+    log.Println(err)
+}
+
+m.Address().Street // retorna o nome da rua
+m.Phone().Number // retorna o número de telefone
 ```
 
 ### Exemplos

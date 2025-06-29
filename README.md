@@ -38,26 +38,26 @@ Basic Usage
 Import the library into your project and start generating mocks:
 
 ```go
-	// specific
-	translations.SetLanguage("ptbr")
-	
-	addr, err := address.GenerateAddress()
-	if err != nil {
-		log.Println(err)
-	}
+// specific
+translations.SetLanguage("ptbr")
 
-	addr.Street // returns street name
+addr, err := address.GenerateAddress()
+if err != nil {
+    log.Println(err)
+}
+
+addr.Street // returns street name
 ```
 
 ```go
-	// mocker
-	m, err := mocai.NewMocker("ptbr")
-	if err != nil {
-		log.Println(err)
-	}
-	
-	m.Address().Street // returns street name
-	m.Phone().Number // returns phone number
+// mocker
+m, err := mocai.NewMocker("ptbr")
+if err != nil {
+    log.Println(err)
+}
+
+m.Address().Street // returns street name
+m.Phone().Number // returns phone number
 ```
 ### Examples
 The ***examples*** folder contains samples of how to use the library, organized by approach:
