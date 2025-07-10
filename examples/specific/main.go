@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	cli "github.com/brazzcore/mocai/cmd/mocai"
+	"github.com/brazzcore/mocai/internal/cli"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"

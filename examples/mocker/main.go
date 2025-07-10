@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	cli "github.com/brazzcore/mocai/cmd/mocai"
+	"github.com/brazzcore/mocai/internal/cli"
 	"github.com/brazzcore/mocai/pkg/mocai"
 )
 
