@@ -1,4 +1,4 @@
-package mocai
+package cli
 
 import (
 	"os"

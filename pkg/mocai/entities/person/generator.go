@@ -1,7 +1,6 @@
 package person
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -16,7 +15,7 @@ type Person struct {
 	FirstNameMale   string
 	FirstNameFemale string
 	LastName        string
-	Gender          gender.Gender
+	Gender          *gender.Gender
 	Age             int
 	CPF             string
 }
@@ -33,11 +32,11 @@ func GeneratePerson() (*Person, error) {
 
 	// Validate data
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, errors.New(ERROR_NO_FIRST_NAMES)
+		return nil, ErrNoFirstNames
 	}
 
 	if len(lastNames) == 0 {
-		return nil, errors.New(ERROR_NO_LAST_NAMES)
+		return nil, ErrNoLastNames
 	}
 
 	// Choose random values
@@ -60,17 +59,15 @@ func GeneratePerson() (*Person, error) {
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
 		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
-			ERROR_GENERATING_PERSON, firstNameMale, firstNameFemale, lastName)
+			ErrGeneratingPerson, firstNameMale, firstNameFemale, lastName)
 	}
 
-	createdPerson := &Person{
+	return &Person{
 		FirstNameMale:   firstNameMale,
 		FirstNameFemale: firstNameFemale,
 		LastName:        lastName,
 		Gender:          gender,
 		Age:             rand.Intn(80) + 18,
 		CPF:             cpf,
-	}
-
-	return createdPerson, nil
+	}, nil
 }

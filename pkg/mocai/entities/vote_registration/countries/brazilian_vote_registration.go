@@ -55,13 +55,11 @@ func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistrati
 		number = fmt.Sprintf("%s %s %s", number[:4], number[4:8], number[8:])
 	}
 
-	createdBrazilianVoteRegistration := &BrazilianVoteRegistration{
+	return &BrazilianVoteRegistration{
 		Section: section,
 		Zone:    zone,
 		Number:  number,
-	}
-
-	return createdBrazilianVoteRegistration, nil
+	}, nil
 }
 
 // randomInt generates a random integer between min and max

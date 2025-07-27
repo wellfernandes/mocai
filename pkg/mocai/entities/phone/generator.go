@@ -22,13 +22,13 @@ func GeneratePhone() (*Phone, error) {
 	// Get the list of area codes
 	areaCodeStr := translations.Get(lang, "phone_area_code")
 	if areaCodeStr == "" {
-		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
 	}
 	areaCodes := strings.Split(areaCodeStr, ",")
 
 	// Validate data
 	if len(areaCodes) == 0 {
-		return nil, fmt.Errorf(ERROR_NO_AREA_CODES+" for: %s", lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
 	}
 	areaCode := areaCodes[rand.Intn(len(areaCodes))]
 
@@ -37,13 +37,11 @@ func GeneratePhone() (*Phone, error) {
 
 	if areaCode == "" || number == "" {
 		return nil, fmt.Errorf("%s: missing required data (areaCode: %s, number: %s)",
-			ERROR_GENERATING_PHONE, areaCode, number)
+			ErrGeneratingPhone, areaCode, number)
 	}
 
-	createdPhone := &Phone{
+	return &Phone{
 		AreaCode: areaCode,
 		Number:   number,
-	}
-
-	return createdPhone, nil
+	}, nil
 }

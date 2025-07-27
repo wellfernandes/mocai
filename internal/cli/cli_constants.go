@@ -1,8 +1,4 @@
-package constants
-
-import (
-	"github.com/brazzcore/mocai/pkg/mocai"
-)
+package cli
 
 // ANSI Escape Codes
 var (
@@ -22,7 +18,7 @@ var (
 
 func init() {
 	// Checks if the terminal supports ANSI
-	if mocai.SupportsANSI() {
+	if SupportsANSI() {
 		CyanBold = "\033[1;36m"
 		BlueBold = "\033[1;34m"
 		Italic = "\033[3m"

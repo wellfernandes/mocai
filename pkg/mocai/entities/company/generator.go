@@ -10,7 +10,6 @@ type Company struct {
 // GenerateCompany generates all companies available.
 func GenerateCompany(formatted bool) (*Company, error) {
 	createdCompanyBrazilian, err := countries.GenerateBrazilianCompany(formatted)
-
 	if err != nil {
 		return nil, err
 	}

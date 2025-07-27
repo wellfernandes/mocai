@@ -8,4 +8,5 @@ import "errors"
 var (
 	ErrGeneratingBrazilianCompany = errors.New("error generating brazilian company")
 	ErrGeneratingCNPJ             = errors.New("error generating CNPJ")
+	ErrNoCompanyNamesAvailable    = errors.New("no company names available")
 )

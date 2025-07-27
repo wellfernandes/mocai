@@ -35,34 +35,37 @@ go get github.com/brazzcore/mocai
 Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
-```
-package examples
+```go
+// specific
+translations.SetLanguage("ptbr")
 
-import (
-	"fmt"
-
-	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
-	"github.com/brazzcore/mocai/pkg/mocai/translations"
-)
-
-func GenerateMockExample() {
-	translations.SetLanguage("ptbr")
-
-	p, err := person.GeneratePerson()
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
-
-	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
-		p.FirstNameMale, p.LastName, p.Gender, p.Age, p.CPF)
-
+addr, err := address.GenerateAddress()
+if err != nil {
+    log.Println(err)
 }
+
+addr.Street // retorna o nome da rua
+```
+
+```go
+// mocker
+m, err := mocai.NewMocker("ptbr")
+if err != nil {
+    log.Println(err)
+}
+
+m.Address().Street // retorna o nome da rua
+m.Phone().Number // retorna o número de telefone
 ```
 
 ### Exemplos
-A pasta ***examples*** contém exemplos de como usar a biblioteca. Para executar os exemplos, navegue até a pasta raiz e execute:
+O diretório ***examples*** contém exemplos de comoo usar a biblioteca, organizados por abordagem:
 
+- `specific/`: Exemplos usando as funções diretas de cada entidade mockável do Mocaí (`phone.GeneratePhone`, etc).
+
+- `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker("ptbr")` para gerar mocks de maneira fluida e simplificada.
+
+Para executar um exemplo, acesse o diretório desejado e execute:
 ```
 go run main.go
 ```

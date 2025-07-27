@@ -24,6 +24,7 @@ func GenerateBrazilianNationalID(formatted bool) (*RG, error) {
 	if formatted {
 		rgNumber = formatRG(rgNumber)
 	}
+
 	return &RG{
 		Number:      rgNumber,
 		State:       "SP",
@@ -64,8 +65,8 @@ func calculateSPRGDigit() (string, error) {
 	} else {
 		dvStr = strconv.Itoa(checkDigit)
 	}
-
 	full := fmt.Sprintf("%s%s", baseStr, dvStr)
+
 	return full, nil
 }
 
@@ -73,5 +74,6 @@ func formatRG(rgNumber string) string {
 	if len(rgNumber) != 9 {
 		return rgNumber
 	}
+
 	return fmt.Sprintf("%s.%s.%s-%s", rgNumber[0:3], rgNumber[3:6], rgNumber[6:8], rgNumber[8:])
 }

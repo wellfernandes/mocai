@@ -1,9 +1,9 @@
-package examples
+package main
 
 import (
 	"fmt"
 
-	"github.com/brazzcore/mocai/pkg/mocai/constants"
+	"github.com/brazzcore/mocai/internal/cli"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
@@ -14,7 +14,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-func GenerateMockExample() {
+func main() {
 	// Set the language to pt-BR
 	translations.SetLanguage("ptbr")
 
@@ -61,11 +61,11 @@ func GenerateMockExample() {
 		return
 	}
 
-	fmt.Println(constants.HeaderMain)
-	fmt.Println(constants.SubHeader)
+	fmt.Println(cli.HeaderMain)
+	fmt.Println(cli.SubHeader)
 
 	fmt.Printf("Person: %s %s, %s, %d years old, CPF: %s\n",
-		p.FirstNameMale, p.LastName, p.Gender, p.Age, p.CPF)
+		p.FirstNameMale, p.LastName, *p.Gender, p.Age, p.CPF)
 
 	fmt.Printf("RG: %s, State: %s, Issuing Body: %s\n",
 		nid.BrazilianRG.Number, nid.BrazilianRG.State, nid.BrazilianRG.IssuingBody)
@@ -92,5 +92,5 @@ func GenerateMockExample() {
 		vr.BrazilianVoteRegistration.Section, vr.BrazilianVoteRegistration.Zone,
 		vr.BrazilianVoteRegistration.Number)
 
-	fmt.Println(constants.Footer)
+	fmt.Println(cli.Footer)
 }
