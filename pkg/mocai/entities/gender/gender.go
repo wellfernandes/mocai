@@ -6,28 +6,41 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+type Gender struct {
+	gender
+}
+
 // Gender represents a person's gender identity.
-type Gender string
+type gender string
 
 // Constants for different gender identities.
 const (
-	Male        Gender = "male"        // Male gender identity
-	Female      Gender = "female"      // Female gender identity
-	NonBinary   Gender = "non-binary"  // Non-binary gender identity
-	GenderFluid Gender = "genderfluid" // Genderfluid identity
-	Agender     Gender = "agender"     // Agender identity
-	TwoSpirit   Gender = "two-spirit"  // Two-Spirit identity (used by some Indigenous peoples)
-	Other       Gender = "other"       // Other gender identity
+	Male        gender = "male"        // Male gender identity
+	Female      gender = "female"      // Female gender identity
+	NonBinary   gender = "non-binary"  // Non-binary gender identity
+	GenderFluid gender = "genderfluid" // Genderfluid identity
+	Agender     gender = "agender"     // Agender identity
+	TwoSpirit   gender = "two-spirit"  // Two-Spirit identity (used by some Indigenous peoples)
+	Other       gender = "other"       // Other gender identity
 )
 
+// NewGender creates a new Gender instance with a randomly generated gender.
+func NewGender() Gender {
+	g, err := (&Gender{}).generateRandomGender()
+	if err != nil {
+		return Gender{}
+	}
+	return g
+}
+
 // GenerateRandomGender generates a random gender based on the current language.
-func GenerateRandomGender() (*Gender, error) {
+func (g *Gender) generateRandomGender() (Gender, error) {
 	lang := translations.GetLanguage()
 	genderStr := translations.Get(lang, "gender")
 
 	if genderStr == "" {
-		return nil, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
+		return Gender{}, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
 	}
 
-	return (*Gender)(&genderStr), nil
+	return Gender{gender: gender(genderStr)}, nil
 }
