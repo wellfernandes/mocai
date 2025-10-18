@@ -15,14 +15,22 @@ type Person struct {
 	FirstNameMale   string
 	FirstNameFemale string
 	LastName        string
-	Gender          *gender.Gender
+	Gender          gender.Gender
 	Age             int
 	CPF             string
 }
 
+func NewPerson(isFormatted bool) Person {
+	p, err := (&Person{}).generatePerson(isFormatted)
+	if err != nil {
+		return Person{}
+	}
+	return p
+}
+
 // GeneratePerson generates a mock person with random data.
 // It returns a pointer to a Person and an error if the generation fails.
-func GeneratePerson() (*Person, error) {
+func (p *Person) generatePerson(isFormatted bool) (Person, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of first names and last names
@@ -32,11 +40,11 @@ func GeneratePerson() (*Person, error) {
 
 	// Validate data
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, ErrNoFirstNames
+		return Person{}, ErrNoFirstNames
 	}
 
 	if len(lastNames) == 0 {
-		return nil, ErrNoLastNames
+		return Person{}, ErrNoLastNames
 	}
 
 	// Choose random values
@@ -45,29 +53,23 @@ func GeneratePerson() (*Person, error) {
 	lastName := lastNames[rand.Intn(len(lastNames))]
 
 	// Generate a random gender
-	gender, err := gender.GenerateRandomGender()
-	if err != nil {
-		return nil, err
-	}
+	gender := gender.NewGender()
 
 	// Generate a random CPF without a mask
-	cpf, err := cpf.GenerateCPF(false)
-	if err != nil {
-		return nil, err
-	}
+	cpf := cpf.NewCPF(isFormatted)
 
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
-		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
+		return Person{}, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
 			ErrGeneratingPerson, firstNameMale, firstNameFemale, lastName)
 	}
 
-	return &Person{
+	return Person{
 		FirstNameMale:   firstNameMale,
 		FirstNameFemale: firstNameFemale,
 		LastName:        lastName,
 		Gender:          gender,
 		Age:             rand.Intn(80) + 18,
-		CPF:             cpf,
+		CPF:             cpf.Number,
 	}, nil
 }
