@@ -23,6 +23,7 @@ type Mocker struct {
 	VoteRegistration voteregistration.VoteRegistration
 }
 
+// NewMocker initializes a Mocai instance with the specified language and formatting options
 func NewMocker(lang string, isFormatted bool) (*Mocker, error) {
 	err := translations.SetLanguage(lang)
 	if err != nil {
