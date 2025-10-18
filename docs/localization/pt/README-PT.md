@@ -36,34 +36,20 @@ Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```go
-// specific
-translations.SetLanguage("ptbr")
-
-addr, err := address.GenerateAddress()
-if err != nil {
-    log.Println(err)
-}
-
-addr.Street // retorna o nome da rua
-```
-
-```go
 // mocker
-m, err := mocai.NewMocker("ptbr")
+m, err := mocai.NewMocker("ptbr", true)
 if err != nil {
     log.Println(err)
 }
 
-m.Address().Street // retorna o nome da rua
-m.Phone().Number // retorna o número de telefone
+m.Address.Street // retorna o nome da rua
+m.Phone.Number // retorna o número de telefone
 ```
 
 ### Exemplos
-O diretório ***examples*** contém exemplos de comoo usar a biblioteca, organizados por abordagem:
+O diretório ***examples*** contém exemplos de comoo usar a biblioteca:
 
-- `specific/`: Exemplos usando as funções diretas de cada entidade mockável do Mocaí (`phone.GeneratePhone`, etc).
-
-- `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker("ptbr")` para gerar mocks de maneira fluida e simplificada.
+- `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker(lang string, isFormatted bool)` para gerar mocks de maneira fluida e simplificada.
 
 Para executar um exemplo, acesse o diretório desejado e execute:
 ```
