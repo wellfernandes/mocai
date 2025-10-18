@@ -47,7 +47,7 @@ m.Phone.Number // retorna o número de telefone
 ```
 
 ### Exemplos
-O diretório ***examples*** contém exemplos de comoo usar a biblioteca:
+O diretório ***examples*** contém exemplos de como usar a biblioteca:
 
 - `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker(lang string, isFormatted bool)` para gerar mocks de maneira fluida e simplificada.
 
