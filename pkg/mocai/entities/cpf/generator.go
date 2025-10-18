@@ -7,10 +7,23 @@ import (
 	"time"
 )
 
+type CPF struct {
+	Number string
+}
+
+// NewCPF generates a new CPF number.
+func NewCPF(isFormatted bool) CPF {
+	c, err := (&CPF{}).generateCPF(isFormatted)
+	if err != nil {
+		return CPF{}
+	}
+	return CPF{Number: c}
+}
+
 // GenerateCPF generates a valid CPF number.
 // If formatted is true, the CPF will be returned in the format xxx.xxx.xxx-xx.
 // If formatted is false, the CPF will be returned as a plain string of 11 digits.
-func GenerateCPF(formatted bool) (string, error) {
+func (c *CPF) generateCPF(formatted bool) (string, error) {
 	// Create a local random generator with a unique seed
 	src := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(src)
