@@ -38,33 +38,19 @@ Basic Usage
 Import the library into your project and start generating mocks:
 
 ```go
-// specific
-translations.SetLanguage("ptbr")
-
-addr, err := address.GenerateAddress()
-if err != nil {
-    log.Println(err)
-}
-
-addr.Street // returns street name
-```
-
-```go
 // mocker
-m, err := mocai.NewMocker("ptbr")
+m, err := mocai.NewMocker("ptbr", true)
 if err != nil {
     log.Println(err)
 }
 
-m.Address().Street // returns street name
-m.Phone().Number // returns phone number
+m.Address.Street // returns street name
+m.Phone.Number // returns phone number
 ```
 ### Examples
-The ***examples*** folder contains samples of how to use the library, organized by approach:
+The ***examples*** folder contains samples of how to use the library:
 
-- `specific/`: Examples using direct calls to each of Mocaí's mockable entities (e.g., phone.GeneratePhone, etc).
-
-- `mocker/`: Example using a main entry point `mocai.NewMocker("ptbr")` to generate mocks in a fluent and simplified way.
+- `mocker/`: Example using a main entry point `mocai.NewMocker(lang string, isFormatted bool)` to generate mocks in a fluent and simplified way.
 
 To run an example, navigate to the desired directory and run:
 ```
