@@ -8,8 +8,8 @@ type NationalID struct {
 	BrazilianRG countries.RG
 }
 
-// NewNationalId creates a new NationalID entity with a generated Brazilian national ID [RG].
-func NewNationalId(isFormatted bool) (*NationalID, error) {
+// NewNationalID creates a new NationalID entity with a generated Brazilian national ID [RG].
+func NewNationalID(isFormatted bool) (*NationalID, error) {
 	n, err := (&NationalID{}).generateNationalID(isFormatted)
 	if err != nil {
 		return nil, err

@@ -50,7 +50,7 @@ func NewMocker(lang string, isFormatted bool) (*Mocker, error) {
 		return nil, err
 	}
 
-	nationalID, err := nationalid.NewNationalId(isFormatted)
+	nationalID, err := nationalid.NewNationalID(isFormatted)
 	if err != nil {
 		return nil, err
 	}
