@@ -59,13 +59,13 @@ func (a *Address) generateAddress() (*Address, error) {
 	// - Verifies each item isn't just whitespace
 	for _, s := range slicesToCheck {
 		if len(s.data) == 0 {
-			return &Address{}, s.err
+			return nil, s.err
 		}
 
 		// Individual item validation (prevent empty values)
 		for _, item := range s.data {
 			if strings.TrimSpace(item) == "" {
-				return &Address{}, fmt.Errorf("%w: empty value in slice", s.err)
+				return nil, fmt.Errorf("%w: empty value in slice", s.err)
 			}
 		}
 	}
