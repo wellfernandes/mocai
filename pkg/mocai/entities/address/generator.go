@@ -24,17 +24,17 @@ type SlicesToCheck struct {
 }
 
 // NewAddress creates and returns a new Address with randomly generated data.
-func NewAddress() Address {
+func NewAddress() (*Address, error) {
 	addr, err := (&Address{}).generateAddress()
 	if err != nil {
-		return Address{}
+		return nil, err
 	}
-	return addr
+	return addr, nil
 }
 
 // GenerateAddress generates a mock address with random data.
 // It returns a pointer to an Address and an error if the generation fails.
-func (a *Address) generateAddress() (Address, error) {
+func (a *Address) generateAddress() (*Address, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of streets, cities, states, and ZIP codes
@@ -59,13 +59,13 @@ func (a *Address) generateAddress() (Address, error) {
 	// - Verifies each item isn't just whitespace
 	for _, s := range slicesToCheck {
 		if len(s.data) == 0 {
-			return Address{}, s.err
+			return &Address{}, s.err
 		}
 
 		// Individual item validation (prevent empty values)
 		for _, item := range s.data {
 			if strings.TrimSpace(item) == "" {
-				return Address{}, fmt.Errorf("%w: empty value in slice", s.err)
+				return &Address{}, fmt.Errorf("%w: empty value in slice", s.err)
 			}
 		}
 	}
@@ -76,7 +76,7 @@ func (a *Address) generateAddress() (Address, error) {
 	state := states[rand.Intn(len(states))]
 	zip := zips[rand.Intn(len(zips))]
 
-	return Address{
+	return &Address{
 		Street: street,
 		Number: rand.Intn(9999),
 		City:   city,

@@ -8,19 +8,18 @@ type VoteRegistration struct {
 }
 
 // NewVoteRegistration generates a Brazilian vote registration.
-func NewVoteRegistration(isFormatted bool) VoteRegistration {
-	vr, err := (&VoteRegistration{}).generateVoteRegistration(isFormatted)
+func NewVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
+	voteRegistration, err := (&VoteRegistration{}).generateVoteRegistration(isFormatted)
 	if err != nil {
-		return VoteRegistration{}
+		return nil, err
 	}
-	return vr
+	return voteRegistration, nil
 }
 
 // GenerateVoteRegistration generates a Brazilian vote registration.
 // If formatted is true, the Brazilian vote registration will be returned in the format XXX XXX XXX.
 // If formatted is false, the Brazilian vote registration will be returned as a plain string.
-func (v *VoteRegistration) generateVoteRegistration(isFormatted bool) (VoteRegistration, error) {
+func (v *VoteRegistration) generateVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
 	brazilianVoteRegistration := countries.NewBrazilianVoteRegistration(isFormatted)
-
-	return VoteRegistration{BrazilianVoteRegistration: brazilianVoteRegistration}, nil
+	return &VoteRegistration{BrazilianVoteRegistration: brazilianVoteRegistration}, nil
 }

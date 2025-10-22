@@ -10,22 +10,21 @@ type Certificate struct {
 }
 
 // NewCertificate creates a new Certificate with generated data.
-func NewCertificate(isFormatted bool) Certificate {
+func NewCertificate(isFormatted bool) (*Certificate, error) {
 	cert, err := (&Certificate{}).generateCertificate(isFormatted)
 	if err != nil {
-		return Certificate{}
+		return nil, err
 	}
-	return cert
+	return cert, nil
 }
 
 // GenerateCertificate generates all certificates available.
 // If formatted is true, returns the number with separators (-).
 // Returns a pointer to Certificate and error if any validation fails
-func (c *Certificate) generateCertificate(formatted bool) (Certificate, error) {
+func (c *Certificate) generateCertificate(formatted bool) (*Certificate, error) {
 	createdBrazilianCertificates, err := countries.GenerateBrazilianCertificates(formatted)
 	if err != nil {
-		return Certificate{}, err
+		return nil, err
 	}
-
-	return Certificate{BrazilianCertificates: createdBrazilianCertificates}, nil
+	return &Certificate{BrazilianCertificates: createdBrazilianCertificates}, nil
 }

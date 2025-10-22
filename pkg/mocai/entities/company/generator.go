@@ -8,20 +8,20 @@ type Company struct {
 }
 
 // NewCompany creates a new Company with generated data.
-func NewCompany(isFormatted bool) Company {
+func NewCompany(isFormatted bool) (*Company, error) {
 	comp, err := (&Company{}).generateCompany(isFormatted)
 	if err != nil {
-		return Company{}
+		return nil, err
 	}
-	return comp
+	return comp, nil
 }
 
 // GenerateCompany generates all companies available.
-func (c *Company) generateCompany(formatted bool) (Company, error) {
+func (c *Company) generateCompany(formatted bool) (*Company, error) {
 	createdCompanyBrazilian, err := countries.GenerateBrazilianCompany(formatted)
 	if err != nil {
-		return Company{}, err
+		return nil, err
 	}
 
-	return Company{BrazilianCompany: createdCompanyBrazilian}, nil
+	return &Company{BrazilianCompany: createdCompanyBrazilian}, nil
 }

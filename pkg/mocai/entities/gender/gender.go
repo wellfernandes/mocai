@@ -6,41 +6,41 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// Gender represents a person's gender.
 type Gender struct {
-	gender
+	Identity
 }
 
-// Gender represents a person's gender identity.
-type gender string
+// Identity represents a person's gender identity.
+type Identity string
 
 // Constants for different gender identities.
 const (
-	Male        gender = "male"        // Male gender identity
-	Female      gender = "female"      // Female gender identity
-	NonBinary   gender = "non-binary"  // Non-binary gender identity
-	GenderFluid gender = "genderfluid" // Genderfluid identity
-	Agender     gender = "agender"     // Agender identity
-	TwoSpirit   gender = "two-spirit"  // Two-Spirit identity (used by some Indigenous peoples)
-	Other       gender = "other"       // Other gender identity
+	Male        Identity = "male"        // Male gender identity
+	Female      Identity = "female"      // Female gender identity
+	NonBinary   Identity = "non-binary"  // Non-binary gender identity
+	GenderFluid Identity = "genderfluid" // Genderfluid identity
+	Agender     Identity = "agender"     // Agender identity
+	TwoSpirit   Identity = "two-spirit"  // Two-Spirit identity (used by some Indigenous peoples)
+	Other       Identity = "other"       // Other gender identity
 )
 
 // NewGender creates a new Gender instance with a randomly generated gender.
-func NewGender() Gender {
+func NewGender() (*Gender, error) {
 	g, err := (&Gender{}).generateRandomGender()
 	if err != nil {
-		return Gender{}
+		return nil, err
 	}
-	return g
+	return g, nil
 }
 
 // GenerateRandomGender generates a random gender based on the current language.
-func (g *Gender) generateRandomGender() (Gender, error) {
+func (g *Gender) generateRandomGender() (*Gender, error) {
 	lang := translations.GetLanguage()
 	genderStr := translations.Get(lang, "gender")
 
 	if genderStr == "" {
-		return Gender{}, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
+		return nil, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
 	}
-
-	return Gender{gender: gender(genderStr)}, nil
+	return &Gender{Identity: Identity(genderStr)}, nil
 }

@@ -15,12 +15,12 @@ type Phone struct {
 }
 
 // NewPhone creates a new Phone instance with generated data.
-func NewPhone() Phone {
-	p, err := (&Phone{}).generatePhone()
+func NewPhone() (*Phone, error) {
+	phone, err := (&Phone{}).generatePhone()
 	if err != nil {
-		return Phone{}
+		return nil, err
 	}
-	return *p
+	return phone, nil
 }
 
 // GeneratePhone generates a mock phone number with random data.
