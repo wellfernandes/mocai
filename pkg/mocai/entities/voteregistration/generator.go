@@ -20,6 +20,9 @@ func NewVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
 // If formatted is true, the Brazilian vote registration will be returned in the format XXX XXX XXX.
 // If formatted is false, the Brazilian vote registration will be returned as a plain string.
 func (v *VoteRegistration) generateVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
-	brazilianVoteRegistration := countries.NewBrazilianVoteRegistration(isFormatted)
-	return &VoteRegistration{BrazilianVoteRegistration: brazilianVoteRegistration}, nil
+	brazilianVoteRegistration, err := countries.NewBrazilianVoteRegistration(isFormatted)
+	if err != nil {
+		return nil, err
+	}
+	return &VoteRegistration{BrazilianVoteRegistration: *brazilianVoteRegistration}, nil
 }

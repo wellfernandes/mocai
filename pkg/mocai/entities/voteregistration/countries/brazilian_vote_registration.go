@@ -19,18 +19,18 @@ type BrazilianVoteRegistration struct {
 }
 
 // NewBrazilianVoteRegistration generates a new Brazilian vote registration.
-func NewBrazilianVoteRegistration(isFormatted bool) BrazilianVoteRegistration {
+func NewBrazilianVoteRegistration(isFormatted bool) (*BrazilianVoteRegistration, error) {
 	bvr, err := (&BrazilianVoteRegistration{}).generateBrazilianVoteRegistration(isFormatted)
 	if err != nil {
-		return BrazilianVoteRegistration{}
+		return nil, err
 	}
-	return bvr
+	return bvr, nil
 }
 
 // GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number.
 // If formatted is true, the Brazilian vote registration number will be returned in the format XXX XXX XXX.
 // If formatted is false, the Brazilian vote registration number will be returned as a plain string.
-func (b *BrazilianVoteRegistration) generateBrazilianVoteRegistration(formatted bool) (BrazilianVoteRegistration, error) {
+func (b *BrazilianVoteRegistration) generateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
 	section := randomInt3Digits()
 	zone := randomInt3Digits()
 
@@ -45,26 +45,26 @@ func (b *BrazilianVoteRegistration) generateBrazilianVoteRegistration(formatted 
 	// Calculate the first check digit
 	checkDigit1, err := calculateCheckDigit1(sequenceNumberStr)
 	if err != nil {
-		return BrazilianVoteRegistration{}, err
+		return nil, err
 	}
 
 	// Calculate the second check digit
 	checkDigit2, err := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
 	if err != nil {
-		return BrazilianVoteRegistration{}, err
+		return nil, err
 	}
 
 	// Combine everything to form the complete number
 	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
 	if number == "" || len(number) != 12 {
-		return BrazilianVoteRegistration{}, ErrInvalidVoteRegistration
+		return nil, ErrInvalidVoteRegistration
 	}
 
 	if formatted {
 		number = fmt.Sprintf("%s %s %s", number[:4], number[4:8], number[8:])
 	}
 
-	return BrazilianVoteRegistration{
+	return &BrazilianVoteRegistration{
 		Section: section,
 		Zone:    zone,
 		Number:  number,
