@@ -39,7 +39,7 @@ Importe a biblioteca em seu projeto e comece a gerar mocks:
 // mocker
 m, err := mocai.NewMocker("ptbr", true)
 if err != nil {
-    log.Println(err)
+    log.Fatal(err)
 }
 
 m.Address.Street // retorna o nome da rua
