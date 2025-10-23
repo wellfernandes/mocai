@@ -36,15 +36,24 @@ Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```go
-// mocker
-m, err := mocai.NewMocker("ptbr", true)
+// Cria uma instância do Mocker para português
+ptMocker, err := mocai.NewMocker("ptbr", true)
 if err != nil {
     log.Fatal(err)
 }
 
-m.Address.Street // retorna o nome da rua
-m.Phone.Number // retorna o número de telefone
+// Acessa os dados mock
+fmt.Printf("Endereço: %s\n", ptMocker.Address.Street)
+fmt.Printf("Telefone: %s\n", ptMocker.Phone.Number)
+
+// Para dados em outro idioma, crie uma nova instância
+enMocker, err := mocai.NewMocker("en", true)
+if err != nil {
+    log.Fatal(err)
+}
 ```
+
+> **Importante**: Cada instância do Mocker é imutável e contém dados no idioma especificado no momento da criação. Para obter dados em um idioma diferente, sempre crie uma nova instância usando NewMocker.
 
 ### Exemplos
 O diretório ***examples*** contém exemplos de como usar a biblioteca:
