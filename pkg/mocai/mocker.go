@@ -12,6 +12,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// Mocker represents an immutable collection of mock data in a specific language.
 type Mocker struct {
 	Address          *address.Address
 	Certificate      *certificate.Certificate
@@ -21,12 +22,16 @@ type Mocker struct {
 	Person           *person.Person
 	Phone            *phone.Phone
 	VoteRegistration *voteregistration.VoteRegistration
+
+	formatted bool
+	lang      string
 }
 
-// NewMocker initializes a Mocai instance with the specified language and formatting options
+// NewMocker initializes a Mocai instance with the specified language and formatting options.
+// All generated data will use the specified language. To get data in a different language,
+// create a new Mocker instance.
 func NewMocker(lang string, isFormatted bool) (*Mocker, error) {
-	err := translations.SetLanguage(lang)
-	if err != nil {
+	if err := translations.SetLanguage(lang); err != nil {
 		return nil, err
 	}
 
@@ -79,19 +84,12 @@ func NewMocker(lang string, isFormatted bool) (*Mocker, error) {
 		Person:           person,
 		Phone:            phone,
 		VoteRegistration: voteRegistration,
+		formatted:        isFormatted,
+		lang:             lang,
 	}, nil
-
 }
 
-// SetLanguage changes the language used
-func (m *Mocker) SetLanguage(lang string) error {
-	err := translations.SetLanguage(lang)
-	if err != nil {
-		return err
-	}
-	return err
-}
-
+// GetLanguage returns the language used to generate this Mocker's data
 func (m *Mocker) GetLanguage() string {
-	return translations.GetLanguage()
+	return m.lang
 }
