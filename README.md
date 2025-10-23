@@ -38,15 +38,25 @@ Basic Usage
 Import the library into your project and start generating mocks:
 
 ```go
-// mocker
-m, err := mocai.NewMocker("ptbr", true)
+// Create a Mocker instance for Portuguese
+ptMocker, err := mocai.NewMocker("ptbr", true)
 if err != nil {
     log.Fatal(err)
 }
 
-m.Address.Street // returns street name
-m.Phone.Number // returns phone number
+// Access mock data
+fmt.Printf("Address: %s\n", ptMocker.Address.Street)
+fmt.Printf("Phone: %s\n", ptMocker.Phone.Number)
+
+// For data in a different language, create a new instance
+enMocker, err := mocai.NewMocker("en", true)
+if err != nil {
+    log.Fatal(err)
+}
 ```
+
+> **Important**: Each Mocker instance is immutable and contains data in the language specified at creation time. To get data in a different language, always create a new instance using NewMocker.
+
 ### Examples
 The ***examples*** folder contains samples of how to use the library:
 
