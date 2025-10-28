@@ -18,10 +18,17 @@ type BrazilianVoteRegistration struct {
 	Number  string
 }
 
+// NewBrazilianVoteRegistration generates a new Brazilian vote registration.
+func NewBrazilianVoteRegistration(isFormatted bool) (*BrazilianVoteRegistration, error) {
+	bvr, err := (&BrazilianVoteRegistration{}).generateBrazilianVoteRegistration(isFormatted)
+	if err != nil {
+		return nil, err
+	}
+	return bvr, nil
+}
+
 // GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number.
-// If formatted is true, the Brazilian vote registration number will be returned in the format XXX XXX XXX.
-// If formatted is false, the Brazilian vote registration number will be returned as a plain string.
-func GenerateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
+func (b *BrazilianVoteRegistration) generateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
 	section := randomInt3Digits()
 	zone := randomInt3Digits()
 

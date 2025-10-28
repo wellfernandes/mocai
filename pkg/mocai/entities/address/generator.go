@@ -23,9 +23,18 @@ type SlicesToCheck struct {
 	err  error
 }
 
+// NewAddress creates and returns a new Address with randomly generated data.
+func NewAddress() (*Address, error) {
+	addr, err := (&Address{}).generateAddress()
+	if err != nil {
+		return nil, err
+	}
+	return addr, nil
+}
+
 // GenerateAddress generates a mock address with random data.
 // It returns a pointer to an Address and an error if the generation fails.
-func GenerateAddress() (*Address, error) {
+func (a *Address) generateAddress() (*Address, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of streets, cities, states, and ZIP codes

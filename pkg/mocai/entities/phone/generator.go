@@ -14,9 +14,18 @@ type Phone struct {
 	Number   string
 }
 
+// NewPhone creates a new Phone instance with generated data.
+func NewPhone() (*Phone, error) {
+	phone, err := (&Phone{}).generatePhone()
+	if err != nil {
+		return nil, err
+	}
+	return phone, nil
+}
+
 // GeneratePhone generates a mock phone number with random data.
 // It returns a pointer to a Phone and an error if the generation fails.
-func GeneratePhone() (*Phone, error) {
+func (p *Phone) generatePhone() (*Phone, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of area codes

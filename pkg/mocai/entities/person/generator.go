@@ -17,12 +17,20 @@ type Person struct {
 	LastName        string
 	Gender          *gender.Gender
 	Age             int
-	CPF             string
+	CPF             *cpf.CPF
+}
+
+func NewPerson(isFormatted bool) (*Person, error) {
+	p, err := (&Person{}).generatePerson(isFormatted)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }
 
 // GeneratePerson generates a mock person with random data.
 // It returns a pointer to a Person and an error if the generation fails.
-func GeneratePerson() (*Person, error) {
+func (p *Person) generatePerson(isFormatted bool) (*Person, error) {
 	lang := translations.GetLanguage()
 
 	// Get the list of first names and last names
@@ -45,13 +53,13 @@ func GeneratePerson() (*Person, error) {
 	lastName := lastNames[rand.Intn(len(lastNames))]
 
 	// Generate a random gender
-	gender, err := gender.GenerateRandomGender()
+	gender, err := gender.NewGender()
 	if err != nil {
 		return nil, err
 	}
 
 	// Generate a random CPF without a mask
-	cpf, err := cpf.GenerateCPF(false)
+	cpf, err := cpf.NewCPF(isFormatted)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +75,7 @@ func GeneratePerson() (*Person, error) {
 		FirstNameFemale: firstNameFemale,
 		LastName:        lastName,
 		Gender:          gender,
-		Age:             rand.Intn(80) + 18,
+		Age:             rand.Intn(70) + 18,
 		CPF:             cpf,
 	}, nil
 }

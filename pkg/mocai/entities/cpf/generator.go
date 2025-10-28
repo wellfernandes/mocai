@@ -7,10 +7,23 @@ import (
 	"time"
 )
 
+type CPF struct {
+	Number string
+}
+
+// NewCPF generates a new CPF number.
+func NewCPF(isFormatted bool) (*CPF, error) {
+	cpf, err := (&CPF{}).generateCPF(isFormatted)
+	if err != nil {
+		return nil, err
+	}
+	return cpf, nil
+}
+
 // GenerateCPF generates a valid CPF number.
 // If formatted is true, the CPF will be returned in the format xxx.xxx.xxx-xx.
 // If formatted is false, the CPF will be returned as a plain string of 11 digits.
-func GenerateCPF(formatted bool) (string, error) {
+func (c *CPF) generateCPF(formatted bool) (*CPF, error) {
 	// Create a local random generator with a unique seed
 	src := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(src)
@@ -28,17 +41,17 @@ func GenerateCPF(formatted bool) (string, error) {
 	digits = append(digits, calculateCheckDigit(digits, 11))
 
 	// Convert the digits to a string
-	cpf := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
+	cpfNumber := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
 
 	// Format the CPF if requested
 	if formatted {
-		if len(cpf) != 11 {
-			return "", ErrInvalidCPF
+		if len(cpfNumber) != 11 {
+			return nil, ErrInvalidCPF
 		}
-		return cpf[:3] + "." + cpf[3:6] + "." + cpf[6:9] + "-" + cpf[9:], nil
+		return &CPF{Number: cpfNumber[:3] + "." + cpfNumber[3:6] + "." + cpfNumber[6:9] + "-" + cpfNumber[9:]}, nil
 	}
 
-	return cpf, nil
+	return &CPF{Number: cpfNumber}, nil
 }
 
 // calculateCheckDigit calculates the check digit for a CPF.

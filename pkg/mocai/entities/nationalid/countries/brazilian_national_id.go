@@ -15,17 +15,25 @@ type RG struct {
 	IssuingBody string
 }
 
+func NewRG(isFormatted bool) RG {
+	rg, err := (&RG{}).generateBrazilianNationalID(isFormatted)
+	if err != nil {
+		return RG{}
+	}
+	return rg
+}
+
 // GenerateBrazilianNationalID generates a valid Brazilian national ID [RG] for São Paulo.
-func GenerateBrazilianNationalID(formatted bool) (*RG, error) {
+func (r *RG) generateBrazilianNationalID(formatted bool) (RG, error) {
 	rgNumber, err := calculateSPRGDigit()
 	if err != nil {
-		return nil, err
+		return RG{}, err
 	}
 	if formatted {
 		rgNumber = formatRG(rgNumber)
 	}
 
-	return &RG{
+	return RG{
 		Number:      rgNumber,
 		State:       "SP",
 		IssuingBody: "SSP - Secretaria de Seguranca Publica",

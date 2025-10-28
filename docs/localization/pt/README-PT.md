@@ -36,34 +36,29 @@ Uso Básico
 Importe a biblioteca em seu projeto e comece a gerar mocks:
 
 ```go
-// specific
-translations.SetLanguage("ptbr")
-
-addr, err := address.GenerateAddress()
+// Cria uma instância do Mocker para português
+ptMocker, err := mocai.NewMocker("ptbr", true)
 if err != nil {
-    log.Println(err)
+    log.Fatal(err)
 }
 
-addr.Street // retorna o nome da rua
-```
+// Acessa os dados mock
+fmt.Printf("Endereço: %s\n", ptMocker.Address.Street)
+fmt.Printf("Telefone: %s\n", ptMocker.Phone.Number)
 
-```go
-// mocker
-m, err := mocai.NewMocker("ptbr")
+// Para dados em outro idioma, crie uma nova instância
+enMocker, err := mocai.NewMocker("en", true)
 if err != nil {
-    log.Println(err)
+    log.Fatal(err)
 }
-
-m.Address().Street // retorna o nome da rua
-m.Phone().Number // retorna o número de telefone
 ```
+
+> **Importante**: Cada instância do Mocker é imutável e contém dados no idioma especificado no momento da criação. Para obter dados em um idioma diferente, sempre crie uma nova instância usando NewMocker.
 
 ### Exemplos
-O diretório ***examples*** contém exemplos de comoo usar a biblioteca, organizados por abordagem:
+O diretório ***examples*** contém exemplos de como usar a biblioteca:
 
-- `specific/`: Exemplos usando as funções diretas de cada entidade mockável do Mocaí (`phone.GeneratePhone`, etc).
-
-- `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker("ptbr")` para gerar mocks de maneira fluida e simplificada.
+- `mocker/`: Exemplo usando um ponto de entrada principal `mocai.NewMocker(lang string, isFormatted bool)` para gerar mocks de maneira fluida e simplificada.
 
 Para executar um exemplo, acesse o diretório desejado e execute:
 ```

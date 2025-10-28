@@ -38,33 +38,29 @@ Basic Usage
 Import the library into your project and start generating mocks:
 
 ```go
-// specific
-translations.SetLanguage("ptbr")
-
-addr, err := address.GenerateAddress()
+// Create a Mocker instance for Portuguese
+ptMocker, err := mocai.NewMocker("ptbr", true)
 if err != nil {
-    log.Println(err)
+    log.Fatal(err)
 }
 
-addr.Street // returns street name
-```
+// Access mock data
+fmt.Printf("Address: %s\n", ptMocker.Address.Street)
+fmt.Printf("Phone: %s\n", ptMocker.Phone.Number)
 
-```go
-// mocker
-m, err := mocai.NewMocker("ptbr")
+// For data in a different language, create a new instance
+enMocker, err := mocai.NewMocker("en", true)
 if err != nil {
-    log.Println(err)
+    log.Fatal(err)
 }
-
-m.Address().Street // returns street name
-m.Phone().Number // returns phone number
 ```
+
+> **Important**: Each Mocker instance is immutable and contains data in the language specified at creation time. To get data in a different language, always create a new instance using NewMocker.
+
 ### Examples
-The ***examples*** folder contains samples of how to use the library, organized by approach:
+The ***examples*** folder contains samples of how to use the library:
 
-- `specific/`: Examples using direct calls to each of Mocaí's mockable entities (e.g., phone.GeneratePhone, etc).
-
-- `mocker/`: Example using a main entry point `mocai.NewMocker("ptbr")` to generate mocks in a fluent and simplified way.
+- `mocker/`: Example using a main entry point `mocai.NewMocker(lang string, isFormatted bool)` to generate mocks in a fluent and simplified way.
 
 To run an example, navigate to the desired directory and run:
 ```
