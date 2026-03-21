@@ -25,7 +25,7 @@ func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.Rand
 	}
 	companyName := companyNames[rnd.Intn(len(companyNames))]
 
-	cnpjVal, err := cnpj.GenerateCNPJ(formatted)
+	cnpjVal, err := cnpj.GenerateCNPJ(formatted, rnd)
 	if err != nil {
 		return BrazilianCompany{}, err
 	}
