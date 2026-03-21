@@ -1,7 +1,3 @@
-go get github.com/brazzcore/mocai
-enMocker, err := mocai.NewMocker("en", true)
-go run main.go
-
 # Mocai
 
 ![mocai](../../.././img/mocai.svg)
