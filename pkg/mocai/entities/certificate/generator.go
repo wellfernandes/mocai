@@ -6,12 +6,12 @@ import (
 
 // Certificate represents all certificates available
 type Certificate struct {
-	BrazilianCertificates countries.BrazilianCertificates
+	Brazil *countries.BrazilianCertificates
 }
 
 // NewCertificate creates a new Certificate with generated data.
 func NewCertificate(isFormatted bool) (*Certificate, error) {
-	cert, err := (&Certificate{}).generateCertificate(isFormatted)
+	cert, err := (&Certificate{}).generate(isFormatted)
 	if err != nil {
 		return nil, err
 	}
@@ -21,10 +21,10 @@ func NewCertificate(isFormatted bool) (*Certificate, error) {
 // GenerateCertificate generates all certificates available.
 // If formatted is true, returns the number with separators (-).
 // Returns a pointer to Certificate and error if any validation fails
-func (c *Certificate) generateCertificate(formatted bool) (*Certificate, error) {
-	createdBrazilianCertificates, err := countries.GenerateBrazilianCertificates(formatted)
+func (c *Certificate) generate(formatted bool) (*Certificate, error) {
+	createdBrazilianCertificates, err := countries.NewBrazilCertificates(formatted)
 	if err != nil {
 		return nil, err
 	}
-	return &Certificate{BrazilianCertificates: createdBrazilianCertificates}, nil
+	return &Certificate{Brazil: createdBrazilianCertificates}, nil
 }
