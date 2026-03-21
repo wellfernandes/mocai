@@ -1,28 +1,27 @@
 package voteregistration
 
-import "github.com/brazzcore/mocai/pkg/mocai/entities/voteregistration/countries"
+import (
+	"github.com/brazzcore/mocai/pkg/mocai/entities/voteregistration/countries"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
+)
 
-// VoteRegistration represents a Brazilian vote registration.
 type VoteRegistration struct {
 	BrazilianVoteRegistration countries.BrazilianVoteRegistration
 }
 
-// NewVoteRegistration generates a Brazilian vote registration.
-func NewVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
-	voteRegistration, err := (&VoteRegistration{}).generateVoteRegistration(isFormatted)
+// NewVoteRegistration generates a Voter ID using a custom language and random source
+func NewVoteRegistration(lang string, isFormatted bool, rnd translations.RandSource) (*VoteRegistration, error) {
+	reg, err := generateVoteRegistration(lang, isFormatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	return voteRegistration, nil
+	return reg, nil
 }
 
-// GenerateVoteRegistration generates a Brazilian vote registration.
-// If formatted is true, the Brazilian vote registration will be returned in the format XXX XXX XXX.
-// If formatted is false, the Brazilian vote registration will be returned as a plain string.
-func (v *VoteRegistration) generateVoteRegistration(isFormatted bool) (*VoteRegistration, error) {
-	brazilianVoteRegistration, err := countries.NewBrazilianVoteRegistration(isFormatted)
+func generateVoteRegistration(lang string, isFormatted bool, rnd translations.RandSource) (*VoteRegistration, error) {
+	reg, err := countries.NewBrazilianVoteRegistrationCustom(lang, isFormatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	return &VoteRegistration{BrazilianVoteRegistration: *brazilianVoteRegistration}, nil
+	return &VoteRegistration{BrazilianVoteRegistration: *reg}, nil
 }
