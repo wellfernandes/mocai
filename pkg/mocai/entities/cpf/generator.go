@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 type CPF struct {
@@ -46,7 +48,7 @@ func (c *CPF) generateCPF(formatted bool) (*CPF, error) {
 	// Format the CPF if requested
 	if formatted {
 		if len(cpfNumber) != 11 {
-			return nil, ErrInvalidCPF
+			return nil, fmt.Errorf("%w, %s", ErrInvalidCPF, translations.Translate("invalid_cpf"))
 		}
 		return &CPF{Number: cpfNumber[:3] + "." + cpfNumber[3:6] + "." + cpfNumber[6:9] + "-" + cpfNumber[9:]}, nil
 	}

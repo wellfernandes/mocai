@@ -26,7 +26,7 @@ func GenerateBrazilianCompany(formatted bool) (BrazilianCompany, error) {
 
 	// Validate data
 	if len(companyNames) == 0 {
-		return BrazilianCompany{}, ErrNoCompanyNamesAvailable
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrNoCompanyNamesAvailable, translations.Translate("no_company_names_available"))
 	}
 
 	// Choose a random company name
@@ -40,11 +40,11 @@ func GenerateBrazilianCompany(formatted bool) (BrazilianCompany, error) {
 
 	// Validate required fields
 	if companyName == "" {
-		return BrazilianCompany{}, fmt.Errorf("%s: Company Name: %s", ErrGeneratingBrazilianCompany, companyName)
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingBrazilianCompany, translations.Translate("error_generating_brazilian_company"))
 	}
 
 	if cnpj == "" {
-		return BrazilianCompany{}, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingCNPJ)
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingCNPJ, translations.Translate("invalid_cnpj"))
 	}
 
 	createdCompany := BrazilianCompany{

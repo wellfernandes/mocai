@@ -40,11 +40,11 @@ func (p *Person) generatePerson(isFormatted bool) (*Person, error) {
 
 	// Validate data
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, ErrNoFirstNames
+		return nil, fmt.Errorf("%w, %s", ErrNoFirstNames, translations.Translate("no_data_available_for_first_names"))
 	}
 
 	if len(lastNames) == 0 {
-		return nil, ErrNoLastNames
+		return nil, fmt.Errorf("%w, %s", ErrNoLastNames, translations.Translate("no_data_available_for_last_names"))
 	}
 
 	// Choose random values
@@ -66,8 +66,7 @@ func (p *Person) generatePerson(isFormatted bool) (*Person, error) {
 
 	// Validate required fields
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
-		return nil, fmt.Errorf("%s: missing required data (firstNameMale: %s, firstNameFemale: %s, lastName: %s)",
-			ErrGeneratingPerson, firstNameMale, firstNameFemale, lastName)
+		return nil, fmt.Errorf("%w, %s", ErrGeneratingPerson, translations.Translate("error_generating_person"))
 	}
 
 	return &Person{

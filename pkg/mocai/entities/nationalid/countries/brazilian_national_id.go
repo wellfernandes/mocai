@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 var globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -51,7 +53,7 @@ func calculateSPRGDigit() (string, error) {
 	for i := range 8 {
 		val, err := strconv.Atoi(string(baseStr[i]))
 		if err != nil {
-			return "", ErrToConvertDigit
+			return "", fmt.Errorf("%w, %s", ErrToConvertDigit, translations.Translate("error_converting_digit"))
 		}
 		d[i] = val
 	}

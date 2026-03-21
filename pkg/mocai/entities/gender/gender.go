@@ -40,7 +40,7 @@ func (g *Gender) generateRandomGender() (*Gender, error) {
 	genderStr := translations.Get(lang, "gender")
 
 	if genderStr == "" {
-		return nil, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
+		return nil, fmt.Errorf("%w, %s", ErrNoGenders, translations.Translate("no_data_available_for_genders")+lang)
 	}
 	return &Gender{Identity: Identity(genderStr)}, nil
 }
