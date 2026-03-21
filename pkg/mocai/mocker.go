@@ -15,7 +15,7 @@ import (
 // Mocker represents an immutable collection of mock data in a specific language.
 type Mocker struct {
 	Address          *address.Address
-	Certificate      *certificate.Certificate
+	Certificates     *certificate.Certificate
 	Company          *company.Company
 	Gender           *gender.Gender
 	NationalID       *nationalid.NationalID
@@ -77,7 +77,7 @@ func NewMocker(lang string, isFormatted bool) (*Mocker, error) {
 
 	return &Mocker{
 		Address:          address,
-		Certificate:      certificate,
+		Certificates:     certificate,
 		Company:          company,
 		Gender:           gender,
 		NationalID:       nationalID,
