@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 // Brazilian certificate types
@@ -47,31 +49,39 @@ type DeathCertificate struct {
 
 // BrazilianCertificates represents all brazilian certificates
 type BrazilianCertificates struct {
-	BirthCertificate    BirthCertificate
-	MarriageCertificate MarriageCertificate
-	DeathCertificate    DeathCertificate
+	BirthCertificate    *BirthCertificate
+	MarriageCertificate *MarriageCertificate
+	DeathCertificate    *DeathCertificate
+}
+
+func NewBrazilCertificates(isFormatted bool) (*BrazilianCertificates, error) {
+	cert, err := (&BrazilianCertificates{}).generateBrazilianCertificates(isFormatted)
+	if err != nil {
+		return nil, err
+	}
+	return cert, nil
 }
 
 // GenerateBrazilianCertificates generates a valid brazilian certificates
 // If formatted is true, returns the number with separators (-)
 // Returns a pointer to BrazilianCertificates and error if any validation fails
-func GenerateBrazilianCertificates(formatted bool) (BrazilianCertificates, error) {
-	createdBirthCertificate, err := generateBirthCertificate(formatted)
+func (b *BrazilianCertificates) generateBrazilianCertificates(formatted bool) (*BrazilianCertificates, error) {
+	createdBirthCertificate, err := b.generateBirthCertificate(formatted)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
 
-	createdMarriageCertificate, err := generateMarriageCertificate(formatted)
+	createdMarriageCertificate, err := b.generateMarriageCertificate(formatted)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
 
-	createdDeathCertificate, err := generateDeathCertificate(formatted)
+	createdDeathCertificate, err := b.generateDeathCertificate(formatted)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
 
-	createdBrazilianCertificates := BrazilianCertificates{
+	createdBrazilianCertificates := &BrazilianCertificates{
 		BirthCertificate:    createdBirthCertificate,
 		MarriageCertificate: createdMarriageCertificate,
 		DeathCertificate:    createdDeathCertificate,
@@ -84,12 +94,12 @@ func GenerateBrazilianCertificates(formatted bool) (BrazilianCertificates, error
 // If formatted is true, returns the number with separators (-)
 // certificateType is the type of certificate [1 - for birth certificate, 2 - for marriage certificate, 3 - for death certificate]
 // Returns a pointer to BaseCertificate and error if any validation fails
-func generateCertificate(formatted bool, certificateType int) (BaseCertificate, error) {
+func generateCertificate(formatted bool, certificateType int) (*BaseCertificate, error) {
 	// Registry Office
 	// 1. Vital Records Office [6 digits]
 	vitalRecordsOffice := generateRandomNumber(100000, 899999)
 	if vitalRecordsOffice < 0 {
-		return BaseCertificate{}, ErrInvalidVitalRecordsOffice
+		return nil, fmt.Errorf("%w: %s", ErrInvalidVitalRecordsOffice, translations.Translate("invalid_vital_records_office_number"))
 	}
 
 	// 2. Archive [2 digits]
@@ -107,26 +117,26 @@ func generateCertificate(formatted bool, certificateType int) (BaseCertificate, 
 	// 6. Book number [5 digits]
 	bookNumber := generateRandomNumber(10000, 89999)
 	if bookNumber < 0 {
-		return BaseCertificate{}, ErrInvalidBookNumber
+		return nil, fmt.Errorf("%w, %s", ErrInvalidBookNumber, translations.Translate("invalid_book_number"))
 	}
 
 	// 7. Page number [3 digits]
 	pageNumber := generateRandomNumber(100, 899)
 	if pageNumber < 0 {
-		return BaseCertificate{}, ErrInvalidPageNumber
+		return nil, ErrInvalidPageNumber
 	}
 
 	// 8. Term number [7 digits]
 	termNumber := generateRandomNumber(1000000, 8999999)
 	if termNumber < 0 {
-		return BaseCertificate{}, ErrInvalidTermNumber
+		return nil, fmt.Errorf("%w, %s", ErrInvalidTermNumber, translations.Translate("invalid_term_number"))
 	}
 
 	// Number without check digits [30 digits]
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
 		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
-		return BaseCertificate{}, ErrInvalidNumberWithoutCheckDigits
+		return nil, fmt.Errorf("%w, %s", ErrInvalidNumberWithoutCheckDigits, translations.Translate("invalid_number_without_check_digits"))
 	}
 
 	// 9. Check digits calculation [2 digits]
@@ -139,10 +149,10 @@ func generateCertificate(formatted bool, certificateType int) (BaseCertificate, 
 	}
 
 	if certificateNumber == "" {
-		return BaseCertificate{}, ErrInvalidCertificate
+		return nil, fmt.Errorf("%w: %s", ErrInvalidCertificate, translations.Translate("invalid_certificate"))
 	}
 
-	createdBaseCertificate := BaseCertificate{
+	createdBaseCertificate := &BaseCertificate{
 		VitalRecordsOffice: vitalRecordsOffice,
 		ArchiveCode:        archiveCode,
 		ServiceType:        serviceType,
@@ -159,42 +169,42 @@ func generateCertificate(formatted bool, certificateType int) (BaseCertificate, 
 }
 
 // generateBirthCertificate generates a valid Brazilian birth certificate
-func generateBirthCertificate(formatted bool) (BirthCertificate, error) {
+func (b *BrazilianCertificates) generateBirthCertificate(formatted bool) (*BirthCertificate, error) {
 	base, err := generateCertificate(formatted, brazilianBirthCertificateType)
 	if err != nil {
-		return BirthCertificate{}, err
+		return nil, err
 	}
 
-	createdBirthCertificate := BirthCertificate{
-		BaseCertificate: base,
+	createdBirthCertificate := &BirthCertificate{
+		BaseCertificate: *base,
 	}
 
 	return createdBirthCertificate, nil
 }
 
 // generateMarriageCertificate generates a valid Brazilian marriage certificate
-func generateMarriageCertificate(formatted bool) (MarriageCertificate, error) {
+func (b *BrazilianCertificates) generateMarriageCertificate(formatted bool) (*MarriageCertificate, error) {
 	base, err := generateCertificate(formatted, brazilianMarriageCertificateType)
 	if err != nil {
-		return MarriageCertificate{}, err
+		return nil, err
 	}
 
-	createdMarriageCertificate := MarriageCertificate{
-		BaseCertificate: base,
+	createdMarriageCertificate := &MarriageCertificate{
+		BaseCertificate: *base,
 	}
 
 	return createdMarriageCertificate, nil
 }
 
 // generateDeathCertificate generates a valid Brazilian death certificate
-func generateDeathCertificate(formatted bool) (DeathCertificate, error) {
+func (b *BrazilianCertificates) generateDeathCertificate(formatted bool) (*DeathCertificate, error) {
 	base, err := generateCertificate(formatted, brazilianDeathCertificateType)
 	if err != nil {
-		return DeathCertificate{}, err
+		return nil, err
 	}
 
-	createdDeathCertificate := DeathCertificate{
-		BaseCertificate: base,
+	createdDeathCertificate := &DeathCertificate{
+		BaseCertificate: *base,
 	}
 
 	return createdDeathCertificate, nil
