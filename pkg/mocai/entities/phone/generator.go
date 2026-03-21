@@ -3,7 +3,6 @@ package phone
 import (
 	"fmt"
 	"math/rand"
-	"strings"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -14,43 +13,30 @@ type Phone struct {
 	Number   string
 }
 
-// NewPhone creates a new Phone instance with generated data.
-func NewPhone() (*Phone, error) {
-	phone, err := (&Phone{}).generatePhone()
-	if err != nil {
-		return nil, err
-	}
-	return phone, nil
+// NewPhone generates a mock phone number using customizable lists, language, and random source
+func NewPhone(lang string, rnd translations.RandSource) (*Phone, error) {
+	return generatePhone(lang, rnd)
 }
 
-// GeneratePhone generates a mock phone number with random data.
-// It returns a pointer to a Phone and an error if the generation fails.
-func (p *Phone) generatePhone() (*Phone, error) {
-	lang := translations.GetLanguage()
-
-	// Get the list of area codes
-	areaCodeStr := translations.Get(lang, "phone_area_code")
-	if areaCodeStr == "" {
-		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
-	}
-	areaCodes := strings.Split(areaCodeStr, ",")
-
-	// Validate data
+func generatePhone(lang string, rnd translations.RandSource) (*Phone, error) {
+	areaCodes := translations.GetList(lang, "phone_area_code")
 	if len(areaCodes) == 0 {
-		return nil, fmt.Errorf("%s for: %s", ErrNoAreaCodes, lang)
+		return nil, fmt.Errorf("%w, %s", ErrNoAreaCodes, translations.Get(lang, "no_data_available_for_area_codes"))
 	}
-	areaCode := areaCodes[rand.Intn(len(areaCodes))]
-
-	// Generate a random phone number
-	number := fmt.Sprintf("9%08d", rand.Intn(100000000))
-
+	if rnd == nil {
+		rnd = defaultRandSource()
+	}
+	areaCode := areaCodes[rnd.Intn(len(areaCodes))]
+	number := fmt.Sprintf("9%08d", rnd.Intn(100000000))
 	if areaCode == "" || number == "" {
-		return nil, fmt.Errorf("%s: missing required data (areaCode: %s, number: %s)",
-			ErrGeneratingPhone, areaCode, number)
+		return nil, fmt.Errorf("%w, %s", ErrGeneratingPhone, translations.Get(lang, "error_generating_phone"))
 	}
-
 	return &Phone{
 		AreaCode: areaCode,
 		Number:   number,
 	}, nil
+}
+
+func defaultRandSource() translations.RandSource {
+	return rand.New(rand.NewSource(int64(rand.Int())))
 }

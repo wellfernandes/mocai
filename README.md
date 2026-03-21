@@ -7,64 +7,111 @@
 A Go library for generating test data, allowing for the simple and efficient creation of mocks for entities.
 
 ## 📖 Description
-**Mocaí** is an open-source library in Go designed to simplify the generation of mocks for entities such as Person, Address, Phone, and many others. Our goal is to make the development and testing of applications more efficient by providing random yet consistent data that simulates real-world scenarios in a practical and reliable manner.
+**Mocaí** is an open-source Go library designed to simplify the generation of realistic mock data for entities such as Person, Address, Phone, Company, CPF, CNPJ, Certificates, National ID (RG), and Voter Registration. The goal is to make development and testing more efficient by providing random yet consistent data that simulates real-world scenarios in a practical and reliable way.
 
 ## 🌟 Curiosity about the Name
-The name Mocaí is a tribute to the Brazilian initiative behind the library. It originated from the combination of "mock" (the English term for simulation or fictitious data) with "açaí," a typical fruit from the Brazilian Amazon, known for its energy and versatility. Just as açaí is essential for many Brazilians, Mocaí aims to be an essential tool for developers who need efficient and high-quality test data. 🇧🇷
+The name Mocaí is a tribute to the Brazilian initiative behind the library. It originated from the combination of "mock" (simulation or fake data) with "açaí," a typical fruit from the Brazilian Amazon, known for its energy and versatility. Just as açaí is essential for many Brazilians, Mocaí aims to be an essential tool for developers who need efficient and high-quality test data. 🇧🇷
 
 ## 🛠️ Main Features
-- **Random Data Generation:** Create mocks of entities with varied and realistic data.
-- **Consistency:** Ensure that the generated data is consistent and suitable for testing.
-- **Ease of Use:** Simple and intuitive interface for quick integration into your projects.
-- **Extensibility:** Add new entities or customize existing ones according to your needs.
+- **Random Data Generation:** Generate mocks for entities with varied and realistic data (Person, Address, Phone, Company, CPF, CNPJ, Certificates, National ID, Voter Registration, and more).
+- **Consistency:** Ensures generated data is consistent and suitable for testing.
+- **Ease of Use:** Simple and intuitive API for quick integration.
+- **Extensibility:** Easily add new entities or languages. The architecture is modular and ready for expansion.
 - **Open Source:** Collaborate, suggest improvements, and contribute to the growth of the library.
 
+## 📦 Supported Entities
+- Person (with gender, age, CPF)
+- Address (street, number, city, state, UF, ZIP)
+- Phone (area code, number)
+- Company (name, CNPJ)
+- CPF (Brazilian individual taxpayer registry)
+- CNPJ (Brazilian company registry)
+- Certificates (Birth, Marriage, Death)
+- National ID (RG)
+- Voter Registration (Título de Eleitor)
+
+## 🌐 Language Support
+- **ptbr** (Brazilian Portuguese) is currently supported. The structure allows for easy addition of new languages in the future.
+
 ## 🚀 Why Use Mocaí?
-- **Productivity:** Reduce the time spent on creating test data.
-- **Quality:** Improve the coverage and effectiveness of your tests with realistic data.
-- **Flexibility:** Adapt the mocks to the specific needs of your project.
+- **Productivity:** Reduce the time spent creating test data.
+- **Quality:** Improve test coverage and effectiveness with realistic data.
+- **Flexibility:** Adapt mocks to your project's specific needs.
 - **Community:** Be part of an open-source community that values collaboration and innovation.
 
+## ⚙️ Requirements
+- Go 1.23.4 or higher
 
 ## 🚀 How to Get Started
 ### Installation
-To start using Mocaí, install the library with the following command:
+To start using Mocaí, install the library with:
 
-```
+```sh
 go get github.com/brazzcore/mocai
 ```
 
-Basic Usage
-Import the library into your project and start generating mocks:
+### Basic Usage
+Import the library and generate mocks using the `Mocker` struct methods:
 
 ```go
-// Create a Mocker instance for Portuguese
-ptMocker, err := mocai.NewMocker("ptbr", true)
-if err != nil {
-    log.Fatal(err)
-}
+package main
 
-// Access mock data
-fmt.Printf("Address: %s\n", ptMocker.Address.Street)
-fmt.Printf("Phone: %s\n", ptMocker.Phone.Number)
+import (
+    "fmt"
+    "log"
+    "github.com/brazzcore/mocai/pkg/mocai"
+)
 
-// For data in a different language, create a new instance
-enMocker, err := mocai.NewMocker("en", true)
-if err != nil {
-    log.Fatal(err)
+func main() {
+    // Create a Mocker instance for Brazilian Portuguese
+    mocker := mocai.NewMocker("ptbr", true, nil) // isFormatted: true for formatted docs (e.g., CPF/CNPJ)
+
+    // Generate a mock address
+    address, err := mocker.NewAddress()
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
+
+    // Generate a mock person
+    person, err := mocker.NewPerson()
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Person: %s %s, Gender: %s, Age: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
+
+    // Generate a mock company
+    company, err := mocker.NewCompany()
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Company: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
 ```
 
-> **Important**: Each Mocker instance is immutable and contains data in the language specified at creation time. To get data in a different language, always create a new instance using NewMocker.
+> **Note:** Each call to a method like `NewPerson()` or `NewAddress()` generates a new mock with random data. The `Mocker` instance is immutable regarding its configuration (language, formatting, random source).
+
+#### About Languages
+Currently, only "ptbr" is implemented. To support other languages, contribute with new translation and mock data files.
+
+#### About Formatting
+The `isFormatted` parameter controls whether documents like CPF/CNPJ are returned formatted (e.g., `123.456.789-00`) or as plain numbers (`12345678900`).
 
 ### Examples
-The ***examples*** folder contains samples of how to use the library:
+The ***examples*** folder contains usage samples:
 
-- `mocker/`: Example using a main entry point `mocai.NewMocker(lang string, isFormatted bool)` to generate mocks in a fluent and simplified way.
+- `mocker/`: Example using the main entry point `mocai.NewMocker(lang string, isFormatted bool, rnd RandSource)` to generate mocks in a fluent and simplified way.
 
-To run an example, navigate to the desired directory and run:
-```
+To run an example:
+```sh
+cd examples/mocker
 go run main.go
+```
+
+## 🧪 Running Tests
+To run all tests:
+```sh
+go test ./...
 ```
 
 ## 🤝 Contribute
@@ -72,9 +119,7 @@ Mocaí is an open-source project, and your contribution is very welcome! Whether
 
 ### How to Contribute
 1. **Report Issues:** Found a bug or have a suggestion? Open an issue.
-
-2. **Submit Pull Requests:** Follow the contribution guidelines and submit your improvements.
-
+2. **Submit Pull Requests:** Follow the contribution guidelines and submit your improvements. Always run tests before submitting.
 3. **Discuss Ideas:** Join discussions and share your ideas for the project.
 
 ### Contribution Guidelines
@@ -82,7 +127,7 @@ Mocaí is an open-source project, and your contribution is very welcome! Whether
 2. Add tests for new features.
 3. If necessary, document your changes in the **README.md**.
 
-## 📄 Licence
+## 📄 License
 Mocaí is distributed under the **MIT License**.
 
 ### 🌟 Mocaí: Generating mocks, simplifying tests, accelerating development.

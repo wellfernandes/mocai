@@ -1,27 +1,28 @@
 package company
 
-import "github.com/brazzcore/mocai/pkg/mocai/entities/company/countries"
+import (
+	"github.com/brazzcore/mocai/pkg/mocai/entities/company/countries"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
+)
 
 // Company represents a generic company.
 type Company struct {
 	BrazilianCompany countries.BrazilianCompany
 }
 
-// NewCompany creates a new Company with generated data.
-func NewCompany(isFormatted bool) (*Company, error) {
-	comp, err := (&Company{}).generateCompany(isFormatted)
+// NewCompany generates a randomized company entity utilizing a user-defined language and random source
+func NewCompany(lang string, isFormatted bool, rnd translations.RandSource) (*Company, error) {
+	comp, err := generateCompany(lang, isFormatted, rnd)
 	if err != nil {
 		return nil, err
 	}
 	return comp, nil
 }
 
-// GenerateCompany generates all companies available.
-func (c *Company) generateCompany(formatted bool) (*Company, error) {
-	createdCompanyBrazilian, err := countries.GenerateBrazilianCompany(formatted)
+func generateCompany(lang string, formatted bool, rnd translations.RandSource) (*Company, error) {
+	createdCompanyBrazilian, err := countries.GenerateBrazilianCompany(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-
 	return &Company{BrazilianCompany: createdCompanyBrazilian}, nil
 }

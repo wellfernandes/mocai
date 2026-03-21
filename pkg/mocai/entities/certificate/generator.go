@@ -2,29 +2,23 @@ package certificate
 
 import (
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate/countries"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 // Certificate represents all certificates available
 type Certificate struct {
-	BrazilianCertificates countries.BrazilianCertificates
+	Brazil *countries.BrazilianCertificates
 }
 
-// NewCertificate creates a new Certificate with generated data.
-func NewCertificate(isFormatted bool) (*Certificate, error) {
-	cert, err := (&Certificate{}).generateCertificate(isFormatted)
+// NewCertificate generates a mock certificate using a custom language and random source.
+func NewCertificate(lang string, isFormatted bool, rnd translations.RandSource) (*Certificate, error) {
+	return generateCertificate(lang, isFormatted, rnd)
+}
+
+func generateCertificate(lang string, formatted bool, rnd translations.RandSource) (*Certificate, error) {
+	createdBrazilianCertificates, err := countries.NewBrazilCertificatesCustom(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	return cert, nil
-}
-
-// GenerateCertificate generates all certificates available.
-// If formatted is true, returns the number with separators (-).
-// Returns a pointer to Certificate and error if any validation fails
-func (c *Certificate) generateCertificate(formatted bool) (*Certificate, error) {
-	createdBrazilianCertificates, err := countries.GenerateBrazilianCertificates(formatted)
-	if err != nil {
-		return nil, err
-	}
-	return &Certificate{BrazilianCertificates: createdBrazilianCertificates}, nil
+	return &Certificate{Brazil: createdBrazilianCertificates}, nil
 }

@@ -3,54 +3,45 @@ package countries
 import (
 	"fmt"
 	"math/rand"
-	"strings"
-	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cnpj"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-// BrazilianCompany represents a Brazilian company.
+// BrazilianCompany represents a Brazilian company
 type BrazilianCompany struct {
-	CompanyName string
-	CNPJ        string
+	Name string
+	CNPJ string
 }
 
-var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-func GenerateBrazilianCompany(formatted bool) (BrazilianCompany, error) {
-	lang := translations.GetLanguage()
-
-	// Get the list of company names
-	companyNames := strings.Split(translations.Get(lang, "company_name"), ",")
-
-	// Validate data
+// GenerateBrazilianCompany generates a mock Brazilian company using customizable lists, language, and random source
+func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.RandSource) (BrazilianCompany, error) {
+	companyNames := translations.GetList(lang, "company_name")
 	if len(companyNames) == 0 {
-		return BrazilianCompany{}, ErrNoCompanyNamesAvailable
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrNoCompanyNamesAvailable, translations.Get(lang, "no_company_names_available"))
 	}
+	if rnd == nil {
+		rnd = defaultRandSource()
+	}
+	companyName := companyNames[rnd.Intn(len(companyNames))]
 
-	// Choose a random company name
-	companyName := companyNames[rng.Intn(len(companyNames))]
-
-	// Generate a random CNPJ without a mask
-	cnpj, err := cnpj.GenerateCNPJ(formatted)
+	cnpjVal, err := cnpj.GenerateCNPJ(formatted, rnd)
 	if err != nil {
 		return BrazilianCompany{}, err
 	}
-
-	// Validate required fields
 	if companyName == "" {
-		return BrazilianCompany{}, fmt.Errorf("%s: Company Name: %s", ErrGeneratingBrazilianCompany, companyName)
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingBrazilianCompany, translations.Get(lang, "error_generating_brazilian_company"))
 	}
-
-	if cnpj == "" {
-		return BrazilianCompany{}, fmt.Errorf("%s: CNPJ is empty", ErrGeneratingCNPJ)
+	if cnpjVal == "" {
+		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingCNPJ, translations.Get(lang, "invalid_cnpj"))
 	}
-
 	createdCompany := BrazilianCompany{
-		CompanyName: companyName,
-		CNPJ:        cnpj,
+		Name: companyName,
+		CNPJ: cnpjVal,
 	}
-
 	return createdCompany, nil
+}
+
+func defaultRandSource() translations.RandSource {
+	return rand.New(rand.NewSource(int64(rand.Int())))
 }

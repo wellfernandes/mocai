@@ -2,7 +2,6 @@ package address
 
 import (
 	"fmt"
-	"math/rand"
 	"strings"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -23,46 +22,34 @@ type SlicesToCheck struct {
 	err  error
 }
 
-// NewAddress creates and returns a new Address with randomly generated data.
-func NewAddress() (*Address, error) {
-	addr, err := (&Address{}).generateAddress()
+// NewAddress generates a mock address using a custom language and a random source
+func NewAddress(lang string, rnd translations.RandSource) (*Address, error) {
+	addr, err := generateAddress(lang, rnd)
 	if err != nil {
 		return nil, err
 	}
 	return addr, nil
 }
 
-// GenerateAddress generates a mock address with random data.
-// It returns a pointer to an Address and an error if the generation fails.
-func (a *Address) generateAddress() (*Address, error) {
-	lang := translations.GetLanguage()
+func generateAddress(lang string, rnd translations.RandSource) (*Address, error) {
+	streets := translations.GetList(lang, "address_street")
+	cities := translations.GetList(lang, "address_city")
+	states := translations.GetList(lang, "address_state")
+	ufs := translations.GetList(lang, "address_uf")
+	zips := translations.GetList(lang, "address_zip")
 
-	// Get the list of streets, cities, states, and ZIP codes
-	streets := strings.Split(translations.Get(lang, "address_street"), ",")
-	cities := strings.Split(translations.Get(lang, "address_city"), ",")
-	states := strings.Split(translations.Get(lang, "address_state"), ",")
-	uf := translations.Get(lang, "address_uf")
-	zips := strings.Split(translations.Get(lang, "address_zip"), ",")
-
-	// slicesToCheck defines validation groups for related address components.
-	// Each entry contains the data slice to validate and its specific error.
 	slicesToCheck := []SlicesToCheck{
 		{streets, ErrNoStreets},
 		{cities, ErrNoCities},
 		{states, ErrNoStates},
-		{[]string{uf}, ErrNoUFs},
+		{ufs, ErrNoUFs},
 		{zips, ErrNoZips},
 	}
 
-	// Validate all required data slices
-	// - Checks for empty slices
-	// - Verifies each item isn't just whitespace
 	for _, s := range slicesToCheck {
 		if len(s.data) == 0 {
 			return nil, s.err
 		}
-
-		// Individual item validation (prevent empty values)
 		for _, item := range s.data {
 			if strings.TrimSpace(item) == "" {
 				return nil, fmt.Errorf("%w: empty value in slice", s.err)
@@ -70,15 +57,16 @@ func (a *Address) generateAddress() (*Address, error) {
 		}
 	}
 
-	// Choose random values
-	street := streets[rand.Intn(len(streets))]
-	city := cities[rand.Intn(len(cities))]
-	state := states[rand.Intn(len(states))]
-	zip := zips[rand.Intn(len(zips))]
+	// performs a random selection using a custom random source
+	street := streets[rnd.Intn(len(streets))]
+	city := cities[rnd.Intn(len(cities))]
+	state := states[rnd.Intn(len(states))]
+	uf := ufs[rnd.Intn(len(ufs))]
+	zip := zips[rnd.Intn(len(zips))]
 
 	return &Address{
 		Street: street,
-		Number: rand.Intn(9999),
+		Number: rnd.Intn(9999),
 		City:   city,
 		State:  state,
 		UF:     uf,

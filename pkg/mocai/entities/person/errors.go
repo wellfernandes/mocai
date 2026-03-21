@@ -6,7 +6,7 @@ import "errors"
 // These errors represent specific failure scenarios and should be wrapped with additional
 // context when returned.
 var (
-	ErrGeneratingPerson = errors.New("error generating person")
-	ErrNoFirstNames     = errors.New("no data available for first names")
-	ErrNoLastNames      = errors.New("no data available for last names")
+	ErrGeneratingPerson = errors.New("person: error generating person")
+	ErrNoFirstNames     = errors.New("person: no data available for first names")
+	ErrNoLastNames      = errors.New("person: no data available for last names")
 )

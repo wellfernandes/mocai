@@ -2,6 +2,7 @@ package gender
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -25,22 +26,23 @@ const (
 	Other       Identity = "other"       // Other gender identity
 )
 
-// NewGender creates a new Gender instance with a randomly generated gender.
-func NewGender() (*Gender, error) {
-	g, err := (&Gender{}).generateRandomGender()
-	if err != nil {
-		return nil, err
-	}
-	return g, nil
+// NewGender generates a random gender using customizable lists, language, and random source
+func NewGender(lang string, rnd translations.RandSource) (*Gender, error) {
+	return generateRandomGender(lang, rnd)
 }
 
-// GenerateRandomGender generates a random gender based on the current language.
-func (g *Gender) generateRandomGender() (*Gender, error) {
-	lang := translations.GetLanguage()
-	genderStr := translations.Get(lang, "gender")
-
-	if genderStr == "" {
-		return nil, fmt.Errorf("%s for: %s", ErrNoGenders, lang)
+func generateRandomGender(lang string, rnd translations.RandSource) (*Gender, error) {
+	genders := translations.GetList(lang, "gender")
+	if len(genders) == 0 {
+		return nil, fmt.Errorf("%w, %s", ErrNoGenders, translations.Get(lang, "no_data_available_for_genders"))
 	}
+	if rnd == nil {
+		rnd = defaultRandSource()
+	}
+	genderStr := genders[rnd.Intn(len(genders))]
 	return &Gender{Identity: Identity(genderStr)}, nil
+}
+
+func defaultRandSource() translations.RandSource {
+	return rand.New(rand.NewSource(int64(rand.Int())))
 }

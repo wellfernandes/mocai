@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 // Brazilian certificate types
@@ -22,12 +24,12 @@ type BaseCertificate struct {
 	ArchiveCode        int
 	ServiceType        int
 	BirthYear          int
-	CertificateType    int
+	Type               int
 	BookNumber         int
 	PageNumber         int
 	TermNumber         int
 	CheckDigits        string
-	CertificateNumber  string
+	Number             string
 }
 
 // BirthCertificate represents a brazilian birth certificate
@@ -47,168 +49,127 @@ type DeathCertificate struct {
 
 // BrazilianCertificates represents all brazilian certificates
 type BrazilianCertificates struct {
-	BirthCertificate    BirthCertificate
-	MarriageCertificate MarriageCertificate
-	DeathCertificate    DeathCertificate
+	BirthCertificate    *BirthCertificate
+	MarriageCertificate *MarriageCertificate
+	DeathCertificate    *DeathCertificate
 }
 
-// GenerateBrazilianCertificates generates a valid brazilian certificates
-// If formatted is true, returns the number with separators (-)
-// Returns a pointer to BrazilianCertificates and error if any validation fails
-func GenerateBrazilianCertificates(formatted bool) (BrazilianCertificates, error) {
-	createdBirthCertificate, err := generateBirthCertificate(formatted)
+func NewBrazilCertificatesCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
+	cert, err := generateBrazilianCertificatesCustom(lang, isFormatted, rnd)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
+	return cert, nil
+}
 
-	createdMarriageCertificate, err := generateMarriageCertificate(formatted)
+func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
+	createdBirthCertificate, err := generateBirthCertificateCustom(lang, formatted, rnd)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
-
-	createdDeathCertificate, err := generateDeathCertificate(formatted)
+	createdMarriageCertificate, err := generateMarriageCertificateCustom(lang, formatted, rnd)
 	if err != nil {
-		return BrazilianCertificates{}, err
+		return nil, err
 	}
-
-	createdBrazilianCertificates := BrazilianCertificates{
+	createdDeathCertificate, err := generateDeathCertificateCustom(lang, formatted, rnd)
+	if err != nil {
+		return nil, err
+	}
+	createdBrazilianCertificates := &BrazilianCertificates{
 		BirthCertificate:    createdBirthCertificate,
 		MarriageCertificate: createdMarriageCertificate,
 		DeathCertificate:    createdDeathCertificate,
 	}
-
 	return createdBrazilianCertificates, nil
 }
 
-// generateCertificates generates a valid brazilian certificate
-// If formatted is true, returns the number with separators (-)
-// certificateType is the type of certificate [1 - for birth certificate, 2 - for marriage certificate, 3 - for death certificate]
-// Returns a pointer to BaseCertificate and error if any validation fails
-func generateCertificate(formatted bool, certificateType int) (BaseCertificate, error) {
-	// Registry Office
-	// 1. Vital Records Office [6 digits]
-	vitalRecordsOffice := generateRandomNumber(100000, 899999)
+func generateCertificateCustom(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
+	l := "pt_br"
+	if len(lang) > 0 && lang[0] != "" {
+		l = lang[0]
+	}
+	if rnd == nil {
+		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+	}
+	vitalRecordsOffice := rnd.Intn(899999-100000+1) + 100000
 	if vitalRecordsOffice < 0 {
-		return BaseCertificate{}, ErrInvalidVitalRecordsOffice
+		return nil, fmt.Errorf("%w: %s", ErrInvalidVitalRecordsOffice, translations.Get(l, "invalid_vital_records_office_number"))
 	}
-
-	// 2. Archive [2 digits]
 	archiveCode := 1
-
-	// 3. Civil Registry of Natural Persons [2 digits]
 	serviceType := 55
-
-	// 4. Birth Year [4 digits]
-	birthYear := generateRandomYear(2010)
-
-	// 5. Certificate type [1 digit]
-	//certificateType
-
-	// 6. Book number [5 digits]
-	bookNumber := generateRandomNumber(10000, 89999)
+	birthYear := rnd.Intn(time.Now().Year()-2010+1) + 2010
+	bookNumber := rnd.Intn(89999-10000+1) + 10000
 	if bookNumber < 0 {
-		return BaseCertificate{}, ErrInvalidBookNumber
+		return nil, fmt.Errorf("%w, %s", ErrInvalidBookNumber, translations.Get(l, "invalid_book_number"))
 	}
-
-	// 7. Page number [3 digits]
-	pageNumber := generateRandomNumber(100, 899)
+	pageNumber := rnd.Intn(899-100+1) + 100
 	if pageNumber < 0 {
-		return BaseCertificate{}, ErrInvalidPageNumber
+		return nil, ErrInvalidPageNumber
 	}
-
-	// 8. Term number [7 digits]
-	termNumber := generateRandomNumber(1000000, 8999999)
+	termNumber := rnd.Intn(8999999-1000000+1) + 1000000
 	if termNumber < 0 {
-		return BaseCertificate{}, ErrInvalidTermNumber
+		return nil, fmt.Errorf("%w, %s", ErrInvalidTermNumber, translations.Get(l, "invalid_term_number"))
 	}
-
-	// Number without check digits [30 digits]
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
 		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
-		return BaseCertificate{}, ErrInvalidNumberWithoutCheckDigits
+		return nil, fmt.Errorf("%w, %s", ErrInvalidNumberWithoutCheckDigits, translations.Get(l, "invalid_number_without_check_digits"))
 	}
-
-	// 9. Check digits calculation [2 digits]
 	checkDigits := calculateCheckDigits(numberWithoutCheckDigits)
-
 	certificateNumber := fmt.Sprintf("%s%02s", numberWithoutCheckDigits, checkDigits)
 	if formatted {
 		certificateNumber = fmt.Sprintf("%06d %02d %02d %04d %d %05d %03d %07d-%02s",
 			vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber, checkDigits)
 	}
-
 	if certificateNumber == "" {
-		return BaseCertificate{}, ErrInvalidCertificate
+		return nil, fmt.Errorf("%w: %s", ErrInvalidCertificate, translations.Get(l, "invalid_certificate"))
 	}
-
-	createdBaseCertificate := BaseCertificate{
+	createdBaseCertificate := &BaseCertificate{
 		VitalRecordsOffice: vitalRecordsOffice,
 		ArchiveCode:        archiveCode,
 		ServiceType:        serviceType,
 		BirthYear:          birthYear,
-		CertificateType:    certificateType,
+		Type:               certificateType,
 		BookNumber:         bookNumber,
 		PageNumber:         pageNumber,
 		TermNumber:         termNumber,
 		CheckDigits:        checkDigits,
-		CertificateNumber:  certificateNumber,
+		Number:             certificateNumber,
 	}
-
 	return createdBaseCertificate, nil
 }
 
-// generateBirthCertificate generates a valid Brazilian birth certificate
-func generateBirthCertificate(formatted bool) (BirthCertificate, error) {
-	base, err := generateCertificate(formatted, brazilianBirthCertificateType)
+func generateBirthCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
+	base, err := generateCertificateCustom(rnd, formatted, brazilianBirthCertificateType)
 	if err != nil {
-		return BirthCertificate{}, err
+		return nil, err
 	}
-
-	createdBirthCertificate := BirthCertificate{
-		BaseCertificate: base,
+	createdBirthCertificate := &BirthCertificate{
+		BaseCertificate: *base,
 	}
-
 	return createdBirthCertificate, nil
 }
 
-// generateMarriageCertificate generates a valid Brazilian marriage certificate
-func generateMarriageCertificate(formatted bool) (MarriageCertificate, error) {
-	base, err := generateCertificate(formatted, brazilianMarriageCertificateType)
+func generateMarriageCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*MarriageCertificate, error) {
+	base, err := generateCertificateCustom(rnd, formatted, brazilianMarriageCertificateType)
 	if err != nil {
-		return MarriageCertificate{}, err
+		return nil, err
 	}
-
-	createdMarriageCertificate := MarriageCertificate{
-		BaseCertificate: base,
+	createdMarriageCertificate := &MarriageCertificate{
+		BaseCertificate: *base,
 	}
-
 	return createdMarriageCertificate, nil
 }
 
-// generateDeathCertificate generates a valid Brazilian death certificate
-func generateDeathCertificate(formatted bool) (DeathCertificate, error) {
-	base, err := generateCertificate(formatted, brazilianDeathCertificateType)
+func generateDeathCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*DeathCertificate, error) {
+	base, err := generateCertificateCustom(rnd, formatted, brazilianDeathCertificateType)
 	if err != nil {
-		return DeathCertificate{}, err
+		return nil, err
 	}
-
-	createdDeathCertificate := DeathCertificate{
-		BaseCertificate: base,
+	createdDeathCertificate := &DeathCertificate{
+		BaseCertificate: *base,
 	}
-
 	return createdDeathCertificate, nil
-}
-
-// generateRandomNumber generates a random number between min and max
-func generateRandomNumber(min, max int) int {
-	return rand.Intn(max-min+1) + min
-}
-
-// generateRandomYear generates a random year between startYear and the current year
-func generateRandomYear(startYear int) int {
-	currentYear := time.Now().Year()
-	return rand.Intn(currentYear-startYear+1) + startYear
 }
 
 // calculateCheckDigits calculates the check digits for the birth certificate number

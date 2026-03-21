@@ -8,17 +8,20 @@ import (
 	"time"
 )
 
-// GenerateCNPJ generates a valid CNPJ number.
+// GenerateCNPJ generates a valid CNPJ number using a custom random source.
 // If formatted is true, the CNPJ will be returned in the format XX.XXX.XXX/XXXX-XX.
 // If formatted is false, the CNPJ will be returned as a plain string of 14 digits.
-func GenerateCNPJ(formatted bool) (string, error) {
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
+// If rnd is nil, a default random source will be used.
+func GenerateCNPJ(formatted bool, rnd interface{ Intn(n int) int }) (string, error) {
+	// Fallback to default if rnd is nil
+	if rnd == nil {
+		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+	}
 
 	// Generate the first 12 digits
 	digits := make([]int, 12)
 	for i := 0; i < 8; i++ {
-		digits[i] = r.Intn(10)
+		digits[i] = rnd.Intn(10)
 	}
 	// Set the branch identifier to 0001 (common for new companies)
 	digits[8], digits[9], digits[10], digits[11] = 0, 0, 0, 1

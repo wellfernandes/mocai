@@ -2,25 +2,19 @@ package nationalid
 
 import (
 	"github.com/brazzcore/mocai/pkg/mocai/entities/nationalid/countries"
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 type NationalID struct {
 	BrazilianRG countries.RG
 }
 
-// NewNationalID creates a new NationalID entity with a generated Brazilian national ID [RG].
-func NewNationalID(isFormatted bool) (*NationalID, error) {
-	n, err := (&NationalID{}).generateNationalID(isFormatted)
-	if err != nil {
-		return nil, err
-	}
-	return n, nil
+// NewNationalID generates a mock RG (Brazilian Identity Card) using a custom language and random source
+func NewNationalID(lang string, isFormatted bool, rnd translations.RandSource) (*NationalID, error) {
+	return generateNationalID(lang, isFormatted, rnd)
 }
 
-// GenerateNationalID generates a Brazilian national ID [RG].
-// If formatted is true, the Brazilian national ID will be returned in the format XX.XXX.XXX-X.
-// if formatted is false, the Brazilian national ID will be returned as a plain string.
-func (n *NationalID) generateNationalID(formatted bool) (*NationalID, error) {
-	rg := countries.NewRG(formatted)
+func generateNationalID(lang string, isFormatted bool, rnd translations.RandSource) (*NationalID, error) {
+	rg := countries.NewRGCustom(isFormatted, rnd, lang)
 	return &NationalID{BrazilianRG: rg}, nil
 }
