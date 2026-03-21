@@ -7,18 +7,18 @@ import (
 )
 
 func TestGenerateCompany(t *testing.T) {
-	company, err := GenerateBrazilianCompany(false)
+	company, err := GenerateBrazilianCompany("ptbr", false, nil)
 	if err != nil {
 		t.Errorf("Failed to generate company: %v", err)
 	}
 
-	if company.CompanyName == "" || company.CNPJ == "" {
+	if company.Name == "" || company.CNPJ == "" {
 		t.Errorf("Generated company has empty fields: %+v", company)
 	}
 }
 
 func TestIfCompanyHasAValidCNPJ(t *testing.T) {
-	company, err := GenerateBrazilianCompany(false)
+	company, err := GenerateBrazilianCompany("ptbr", false, nil)
 	if err != nil {
 		t.Errorf("Failed to generate company: %v", err)
 	}
