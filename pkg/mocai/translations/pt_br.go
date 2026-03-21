@@ -29,5 +29,27 @@ func init() {
 		"address_zip":              address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
 		"phone_area_code":          phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
 		"company_name":             company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
+
+		// errors
+		"invalid_certificate":                  "certidão inválida",
+		"invalid_vital_records_office_number":  "número do cartório de registros civis inválido",
+		"invalid_archive_number":               "número do arquivo inválido",
+		"invalid_vital_records_service number": "número de serviço de registros vitais inválido",
+		"invalid_birth_year":                   "ano de nascimento inválido",
+		"invalid_book_number":                  "número do livro inválido",
+		"invalid_page_number":                  "número da página inválida",
+		"invalid_term_number":                  "número do termo inválido",
+		"invalid_number_without_check_digits":  "número sem dígitos de verificação inválido",
+		"error_generating_brazilian_company":   "erro ao gerar empresa brasileira",
+		"invalid_cnpj":                         "cnpj inválido",
+		"no_company_names_available":           "nenhum nome de empresa disponível",
+		"invalid_cpf":                          "cpf inválido",
+		"no_data_available_for_genders":        "não há dados disponíveis para este gênero",
+		"error_converting_digit":               "erro ao converter dígito",
+		"error_generating_person":              "erro ao gerar pessoa",
+		"no_data_available_for_first_names":    "não há dados disponíveis para primeiro nome",
+		"no_data_available_for_last_names":     "não há dados disponíveis para último nome",
+		"error_generating_phone":               "erro ao gerar número de telefone",
+		"no_data_available_for_area_codes":     "não há código de área disponível",
 	})
 }
