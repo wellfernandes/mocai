@@ -13,51 +13,35 @@ type CPF struct {
 	Number string
 }
 
-// NewCPF generates a new CPF number.
-func NewCPF(isFormatted bool) (*CPF, error) {
-	cpf, err := (&CPF{}).generateCPF(isFormatted)
-	if err != nil {
-		return nil, err
+// NewCPF generates a mock CPF using a custom language and random source
+func NewCPF(lang string, isFormatted bool, rnd translations.RandSource) (*CPF, error) {
+	if rnd == nil {
+		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
-	return cpf, nil
-}
 
-// GenerateCPF generates a valid CPF number.
-// If formatted is true, the CPF will be returned in the format xxx.xxx.xxx-xx.
-// If formatted is false, the CPF will be returned as a plain string of 11 digits.
-func (c *CPF) generateCPF(formatted bool) (*CPF, error) {
-	// Create a local random generator with a unique seed
-	src := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(src)
-
-	// Generate the first 9 digits
+	// generate the first 9 digits
 	digits := make([]int, 9)
 	for i := range digits {
-		digits[i] = r.Intn(10)
+		digits[i] = rnd.Intn(10)
 	}
 
-	// Calculate the first check digit
-	digits = append(digits, calculateCheckDigit(digits, 10))
+	// calculate the first check digit
+	digits = append(digits, CalculateCheckDigit(digits, 10))
 
-	// Calculate the second check digit
-	digits = append(digits, calculateCheckDigit(digits, 11))
+	// calculate the second check digit
+	digits = append(digits, CalculateCheckDigit(digits, 11))
 
-	// Convert the digits to a string
+	// convert the digits to a string
 	cpfNumber := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
-
-	// Format the CPF if requested
-	if formatted {
+	if isFormatted {
 		if len(cpfNumber) != 11 {
-			return nil, fmt.Errorf("%w, %s", ErrInvalidCPF, translations.Translate("invalid_cpf"))
+			return nil, fmt.Errorf("%w, %s", ErrInvalidCPF, translations.Get(lang, "invalid_cpf"))
 		}
 		return &CPF{Number: cpfNumber[:3] + "." + cpfNumber[3:6] + "." + cpfNumber[6:9] + "-" + cpfNumber[9:]}, nil
 	}
-
 	return &CPF{Number: cpfNumber}, nil
 }
-
-// calculateCheckDigit calculates the check digit for a CPF.
-func calculateCheckDigit(digits []int, weight int) int {
+func CalculateCheckDigit(digits []int, weight int) int {
 	sum := 0
 	for _, digit := range digits {
 		sum += digit * weight
