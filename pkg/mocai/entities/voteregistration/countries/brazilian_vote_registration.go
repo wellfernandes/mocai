@@ -5,20 +5,22 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
 var (
 	globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
 )
 
-// BrazilianVoteRegistration represents a Brazilian vote registration.
+// BrazilianVoteRegistration represents a Brazilian vote registration
 type BrazilianVoteRegistration struct {
 	Section string
 	Zone    string
 	Number  string
 }
 
-// NewBrazilianVoteRegistration generates a new Brazilian vote registration.
+// NewBrazilianVoteRegistration generates a new Brazilian vote registration
 func NewBrazilianVoteRegistration(isFormatted bool) (*BrazilianVoteRegistration, error) {
 	bvr, err := (&BrazilianVoteRegistration{}).generateBrazilianVoteRegistration(isFormatted)
 	if err != nil {
@@ -27,7 +29,7 @@ func NewBrazilianVoteRegistration(isFormatted bool) (*BrazilianVoteRegistration,
 	return bvr, nil
 }
 
-// GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number.
+// GenerateBrazilianVoteRegistration generates a valid Brazilian vote registration number
 func (b *BrazilianVoteRegistration) generateBrazilianVoteRegistration(formatted bool) (*BrazilianVoteRegistration, error) {
 	section := randomInt3Digits()
 	zone := randomInt3Digits()
@@ -100,8 +102,8 @@ func calculateCheckDigit1(sequenceNumber string) (string, error) {
 	return strconv.Itoa(checkDigit1), nil
 }
 
-// calculateCheckDigit2 calculates the second check digit.
-// It depends on the state code and the first check digit.
+// calculateCheckDigit2 calculates the second check digit
+// It depends on the state code and the first check digit
 func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (string, error) {
 	sum := 0
 	weights := []int{7, 8}
@@ -129,4 +131,36 @@ func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (stri
 	}
 
 	return strconv.Itoa(checkDigit2), nil
+}
+
+func NewBrazilianVoteRegistrationCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianVoteRegistration, error) {
+	if rnd == nil {
+		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+	}
+	section := fmt.Sprintf("%03d", rnd.Intn(1000))
+	zone := fmt.Sprintf("%03d", rnd.Intn(1000))
+	sequenceNumber := rnd.Intn(99999999) + 1
+	sequenceNumberStr := fmt.Sprintf("%08d", sequenceNumber)
+	stateCode := rnd.Intn(28) + 1
+	stateCodeStr := fmt.Sprintf("%02d", stateCode)
+	checkDigit1, err := calculateCheckDigit1(sequenceNumberStr)
+	if err != nil {
+		return nil, fmt.Errorf("%w, %s", ErrInvalidCheckDigit1, translations.Get(lang, "invalid_check_digit_1"))
+	}
+	checkDigit2, err := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
+	if err != nil {
+		return nil, fmt.Errorf("%w, %s", ErrInvalidCheckDigit2, translations.Get(lang, "invalid_check_digit_2"))
+	}
+	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
+	if number == "" || len(number) != 12 {
+		return nil, fmt.Errorf("%w, %s", ErrInvalidVoteRegistration, translations.Get(lang, "invalid_vote_registration"))
+	}
+	if isFormatted {
+		number = fmt.Sprintf("%s %s %s", number[:4], number[4:8], number[8:])
+	}
+	return &BrazilianVoteRegistration{
+		Section: section,
+		Zone:    zone,
+		Number:  number,
+	}, nil
 }
