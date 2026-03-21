@@ -1,75 +1,90 @@
 package translations
 
 import (
-	"fmt"
 	"sync"
 )
 
+// registryList stores lists of translations by language and keyword
 var (
-	registry    = make(map[string]map[string]string) // Registry stores translations for each language
-	currentLang = "ptbr"                             // Default language
-	mu          sync.RWMutex                         // Mutex to protect the registry
+	registryList = make(map[string]map[string][]string)
+	mu           sync.RWMutex
 )
 
-// Register adds translations for a specific language.
-func Register(lang string, messages map[string]string) {
-	if lang == "" {
-		return
-	}
-	if messages == nil {
-		return
-	}
+// registry for single string translations
+var (
+	registrySingle = make(map[string]map[string]string)
+)
 
+// RegisterList records lists of translations
+func RegisterList(lang string, messages map[string][]string) {
+	if lang == "" || messages == nil {
+		return
+	}
 	mu.Lock()
 	defer mu.Unlock()
+	if registryList[lang] == nil {
+		registryList[lang] = make(map[string][]string)
+	}
+	for key, values := range messages {
+		registryList[lang][key] = values
+	}
+}
 
-	if registry[lang] == nil {
-		registry[lang] = make(map[string]string)
+// Register records single string translations
+func Register(lang string, messages map[string]string) {
+	if lang == "" || messages == nil {
+		return
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	if registrySingle[lang] == nil {
+		registrySingle[lang] = make(map[string]string)
 	}
 	for key, value := range messages {
-		registry[lang][key] = value
+		registrySingle[lang][key] = value
 	}
 }
 
-// SetLanguage sets the current language for translations.
-func SetLanguage(lang string) error {
-
-	mu.Lock()
-	defer mu.Unlock()
-	if _, exists := registry[lang]; !exists {
-		return fmt.Errorf("%w: %s", ErrUnsupportedLanguage, lang)
-	}
-	currentLang = lang
-	return nil
-}
-
-// GetLanguage returns the current language.
-func GetLanguage() string {
-	mu.RLock()
-	defer mu.RUnlock()
-	return currentLang
-}
-
-// Get retrieves a translation for a specific key in a given language.
+// Get returns a single string translation for a given language and key
 func Get(lang, key string) string {
 	if lang == "" || key == "" {
 		return key
 	}
-
 	mu.RLock()
 	defer mu.RUnlock()
-
-	if val, ok := registry[lang][key]; ok {
+	if val, ok := registrySingle[lang][key]; ok {
 		return val
 	}
-
-	return key // Return the key itself if the translation is not found
+	return key
 }
 
-// Translate retrieves a translation for a specific key in the current language.
-func Translate(key string) string {
+// GetList returns a list of translations for a given language and keyword
+func GetList(lang, key string) []string {
+	if lang == "" || key == "" {
+		return nil
+	}
 	mu.RLock()
-	lang := currentLang
-	mu.RUnlock()
-	return Get(lang, key)
+	defer mu.RUnlock()
+	if val, ok := registryList[lang][key]; ok {
+		return val
+	}
+	return nil
+}
+
+// GetRandom returns a random value from a list of translations
+func GetRandom(lang, key string, rnd RandSource) string {
+	values := GetList(lang, key)
+	if len(values) == 0 {
+		return key
+	}
+	if rnd == nil {
+		return values[0]
+	}
+	idx := rnd.Intn(len(values))
+	return values[idx]
+}
+
+// RandSource it is an interface for randomness sources >> compatible with rand.rand.
+type RandSource interface {
+	Intn(n int) int
 }
