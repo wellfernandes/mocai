@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
-	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
-
-var globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 type RG struct {
 	Number      string
@@ -17,57 +14,55 @@ type RG struct {
 	IssuingBody string
 }
 
-func NewRG(isFormatted bool) RG {
-	rg, err := (&RG{}).generateBrazilianNationalID(isFormatted)
+// NewRGCustom generates a random RG (Brazilian Identity Card) using an injected random source and custom language
+func NewRGCustom(isFormatted bool, rnd translations.RandSource, lang ...string) RG {
+	l := "pt_br"
+	if len(lang) > 0 && lang[0] != "" {
+		l = lang[0]
+	}
+	rg, err := generateBrazilianNationalIDCustom(isFormatted, rnd, l)
 	if err != nil {
 		return RG{}
 	}
 	return rg
 }
 
-// GenerateBrazilianNationalID generates a valid Brazilian national ID [RG] for São Paulo.
-func (r *RG) generateBrazilianNationalID(formatted bool) (RG, error) {
-	rgNumber, err := calculateSPRGDigit()
+func generateBrazilianNationalIDCustom(formatted bool, rnd translations.RandSource, lang string) (RG, error) {
+	rgNumber, err := calculateSPRGDigitCustom(rnd, lang)
 	if err != nil {
 		return RG{}, err
 	}
 	if formatted {
 		rgNumber = formatRG(rgNumber)
 	}
-
+	state := translations.Get(lang, "brazilian_rg_state")
+	issuingBody := translations.Get(lang, "brazilian_rg_issuing_body")
 	return RG{
 		Number:      rgNumber,
-		State:       "SP",
-		IssuingBody: "SSP - Secretaria de Seguranca Publica",
+		State:       state,
+		IssuingBody: issuingBody,
 	}, nil
 }
 
-// calculateSPRGDigit calculates the RG check digit for São Paulo.
-func calculateSPRGDigit() (string, error) {
-	// generate a random base until 8 digits
-	base := globalRand.Intn(100000000)
+func calculateSPRGDigitCustom(rnd translations.RandSource, lang string) (string, error) {
+	if rnd == nil {
+		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+	}
+	base := rnd.Intn(100000000)
 	baseStr := fmt.Sprintf("%08d", base)
-
-	// slice contains the digits
 	d := make([]int, 8)
 	for i := range 8 {
 		val, err := strconv.Atoi(string(baseStr[i]))
 		if err != nil {
-			return "", fmt.Errorf("%w, %s", ErrToConvertDigit, translations.Translate("error_converting_digit"))
+			return "", fmt.Errorf("%w, %s", ErrToConvertDigit, translations.Get(lang, "error_converting_digit"))
 		}
 		d[i] = val
 	}
-
-	// wheights from right to left: 9, 8, 7, 6, 5, 4, 3, 2
 	wheights := []int{2, 3, 4, 5, 6, 7, 8, 9}
-
-	// calculate sum
 	sum := 0
 	for i := range 8 {
 		sum += d[7-i] * wheights[i]
 	}
-
-	// calculate check digit
 	checkDigit := sum % 11
 	var dvStr string
 	if checkDigit == 10 {
@@ -76,7 +71,6 @@ func calculateSPRGDigit() (string, error) {
 		dvStr = strconv.Itoa(checkDigit)
 	}
 	full := fmt.Sprintf("%s%s", baseStr, dvStr)
-
 	return full, nil
 }
 
