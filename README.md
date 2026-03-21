@@ -1,6 +1,3 @@
-go get github.com/brazzcore/mocai
-go run main.go
-
 # Mocai
 
 ![mocai](img/mocai.svg)
