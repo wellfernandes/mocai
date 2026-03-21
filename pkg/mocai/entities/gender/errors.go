@@ -6,6 +6,6 @@ import "errors"
 // These errors represent specific failure scenarios and should be wrapped with additional
 // context when returned.
 var (
-	ErrNoGenders     = errors.New("no data available for genders")
-	ErrInvalidGender = errors.New("invalid gender")
+	ErrNoGenders     = errors.New("gender: no data available for genders")
+	ErrInvalidGender = errors.New("gender: invalid gender")
 )

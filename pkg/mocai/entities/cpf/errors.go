@@ -3,5 +3,5 @@ package cpf
 import "errors"
 
 var (
-	ErrInvalidCPF = errors.New("invalid CPF")
+	ErrInvalidCPF = errors.New("cpf: invalid cpf")
 )
