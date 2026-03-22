@@ -31,10 +31,10 @@ func generatePerson(lang string, isFormatted bool, rnd translations.RandSource) 
 	lastNames := translations.GetList(lang, "person_last_name")
 
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, fmt.Errorf("%w, %s", ErrNoFirstNames, translations.Get(lang, "no_data_available_for_first_names"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_first_names"))
 	}
 	if len(lastNames) == 0 {
-		return nil, fmt.Errorf("%w, %s", ErrNoLastNames, translations.Get(lang, "no_data_available_for_last_names"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_last_names"))
 	}
 
 	if rnd == nil {
@@ -56,7 +56,7 @@ func generatePerson(lang string, isFormatted bool, rnd translations.RandSource) 
 	}
 
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
-		return nil, fmt.Errorf("%w, %s", ErrGeneratingPerson, translations.Get(lang, "error_generating_person"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "error_generating_person"))
 	}
 
 	return &Person{

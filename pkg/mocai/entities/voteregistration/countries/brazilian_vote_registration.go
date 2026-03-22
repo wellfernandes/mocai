@@ -145,15 +145,15 @@ func NewBrazilianVoteRegistrationCustom(lang string, isFormatted bool, rnd trans
 	stateCodeStr := fmt.Sprintf("%02d", stateCode)
 	checkDigit1, err := calculateCheckDigit1(sequenceNumberStr)
 	if err != nil {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidCheckDigit1, translations.Get(lang, "invalid_check_digit_1"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_check_digit_1"))
 	}
 	checkDigit2, err := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
 	if err != nil {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidCheckDigit2, translations.Get(lang, "invalid_check_digit_2"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_check_digit_2"))
 	}
 	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
 	if number == "" || len(number) != 12 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidVoteRegistration, translations.Get(lang, "invalid_vote_registration"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_vote_registration"))
 	}
 	if isFormatted {
 		number = fmt.Sprintf("%s %s %s", number[:4], number[4:8], number[8:])

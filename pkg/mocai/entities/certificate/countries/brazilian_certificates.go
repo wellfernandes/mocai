@@ -93,14 +93,14 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 	}
 	vitalRecordsOffice := rnd.Intn(899999-100000+1) + 100000
 	if vitalRecordsOffice < 0 {
-		return nil, fmt.Errorf("%w: %s", ErrInvalidVitalRecordsOffice, translations.Get(l, "invalid_vital_records_office_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_vital_records_office_number"))
 	}
 	archiveCode := 1
 	serviceType := 55
 	birthYear := rnd.Intn(time.Now().Year()-2010+1) + 2010
 	bookNumber := rnd.Intn(89999-10000+1) + 10000
 	if bookNumber < 0 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidBookNumber, translations.Get(l, "invalid_book_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_book_number"))
 	}
 	pageNumber := rnd.Intn(899-100+1) + 100
 	if pageNumber < 0 {
@@ -108,12 +108,12 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 	}
 	termNumber := rnd.Intn(8999999-1000000+1) + 1000000
 	if termNumber < 0 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidTermNumber, translations.Get(l, "invalid_term_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_term_number"))
 	}
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
 		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidNumberWithoutCheckDigits, translations.Get(l, "invalid_number_without_check_digits"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_number_without_check_digits"))
 	}
 	checkDigits := calculateCheckDigits(numberWithoutCheckDigits)
 	certificateNumber := fmt.Sprintf("%s%02s", numberWithoutCheckDigits, checkDigits)
@@ -122,7 +122,7 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 			vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber, checkDigits)
 	}
 	if certificateNumber == "" {
-		return nil, fmt.Errorf("%w: %s", ErrInvalidCertificate, translations.Get(l, "invalid_certificate"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_certificate"))
 	}
 	createdBaseCertificate := &BaseCertificate{
 		VitalRecordsOffice: vitalRecordsOffice,

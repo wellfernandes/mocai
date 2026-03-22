@@ -54,7 +54,7 @@ func calculateSPRGDigitCustom(rnd translations.RandSource, lang string) (string,
 	for i := range 8 {
 		val, err := strconv.Atoi(string(baseStr[i]))
 		if err != nil {
-			return "", fmt.Errorf("%w, %s", ErrToConvertDigit, translations.Get(lang, "error_converting_digit"))
+			return "", fmt.Errorf("%s", translations.Get(lang, "error_converting_digit"))
 		}
 		d[i] = val
 	}

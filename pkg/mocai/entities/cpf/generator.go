@@ -35,7 +35,7 @@ func NewCPF(lang string, isFormatted bool, rnd translations.RandSource) (*CPF, e
 	cpfNumber := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
 	if isFormatted {
 		if len(cpfNumber) != 11 {
-			return nil, fmt.Errorf("%w, %s", ErrInvalidCPF, translations.Get(lang, "invalid_cpf"))
+			return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_cpf"))
 		}
 		return &CPF{Number: cpfNumber[:3] + "." + cpfNumber[3:6] + "." + cpfNumber[6:9] + "-" + cpfNumber[9:]}, nil
 	}
