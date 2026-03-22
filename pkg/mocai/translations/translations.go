@@ -65,6 +65,13 @@ func Get(lang, key string) string {
 	if val, ok := registrySingle[lang][key]; ok {
 		return val
 	}
+
+	// fallback: try en_us if not found in requested language
+	if lang != "en_us" {
+		if val, ok := registrySingle["en_us"][key]; ok {
+			return val
+		}
+	}
 	return key
 }
 
