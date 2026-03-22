@@ -84,7 +84,7 @@ func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd transl
 }
 
 func generateCertificateCustom(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
-	l := "pt_br"
+	l := "ptbr"
 	if len(lang) > 0 && lang[0] != "" {
 		l = lang[0]
 	}
