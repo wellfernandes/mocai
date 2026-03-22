@@ -26,9 +26,10 @@ func generatePhone(lang string, rnd translations.RandSource) (*Phone, error) {
 	if rnd == nil {
 		rnd = defaultRandSource()
 	}
+
 	areaCode := areaCodes[rnd.Intn(len(areaCodes))]
 	number := fmt.Sprintf("9%08d", rnd.Intn(100000000))
-	if areaCode == "" || number == "" {
+	if areaCode == "" {
 		return nil, fmt.Errorf("%w, %s", ErrGeneratingPhone, translations.Get(lang, "error_generating_phone"))
 	}
 	return &Phone{
