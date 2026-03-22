@@ -24,14 +24,16 @@ type Mocker struct {
 }
 
 func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(time.Now().UnixNano()))
+	return translations.NewSafeRandSource(rand.New(rand.NewSource(time.Now().UnixNano())))
 }
 
 // NewMocker creates a new Mocker instance with customizable language, formatting, and random source
 func NewMocker(lang string, isFormatted bool, rnd translations.RandSource) *Mocker {
 	if rnd == nil {
-		// fallback to rand.New(rand.NewSource(time.Now().UnixNano()))
 		rnd = defaultRandSource()
+	} else {
+		// Always wrap in SafeRandSource for concurrency safety
+		rnd = translations.NewSafeRandSource(rnd)
 	}
 	return &Mocker{
 		lang:      lang,
@@ -88,9 +90,4 @@ func (m *Mocker) NewPhone() (*phone.Phone, error) {
 // GetLanguage returns the language used in this instance
 func (m *Mocker) GetLanguage() string {
 	return m.lang
-}
-
-// GetRand returns the randomness source used
-func (m *Mocker) GetRand() translations.RandSource {
-	return m.rnd
 }
