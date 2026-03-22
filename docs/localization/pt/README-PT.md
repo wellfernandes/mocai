@@ -88,8 +88,8 @@ func main() {
     }
     fmt.Printf("Empresa: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
-```
 
+```
 ### Mensagens de Erro e Localização
 
 Todas as mensagens de erro retornadas pelo Mocai são sempre localizadas e amigáveis ao usuário. Quando ocorre um erro (ex: dados inválidos, idioma não suportado ou falha na geração), a mensagem será apresentada no idioma configurado para a instância do `Mocker`. Isso garante que tanto desenvolvedores quanto usuários finais recebam feedback claro e apropriado ao contexto.
