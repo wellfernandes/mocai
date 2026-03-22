@@ -2,7 +2,6 @@ package countries
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -89,7 +88,7 @@ func generateCertificate(rnd translations.RandSource, formatted bool, certificat
 		l = lang[0]
 	}
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+		rnd = translations.DefaultRandSource()
 	}
 	vitalRecordsOffice := rnd.Intn(899999-100000+1) + 100000
 	if vitalRecordsOffice < 0 {

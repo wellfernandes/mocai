@@ -2,7 +2,6 @@ package countries
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cnpj"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -21,7 +20,7 @@ func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.Rand
 		return BrazilianCompany{}, fmt.Errorf("%s", translations.Get(lang, "no_company_names_available"))
 	}
 	if rnd == nil {
-		rnd = defaultRandSource()
+		rnd = translations.DefaultRandSource()
 	}
 	companyName := companyNames[rnd.Intn(len(companyNames))]
 
@@ -40,8 +39,4 @@ func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.Rand
 		CNPJ: cnpjVal,
 	}
 	return createdCompany, nil
-}
-
-func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(int64(rand.Int())))
 }

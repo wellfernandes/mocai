@@ -1,9 +1,6 @@
 package mocai
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
@@ -23,17 +20,10 @@ type Mocker struct {
 	rnd       translations.RandSource
 }
 
-func defaultRandSource() translations.RandSource {
-	return translations.NewSafeRandSource(rand.New(rand.NewSource(time.Now().UnixNano())))
-}
-
 // NewMocker creates a new Mocker instance with customizable language, formatting, and random source
 func NewMocker(lang string, isFormatted bool, rnd translations.RandSource) *Mocker {
 	if rnd == nil {
-		rnd = defaultRandSource()
-	} else {
-		// Always wrap in SafeRandSource for concurrency safety
-		rnd = translations.NewSafeRandSource(rnd)
+		rnd = translations.DefaultRandSource()
 	}
 	return &Mocker{
 		lang:      lang,

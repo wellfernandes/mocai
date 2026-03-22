@@ -89,7 +89,7 @@ func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (stri
 
 func NewBrazilianVoteRegistrationCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianVoteRegistration, error) {
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+		rnd = translations.DefaultRandSource()
 	}
 
 	// Generate a random 3-digit section and zone

@@ -2,7 +2,6 @@ package person
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cpf"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/gender"
@@ -38,7 +37,7 @@ func generatePerson(lang string, isFormatted bool, rnd translations.RandSource) 
 	}
 
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+		rnd = translations.DefaultRandSource()
 	}
 
 	firstNameMale := firstNamesMale[rnd.Intn(len(firstNamesMale))]

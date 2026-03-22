@@ -2,7 +2,6 @@ package phone
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -24,7 +23,7 @@ func generatePhone(lang string, rnd translations.RandSource) (*Phone, error) {
 		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_area_codes"))
 	}
 	if rnd == nil {
-		rnd = defaultRandSource()
+		rnd = translations.DefaultRandSource()
 	}
 
 	areaCode := areaCodes[rnd.Intn(len(areaCodes))]
@@ -36,8 +35,4 @@ func generatePhone(lang string, rnd translations.RandSource) (*Phone, error) {
 		AreaCode: areaCode,
 		Number:   number,
 	}, nil
-}
-
-func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(int64(rand.Int())))
 }

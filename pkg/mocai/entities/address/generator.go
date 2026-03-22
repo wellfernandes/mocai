@@ -36,6 +36,10 @@ func generateAddress(lang string, rnd translations.RandSource) (*Address, error)
 	if translations.GetUFMap(lang) == nil {
 		supportedLang = "ptbr"
 	}
+	if rnd == nil {
+		rnd = translations.NewSafeRandSource(translations.DefaultRandSource())
+	}
+
 	streets := translations.GetList(supportedLang, "address_street")
 	cities := translations.GetList(supportedLang, "address_city")
 	states := translations.GetList(supportedLang, "address_state")
