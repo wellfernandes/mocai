@@ -40,8 +40,10 @@ func init() {
 			}
 			return ufs
 		}(),
-		"address_zip": address_mocks.ZIPCodes,
+		"address_zip":     address_mocks.ZIPCodes,
+		"phone_area_code": phone_mocks.AreaCodes,
 	})
+
 	// choose a random state
 	state := address_mocks.States[rand.Intn(len(address_mocks.States))]
 
@@ -60,8 +62,9 @@ func init() {
 		"address_state":             state,
 		"address_uf":                uf,
 		"address_zip":               address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
-		"phone_area_code":           phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
-		"company_name":              company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
+		// single random area code for legacy API (keep for compatibility)
+		"phone_area_code": phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
+		"company_name":    company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
 
 		// errors
 		"invalid_certificate":                  "certidão inválida",
