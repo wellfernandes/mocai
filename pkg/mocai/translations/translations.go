@@ -9,7 +9,12 @@ import (
 // GetUFMap Returns the mapping of states for the specified language, if available
 func GetUFMap(lang string) map[string]string {
 	if lang == "ptbr" {
-		return address_ptbr.UFs
+		// returns a defensive copy to avoid exposing the global map
+		copyMap := make(map[string]string, len(address_ptbr.UFs))
+		for k, v := range address_ptbr.UFs {
+			copyMap[k] = v
+		}
+		return copyMap
 	}
 	return nil
 }
