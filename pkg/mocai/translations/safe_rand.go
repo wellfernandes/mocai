@@ -1,6 +1,15 @@
 package translations
 
-import "sync"
+import (
+	"math/rand"
+	"sync"
+	"time"
+)
+
+// DefaultRandSource returns a standard thread-safe randomness source for global use
+func DefaultRandSource() RandSource {
+	return NewSafeRandSource(rand.New(rand.NewSource(time.Now().UnixNano())))
+}
 
 // SafeRandSource wraps a RandSource with a mutex for concurrent safety
 type SafeRandSource struct {
