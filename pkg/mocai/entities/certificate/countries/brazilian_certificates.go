@@ -104,7 +104,7 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 	}
 	pageNumber := rnd.Intn(899-100+1) + 100
 	if pageNumber < 0 {
-		return nil, ErrInvalidPageNumber
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_page_number"))
 	}
 	termNumber := rnd.Intn(8999999-1000000+1) + 1000000
 	if termNumber < 0 {
