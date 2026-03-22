@@ -11,6 +11,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/entities/gender"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/nationalid"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/voteregistration"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -77,6 +78,11 @@ func (m *Mocker) NewCPF() (*cpf.CPF, error) {
 // NewCertificate generates a mock certificate using a custom language and random source
 func (m *Mocker) NewCertificate() (*certificate.Certificate, error) {
 	return certificate.NewCertificate(m.lang, m.formatted, m.rnd)
+}
+
+// NewPhone generates a mock phone using a custom language and random source
+func (m *Mocker) NewPhone() (*phone.Phone, error) {
+	return phone.NewPhone(m.lang, m.rnd)
 }
 
 // GetLanguage returns the language used in this instance
