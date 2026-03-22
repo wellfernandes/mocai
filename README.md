@@ -90,8 +90,8 @@ func main() {
     }
     fmt.Printf("Company: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
-```
 
+```
 ### Error Messages & Localization
 
 All error messages returned by Mocai are always localized and user-friendly. When an error occurs (e.g., invalid data, unsupported language, or generation failure), the error message will be presented in the language configured for the `Mocker` instance. This ensures that both developers and end-users receive clear, context-appropriate feedback.
