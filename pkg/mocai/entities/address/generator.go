@@ -32,17 +32,19 @@ func NewAddress(lang string, rnd translations.RandSource) (*Address, error) {
 }
 
 func generateAddress(lang string, rnd translations.RandSource) (*Address, error) {
-	streets := translations.GetList(lang, "address_street")
-	cities := translations.GetList(lang, "address_city")
-	states := translations.GetList(lang, "address_state")
-	ufs := translations.GetList(lang, "address_uf")
-	zips := translations.GetList(lang, "address_zip")
+	supportedLang := lang
+	if translations.GetUFMap(lang) == nil {
+		supportedLang = "ptbr"
+	}
+	streets := translations.GetList(supportedLang, "address_street")
+	cities := translations.GetList(supportedLang, "address_city")
+	states := translations.GetList(supportedLang, "address_state")
+	zips := translations.GetList(supportedLang, "address_zip")
 
 	slicesToCheck := []SlicesToCheck{
 		{streets, ErrNoStreets},
 		{cities, ErrNoCities},
 		{states, ErrNoStates},
-		{ufs, ErrNoUFs},
 		{zips, ErrNoZips},
 	}
 
@@ -57,11 +59,29 @@ func generateAddress(lang string, rnd translations.RandSource) (*Address, error)
 		}
 	}
 
-	// performs a random selection using a custom random source
+	// select the index for state and UF in a paired manner
+	stateIdx := rnd.Intn(len(states))
+	state := states[stateIdx]
+
+	var uf string
+
+	ufMap := translations.GetUFMap(supportedLang)
+	if ufMap != nil {
+		uf = ufMap[state]
+	}
+	if uf == "" {
+		ufs := translations.GetList(supportedLang, "address_uf")
+		if len(ufs) > stateIdx {
+			uf = ufs[stateIdx]
+		} else if len(ufs) > 0 {
+			uf = ufs[rnd.Intn(len(ufs))]
+		} else {
+			uf = ""
+		}
+	}
+
 	street := streets[rnd.Intn(len(streets))]
 	city := cities[rnd.Intn(len(cities))]
-	state := states[rnd.Intn(len(states))]
-	uf := ufs[rnd.Intn(len(ufs))]
 	zip := zips[rnd.Intn(len(zips))]
 
 	return &Address{

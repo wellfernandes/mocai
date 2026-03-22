@@ -2,7 +2,17 @@ package translations
 
 import (
 	"sync"
+
+	address_ptbr "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
 )
+
+// GetUFMap Returns the mapping of states for the specified language, if available
+func GetUFMap(lang string) map[string]string {
+	if lang == "ptbr" {
+		return address_ptbr.UFs
+	}
+	return nil
+}
 
 // registryList stores lists of translations by language and keyword
 var (
