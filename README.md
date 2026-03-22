@@ -69,6 +69,7 @@ func main() {
     // Generate a mock address
     address, err := mocker.NewAddress()
     if err != nil {
+        // All error messages are always localized and user-friendly
         log.Fatal(err)
     }
     fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
@@ -76,6 +77,7 @@ func main() {
     // Generate a mock person
     person, err := mocker.NewPerson()
     if err != nil {
+        // All error messages are always localized and user-friendly
         log.Fatal(err)
     }
     fmt.Printf("Person: %s %s, Gender: %s, Age: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
@@ -83,9 +85,15 @@ func main() {
     // Generate a mock company
     company, err := mocker.NewCompany()
     if err != nil {
+        // All error messages are always localized and user-friendly
         log.Fatal(err)
     }
     fmt.Printf("Company: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
+### Error Messages & Localization
+
+All error messages returned by Mocai are always localized and user-friendly. When an error occurs (e.g., invalid data, unsupported language, or generation failure), the error message will be presented in the language configured for the `Mocker` instance. This ensures that both developers and end-users receive clear, context-appropriate feedback.
+
+You do not need to perform any extra steps for error localization — Mocai handles this automatically for all supported languages.
 }
 ```
 
