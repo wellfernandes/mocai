@@ -69,6 +69,7 @@ func main() {
     // Generate a mock address
     address, err := mocker.NewAddress()
     if err != nil {
+        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
@@ -76,6 +77,7 @@ func main() {
     // Generate a mock person
     person, err := mocker.NewPerson()
     if err != nil {
+        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Person: %s %s, Gender: %s, Age: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
@@ -83,10 +85,19 @@ func main() {
     // Generate a mock company
     company, err := mocker.NewCompany()
     if err != nil {
+        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Company: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
+
+```
+
+### Error Messages & Localization
+
+Error messages are localized where translation keys are available. When an error occurs (e.g., invalid data, unsupported language, or generation failure), the error message will be presented in the language configured for the `Mocker` instance, if a translation exists. In some cases, fallback or hardcoded errors may occur if translation coverage is incomplete.
+
+You do not need to perform any extra steps for error localization — Mocai handles this automatically for all supported languages where translation keys are present.
 ```
 
 > **Note:** Each call to a method like `NewPerson()` or `NewAddress()` generates a new mock with random data. The `Mocker` instance is immutable regarding its configuration (language, formatting, random source).

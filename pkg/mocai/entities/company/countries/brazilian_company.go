@@ -2,7 +2,6 @@ package countries
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cnpj"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -18,10 +17,10 @@ type BrazilianCompany struct {
 func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.RandSource) (BrazilianCompany, error) {
 	companyNames := translations.GetList(lang, "company_name")
 	if len(companyNames) == 0 {
-		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrNoCompanyNamesAvailable, translations.Get(lang, "no_company_names_available"))
+		return BrazilianCompany{}, fmt.Errorf("%s", translations.Get(lang, "no_company_names_available"))
 	}
 	if rnd == nil {
-		rnd = defaultRandSource()
+		rnd = translations.DefaultRandSource()
 	}
 	companyName := companyNames[rnd.Intn(len(companyNames))]
 
@@ -30,18 +29,14 @@ func GenerateBrazilianCompany(lang string, formatted bool, rnd translations.Rand
 		return BrazilianCompany{}, err
 	}
 	if companyName == "" {
-		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingBrazilianCompany, translations.Get(lang, "error_generating_brazilian_company"))
+		return BrazilianCompany{}, fmt.Errorf("%s", translations.Get(lang, "error_generating_brazilian_company"))
 	}
 	if cnpjVal == "" {
-		return BrazilianCompany{}, fmt.Errorf("%w, %s", ErrGeneratingCNPJ, translations.Get(lang, "invalid_cnpj"))
+		return BrazilianCompany{}, fmt.Errorf("%s", translations.Get(lang, "invalid_cnpj"))
 	}
 	createdCompany := BrazilianCompany{
 		Name: companyName,
 		CNPJ: cnpjVal,
 	}
 	return createdCompany, nil
-}
-
-func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(int64(rand.Int())))
 }

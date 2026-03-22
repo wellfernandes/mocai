@@ -67,6 +67,7 @@ func main() {
     // Gera um endereço fictício
     address, err := mocker.NewAddress()
     if err != nil {
+        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Endereço: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
@@ -74,6 +75,7 @@ func main() {
     // Gera uma pessoa fictícia
     person, err := mocker.NewPerson()
     if err != nil {
+        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Pessoa: %s %s, Gênero: %s, Idade: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
@@ -81,10 +83,19 @@ func main() {
     // Gera uma empresa fictícia
     company, err := mocker.NewCompany()
     if err != nil {
+        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Empresa: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
+
+```
+
+### Mensagens de Erro e Localização
+
+As mensagens de erro são localizadas quando há chave de tradução disponível. Quando ocorre um erro (ex: dados inválidos, idioma não suportado ou falha na geração), a mensagem será apresentada no idioma configurado para a instância do `Mocker`, se houver tradução. Em alguns casos, mensagens fixas podem aparecer caso a cobertura de traduções não seja completa.
+
+Não é necessário realizar nenhuma etapa extra para a localização das mensagens de erro — o Mocai faz isso automaticamente para todos os idiomas suportados onde há chave de tradução.
 ```
 
 > **Nota:** Cada chamada de método como `NewPerson()` ou `NewAddress()` gera um novo mock com dados aleatórios. A instância do `Mocker` é imutável quanto à configuração (idioma, formatação, fonte de aleatoriedade).

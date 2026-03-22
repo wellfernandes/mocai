@@ -1,9 +1,6 @@
 package mocai
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/brazzcore/mocai/pkg/mocai/entities/address"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/certificate"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/company"
@@ -11,6 +8,7 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/entities/gender"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/nationalid"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/person"
+	"github.com/brazzcore/mocai/pkg/mocai/entities/phone"
 	"github.com/brazzcore/mocai/pkg/mocai/entities/voteregistration"
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -22,15 +20,10 @@ type Mocker struct {
 	rnd       translations.RandSource
 }
 
-func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(time.Now().UnixNano()))
-}
-
 // NewMocker creates a new Mocker instance with customizable language, formatting, and random source
 func NewMocker(lang string, isFormatted bool, rnd translations.RandSource) *Mocker {
 	if rnd == nil {
-		// fallback to rand.New(rand.NewSource(time.Now().UnixNano()))
-		rnd = defaultRandSource()
+		rnd = translations.DefaultRandSource()
 	}
 	return &Mocker{
 		lang:      lang,
@@ -79,12 +72,12 @@ func (m *Mocker) NewCertificate() (*certificate.Certificate, error) {
 	return certificate.NewCertificate(m.lang, m.formatted, m.rnd)
 }
 
+// NewPhone generates a mock phone using a custom language and random source
+func (m *Mocker) NewPhone() (*phone.Phone, error) {
+	return phone.NewPhone(m.lang, m.rnd)
+}
+
 // GetLanguage returns the language used in this instance
 func (m *Mocker) GetLanguage() string {
 	return m.lang
-}
-
-// GetRand returns the randomness source used
-func (m *Mocker) GetRand() translations.RandSource {
-	return m.rnd
 }

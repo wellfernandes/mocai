@@ -2,7 +2,6 @@ package countries
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -55,23 +54,23 @@ type BrazilianCertificates struct {
 }
 
 func NewBrazilCertificatesCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
-	cert, err := generateBrazilianCertificatesCustom(lang, isFormatted, rnd)
+	cert, err := generateBrazilianCertificates(lang, isFormatted, rnd)
 	if err != nil {
 		return nil, err
 	}
 	return cert, nil
 }
 
-func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
-	createdBirthCertificate, err := generateBirthCertificateCustom(lang, formatted, rnd)
+func generateBrazilianCertificates(lang string, formatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
+	createdBirthCertificate, err := generateBirthCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	createdMarriageCertificate, err := generateMarriageCertificateCustom(lang, formatted, rnd)
+	createdMarriageCertificate, err := generateMarriageCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	createdDeathCertificate, err := generateDeathCertificateCustom(lang, formatted, rnd)
+	createdDeathCertificate, err := generateDeathCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
@@ -83,37 +82,37 @@ func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd transl
 	return createdBrazilianCertificates, nil
 }
 
-func generateCertificateCustom(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
-	l := "pt_br"
+func generateCertificate(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
+	l := "ptbr"
 	if len(lang) > 0 && lang[0] != "" {
 		l = lang[0]
 	}
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+		rnd = translations.DefaultRandSource()
 	}
 	vitalRecordsOffice := rnd.Intn(899999-100000+1) + 100000
 	if vitalRecordsOffice < 0 {
-		return nil, fmt.Errorf("%w: %s", ErrInvalidVitalRecordsOffice, translations.Get(l, "invalid_vital_records_office_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_vital_records_office_number"))
 	}
 	archiveCode := 1
 	serviceType := 55
 	birthYear := rnd.Intn(time.Now().Year()-2010+1) + 2010
 	bookNumber := rnd.Intn(89999-10000+1) + 10000
 	if bookNumber < 0 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidBookNumber, translations.Get(l, "invalid_book_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_book_number"))
 	}
 	pageNumber := rnd.Intn(899-100+1) + 100
 	if pageNumber < 0 {
-		return nil, ErrInvalidPageNumber
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_page_number"))
 	}
 	termNumber := rnd.Intn(8999999-1000000+1) + 1000000
 	if termNumber < 0 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidTermNumber, translations.Get(l, "invalid_term_number"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_term_number"))
 	}
 	numberWithoutCheckDigits := fmt.Sprintf("%06d%02d%02d%04d%d%05d%03d%07d",
 		vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber)
 	if len(numberWithoutCheckDigits) != 30 {
-		return nil, fmt.Errorf("%w, %s", ErrInvalidNumberWithoutCheckDigits, translations.Get(l, "invalid_number_without_check_digits"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_number_without_check_digits"))
 	}
 	checkDigits := calculateCheckDigits(numberWithoutCheckDigits)
 	certificateNumber := fmt.Sprintf("%s%02s", numberWithoutCheckDigits, checkDigits)
@@ -122,7 +121,7 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 			vitalRecordsOffice, archiveCode, serviceType, birthYear, certificateType, bookNumber, pageNumber, termNumber, checkDigits)
 	}
 	if certificateNumber == "" {
-		return nil, fmt.Errorf("%w: %s", ErrInvalidCertificate, translations.Get(l, "invalid_certificate"))
+		return nil, fmt.Errorf("%s", translations.Get(l, "invalid_certificate"))
 	}
 	createdBaseCertificate := &BaseCertificate{
 		VitalRecordsOffice: vitalRecordsOffice,
@@ -139,8 +138,8 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 	return createdBaseCertificate, nil
 }
 
-func generateBirthCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
-	base, err := generateCertificateCustom(rnd, formatted, brazilianBirthCertificateType)
+func generateBirthCertificate(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianBirthCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}
@@ -150,8 +149,8 @@ func generateBirthCertificateCustom(lang string, formatted bool, rnd translation
 	return createdBirthCertificate, nil
 }
 
-func generateMarriageCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*MarriageCertificate, error) {
-	base, err := generateCertificateCustom(rnd, formatted, brazilianMarriageCertificateType)
+func generateMarriageCertificate(lang string, formatted bool, rnd translations.RandSource) (*MarriageCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianMarriageCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}
@@ -161,8 +160,8 @@ func generateMarriageCertificateCustom(lang string, formatted bool, rnd translat
 	return createdMarriageCertificate, nil
 }
 
-func generateDeathCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*DeathCertificate, error) {
-	base, err := generateCertificateCustom(rnd, formatted, brazilianDeathCertificateType)
+func generateDeathCertificate(lang string, formatted bool, rnd translations.RandSource) (*DeathCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianDeathCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}

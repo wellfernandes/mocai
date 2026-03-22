@@ -2,7 +2,22 @@ package translations
 
 import (
 	"sync"
+
+	address_ptbr "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
 )
+
+// GetUFMap Returns the mapping of states for the specified language, if available
+func GetUFMap(lang string) map[string]string {
+	if lang == "ptbr" {
+		// returns a defensive copy to avoid exposing the global map
+		copyMap := make(map[string]string, len(address_ptbr.UFs))
+		for k, v := range address_ptbr.UFs {
+			copyMap[k] = v
+		}
+		return copyMap
+	}
+	return nil
+}
 
 // registryList stores lists of translations by language and keyword
 var (
@@ -54,6 +69,13 @@ func Get(lang, key string) string {
 	defer mu.RUnlock()
 	if val, ok := registrySingle[lang][key]; ok {
 		return val
+	}
+
+	// fallback: try en_us if not found in requested language
+	if lang != "en_us" {
+		if val, ok := registrySingle["en_us"][key]; ok {
+			return val
+		}
 	}
 	return key
 }

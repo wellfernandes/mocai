@@ -2,7 +2,6 @@ package countries
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
@@ -46,7 +45,7 @@ func generateBrazilianNationalIDCustom(formatted bool, rnd translations.RandSour
 
 func calculateSPRGDigitCustom(rnd translations.RandSource, lang string) (string, error) {
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(int64(rand.Int())))
+		rnd = translations.DefaultRandSource()
 	}
 	base := rnd.Intn(100000000)
 	baseStr := fmt.Sprintf("%08d", base)
@@ -54,7 +53,7 @@ func calculateSPRGDigitCustom(rnd translations.RandSource, lang string) (string,
 	for i := range 8 {
 		val, err := strconv.Atoi(string(baseStr[i]))
 		if err != nil {
-			return "", fmt.Errorf("%w, %s", ErrToConvertDigit, translations.Get(lang, "error_converting_digit"))
+			return "", fmt.Errorf("%s", translations.Get(lang, "error_converting_digit"))
 		}
 		d[i] = val
 	}

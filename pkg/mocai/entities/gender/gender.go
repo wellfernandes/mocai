@@ -2,7 +2,6 @@ package gender
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -34,15 +33,11 @@ func NewGender(lang string, rnd translations.RandSource) (*Gender, error) {
 func generateRandomGender(lang string, rnd translations.RandSource) (*Gender, error) {
 	genders := translations.GetList(lang, "gender")
 	if len(genders) == 0 {
-		return nil, fmt.Errorf("%w, %s", ErrNoGenders, translations.Get(lang, "no_data_available_for_genders"))
+		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_genders"))
 	}
 	if rnd == nil {
-		rnd = defaultRandSource()
+		rnd = translations.DefaultRandSource()
 	}
 	genderStr := genders[rnd.Intn(len(genders))]
 	return &Gender{Identity: Identity(genderStr)}, nil
-}
-
-func defaultRandSource() translations.RandSource {
-	return rand.New(rand.NewSource(int64(rand.Int())))
 }

@@ -2,9 +2,7 @@ package cpf
 
 import (
 	"fmt"
-	"math/rand"
 	"strings"
-	"time"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
@@ -16,7 +14,7 @@ type CPF struct {
 // NewCPF generates a mock CPF using a custom language and random source
 func NewCPF(lang string, isFormatted bool, rnd translations.RandSource) (*CPF, error) {
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+		rnd = translations.DefaultRandSource()
 	}
 
 	// generate the first 9 digits
@@ -35,7 +33,7 @@ func NewCPF(lang string, isFormatted bool, rnd translations.RandSource) (*CPF, e
 	cpfNumber := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
 	if isFormatted {
 		if len(cpfNumber) != 11 {
-			return nil, fmt.Errorf("%w, %s", ErrInvalidCPF, translations.Get(lang, "invalid_cpf"))
+			return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_cpf"))
 		}
 		return &CPF{Number: cpfNumber[:3] + "." + cpfNumber[3:6] + "." + cpfNumber[6:9] + "-" + cpfNumber[9:]}, nil
 	}
