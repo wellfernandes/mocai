@@ -87,12 +87,14 @@ func main() {
         log.Fatal(err)
     }
     fmt.Printf("Empresa: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
+}
+```
+
 ### Mensagens de Erro e Localização
 
 Todas as mensagens de erro retornadas pelo Mocai são sempre localizadas e amigáveis ao usuário. Quando ocorre um erro (ex: dados inválidos, idioma não suportado ou falha na geração), a mensagem será apresentada no idioma configurado para a instância do `Mocker`. Isso garante que tanto desenvolvedores quanto usuários finais recebam feedback claro e apropriado ao contexto.
 
 Não é necessário realizar nenhuma etapa extra para a localização das mensagens de erro — o Mocai faz isso automaticamente para todos os idiomas suportados.
-}
 ```
 
 > **Nota:** Cada chamada de método como `NewPerson()` ou `NewAddress()` gera um novo mock com dados aleatórios. A instância do `Mocker` é imutável quanto à configuração (idioma, formatação, fonte de aleatoriedade).
