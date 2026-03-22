@@ -62,9 +62,7 @@ func init() {
 		"address_state":             state,
 		"address_uf":                uf,
 		"address_zip":               address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
-		// single random area code for legacy API (keep for compatibility)
-		"phone_area_code": phone_mocks.AreaCodes[rand.Intn(len(phone_mocks.AreaCodes))],
-		"company_name":    company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
+		"company_name":              company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
 
 		// errors
 		"invalid_certificate":                  "certidão inválida",
