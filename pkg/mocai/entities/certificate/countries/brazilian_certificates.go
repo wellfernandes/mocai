@@ -140,6 +140,8 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 }
 
 func generateBirthCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
+	// Note: The 'lang' parameter is currently unused because certificate numbers do not depend on language.
+	// It will be relevant only if textual data (e.g., names, descriptions) is added in the future.
 	base, err := generateCertificateCustom(rnd, formatted, brazilianBirthCertificateType)
 	if err != nil {
 		return nil, err
