@@ -55,23 +55,23 @@ type BrazilianCertificates struct {
 }
 
 func NewBrazilCertificatesCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
-	cert, err := generateBrazilianCertificatesCustom(lang, isFormatted, rnd)
+	cert, err := generateBrazilianCertificates(lang, isFormatted, rnd)
 	if err != nil {
 		return nil, err
 	}
 	return cert, nil
 }
 
-func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
-	createdBirthCertificate, err := generateBirthCertificateCustom(lang, formatted, rnd)
+func generateBrazilianCertificates(lang string, formatted bool, rnd translations.RandSource) (*BrazilianCertificates, error) {
+	createdBirthCertificate, err := generateBirthCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	createdMarriageCertificate, err := generateMarriageCertificateCustom(lang, formatted, rnd)
+	createdMarriageCertificate, err := generateMarriageCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
-	createdDeathCertificate, err := generateDeathCertificateCustom(lang, formatted, rnd)
+	createdDeathCertificate, err := generateDeathCertificate(lang, formatted, rnd)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func generateBrazilianCertificatesCustom(lang string, formatted bool, rnd transl
 	return createdBrazilianCertificates, nil
 }
 
-func generateCertificateCustom(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
+func generateCertificate(rnd translations.RandSource, formatted bool, certificateType int, lang ...string) (*BaseCertificate, error) {
 	l := "ptbr"
 	if len(lang) > 0 && lang[0] != "" {
 		l = lang[0]
@@ -139,10 +139,8 @@ func generateCertificateCustom(rnd translations.RandSource, formatted bool, cert
 	return createdBaseCertificate, nil
 }
 
-func generateBirthCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
-	// Note: The 'lang' parameter is currently unused because certificate numbers do not depend on language.
-	// It will be relevant only if textual data (e.g., names, descriptions) is added in the future.
-	base, err := generateCertificateCustom(rnd, formatted, brazilianBirthCertificateType)
+func generateBirthCertificate(lang string, formatted bool, rnd translations.RandSource) (*BirthCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianBirthCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}
@@ -152,8 +150,8 @@ func generateBirthCertificateCustom(lang string, formatted bool, rnd translation
 	return createdBirthCertificate, nil
 }
 
-func generateMarriageCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*MarriageCertificate, error) {
-	base, err := generateCertificateCustom(rnd, formatted, brazilianMarriageCertificateType)
+func generateMarriageCertificate(lang string, formatted bool, rnd translations.RandSource) (*MarriageCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianMarriageCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +161,8 @@ func generateMarriageCertificateCustom(lang string, formatted bool, rnd translat
 	return createdMarriageCertificate, nil
 }
 
-func generateDeathCertificateCustom(lang string, formatted bool, rnd translations.RandSource) (*DeathCertificate, error) {
-	base, err := generateCertificateCustom(rnd, formatted, brazilianDeathCertificateType)
+func generateDeathCertificate(lang string, formatted bool, rnd translations.RandSource) (*DeathCertificate, error) {
+	base, err := generateCertificate(rnd, formatted, brazilianDeathCertificateType, lang)
 	if err != nil {
 		return nil, err
 	}
