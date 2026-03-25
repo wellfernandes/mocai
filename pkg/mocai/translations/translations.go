@@ -6,7 +6,7 @@ import (
 	address_ptbr "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
 )
 
-// GetUFMap Returns the mapping of states for the specified language, if available
+// GetUFMap returns the mapping of states for the specified language, if available.
 func GetUFMap(lang string) map[string]string {
 	if lang == "ptbr" {
 		// returns a defensive copy to avoid exposing the global map
@@ -19,18 +19,16 @@ func GetUFMap(lang string) map[string]string {
 	return nil
 }
 
-// registryList stores lists of translations by language and keyword
+// registryList stores lists of translations by language and keyword.
+// registrySingle stores single string translations by language and keyword.
+// Both are protected by mu for concurrent access safety.
 var (
-	registryList = make(map[string]map[string][]string)
-	mu           sync.RWMutex
-)
-
-// registry for single string translations
-var (
+	registryList   = make(map[string]map[string][]string)
 	registrySingle = make(map[string]map[string]string)
+	mu             sync.RWMutex
 )
 
-// RegisterList records lists of translations
+// RegisterList records lists of translations.
 func RegisterList(lang string, messages map[string][]string) {
 	if lang == "" || messages == nil {
 		return
@@ -45,7 +43,7 @@ func RegisterList(lang string, messages map[string][]string) {
 	}
 }
 
-// Register records single string translations
+// Register records single string translations.
 func Register(lang string, messages map[string]string) {
 	if lang == "" || messages == nil {
 		return
@@ -60,7 +58,7 @@ func Register(lang string, messages map[string]string) {
 	}
 }
 
-// Get returns a single string translation for a given language and key
+// Get returns a single string translation for a given language and key.
 func Get(lang, key string) string {
 	if lang == "" || key == "" {
 		return key
@@ -80,7 +78,7 @@ func Get(lang, key string) string {
 	return key
 }
 
-// GetList returns a list of translations for a given language and keyword
+// GetList returns a list of translations for a given language and keyword.
 func GetList(lang, key string) []string {
 	if lang == "" || key == "" {
 		return nil
@@ -93,7 +91,7 @@ func GetList(lang, key string) []string {
 	return nil
 }
 
-// GetRandom returns a random value from a list of translations
+// GetRandom returns a random value from a list of translations.
 func GetRandom(lang, key string, rnd RandSource) string {
 	values := GetList(lang, key)
 	if len(values) == 0 {
@@ -106,7 +104,7 @@ func GetRandom(lang, key string, rnd RandSource) string {
 	return values[idx]
 }
 
-// RandSource it is an interface for randomness sources >> compatible with rand.rand.
+// RandSource is an interface for randomness sources, compatible with math/rand.Rand.
 type RandSource interface {
 	Intn(n int) int
 }
