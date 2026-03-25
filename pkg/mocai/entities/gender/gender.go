@@ -1,10 +1,14 @@
 package gender
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
+
+// ErrNoGenderData is returned when no gender data is available for the given language.
+var ErrNoGenderData = errors.New("gender: no data available")
 
 // Gender represents a person's gender.
 type Gender struct {
@@ -25,7 +29,7 @@ const (
 	Other       Identity = "other"       // Other gender identity
 )
 
-// NewGender generates a random gender using customizable lists, language, and random source
+// NewGender generates a random gender using customizable lists, language, and random source.
 func NewGender(lang string, rnd translations.RandSource) (*Gender, error) {
 	return generateRandomGender(lang, rnd)
 }
@@ -33,7 +37,7 @@ func NewGender(lang string, rnd translations.RandSource) (*Gender, error) {
 func generateRandomGender(lang string, rnd translations.RandSource) (*Gender, error) {
 	genders := translations.GetList(lang, "gender")
 	if len(genders) == 0 {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_genders"))
+		return nil, fmt.Errorf("%w: %s", ErrNoGenderData, translations.Get(lang, "no_data_available_for_genders"))
 	}
 	if rnd == nil {
 		rnd = translations.DefaultRandSource()
