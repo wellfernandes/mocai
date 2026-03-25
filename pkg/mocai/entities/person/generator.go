@@ -1,6 +1,7 @@
 package person
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/brazzcore/mocai/pkg/mocai/entities/cpf"
@@ -8,7 +9,14 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-// Person represents a mock person with first names, last name, and age
+// Sentinel errors for person generation.
+var (
+	ErrNoFirstNames     = errors.New("person: no first names available")
+	ErrNoLastNames      = errors.New("person: no last names available")
+	ErrGeneratingPerson = errors.New("person: error generating person")
+)
+
+// Person represents a mock person with first names, last name, gender, age, and CPF.
 type Person struct {
 	FirstNameMale   string
 	FirstNameFemale string
@@ -18,22 +26,21 @@ type Person struct {
 	CPF             *cpf.CPF
 }
 
+// NewPerson generates a mock person using a custom language, formatting, and random source.
 func NewPerson(lang string, isFormatted bool, rnd translations.RandSource) (*Person, error) {
 	return generatePerson(lang, isFormatted, rnd)
 }
 
-// GeneratePerson generates a mock person with random data
-// It returns a pointer to a Person and an error if the generation fails
 func generatePerson(lang string, isFormatted bool, rnd translations.RandSource) (*Person, error) {
 	firstNamesMale := translations.GetList(lang, "person_first_name_male")
 	firstNamesFemale := translations.GetList(lang, "person_first_name_female")
 	lastNames := translations.GetList(lang, "person_last_name")
 
 	if len(firstNamesMale) == 0 || len(firstNamesFemale) == 0 {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_first_names"))
+		return nil, fmt.Errorf("%w: %s", ErrNoFirstNames, translations.Get(lang, "no_data_available_for_first_names"))
 	}
 	if len(lastNames) == 0 {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "no_data_available_for_last_names"))
+		return nil, fmt.Errorf("%w: %s", ErrNoLastNames, translations.Get(lang, "no_data_available_for_last_names"))
 	}
 
 	if rnd == nil {
@@ -55,7 +62,7 @@ func generatePerson(lang string, isFormatted bool, rnd translations.RandSource) 
 	}
 
 	if firstNameMale == "" || firstNameFemale == "" || lastName == "" {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "error_generating_person"))
+		return nil, fmt.Errorf("%w: %s", ErrGeneratingPerson, translations.Get(lang, "error_generating_person"))
 	}
 
 	return &Person{
