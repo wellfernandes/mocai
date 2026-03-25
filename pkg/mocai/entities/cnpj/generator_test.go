@@ -19,7 +19,7 @@ func TestGenerateCNPJFormatted(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	// Should match pattern XX.XXX.XXX/XXXX-XX (18 chars)
+
 	if len(cnpjVal) != 18 {
 		t.Errorf("expected 18 chars formatted, got %d: %s", len(cnpjVal), cnpjVal)
 	}
