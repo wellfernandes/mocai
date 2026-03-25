@@ -3,19 +3,22 @@ package cnpj
 import (
 	"errors"
 	"fmt"
-	"math/rand"
 	"strings"
-	"time"
+
+	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
+
+// ErrInvalidCNPJLength is returned when the generated CNPJ does not have 14 digits.
+var ErrInvalidCNPJLength = errors.New("cnpj: invalid CNPJ length")
 
 // GenerateCNPJ generates a valid CNPJ number using a custom random source.
 // If formatted is true, the CNPJ will be returned in the format XX.XXX.XXX/XXXX-XX.
 // If formatted is false, the CNPJ will be returned as a plain string of 14 digits.
 // If rnd is nil, a default random source will be used.
-func GenerateCNPJ(formatted bool, rnd interface{ Intn(n int) int }) (string, error) {
+func GenerateCNPJ(formatted bool, rnd translations.RandSource) (string, error) {
 	// Fallback to default if rnd is nil
 	if rnd == nil {
-		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+		rnd = translations.DefaultRandSource()
 	}
 
 	// Generate the first 12 digits
@@ -36,7 +39,7 @@ func GenerateCNPJ(formatted bool, rnd interface{ Intn(n int) int }) (string, err
 	cnpj := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(digits)), ""), "[]")
 
 	if len(cnpj) != 14 {
-		return "", errors.New("invalid CNPJ length")
+		return "", ErrInvalidCNPJLength
 	}
 
 	// Format the CNPJ if requested
