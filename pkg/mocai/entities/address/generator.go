@@ -17,12 +17,13 @@ type Address struct {
 	ZIP    string
 }
 
-type SlicesToCheck struct {
+// slicesToCheck is an internal helper for validating required data slices.
+type slicesToCheck struct {
 	data []string
 	err  error
 }
 
-// NewAddress generates a mock address using a custom language and a random source
+// NewAddress generates a mock address using a custom language and a random source.
 func NewAddress(lang string, rnd translations.RandSource) (*Address, error) {
 	addr, err := generateAddress(lang, rnd)
 	if err != nil {
@@ -37,7 +38,7 @@ func generateAddress(lang string, rnd translations.RandSource) (*Address, error)
 		supportedLang = "ptbr"
 	}
 	if rnd == nil {
-		rnd = translations.NewSafeRandSource(translations.DefaultRandSource())
+		rnd = translations.DefaultRandSource()
 	}
 
 	streets := translations.GetList(supportedLang, "address_street")
@@ -45,14 +46,14 @@ func generateAddress(lang string, rnd translations.RandSource) (*Address, error)
 	states := translations.GetList(supportedLang, "address_state")
 	zips := translations.GetList(supportedLang, "address_zip")
 
-	slicesToCheck := []SlicesToCheck{
+	checks := []slicesToCheck{
 		{streets, ErrNoStreets},
 		{cities, ErrNoCities},
 		{states, ErrNoStates},
 		{zips, ErrNoZips},
 	}
 
-	for _, s := range slicesToCheck {
+	for _, s := range checks {
 		if len(s.data) == 0 {
 			return nil, s.err
 		}
