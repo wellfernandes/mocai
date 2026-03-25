@@ -1,32 +1,37 @@
 package countries
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// ErrConvertingDigit is returned when a digit conversion fails during RG generation.
+var ErrConvertingDigit = errors.New("nationalid: error converting digit")
+
+// RG represents a Brazilian identity card (Registro Geral).
 type RG struct {
 	Number      string
 	State       string
 	IssuingBody string
 }
 
-// NewRGCustom generates a random RG (Brazilian Identity Card) using an injected random source and custom language
-func NewRGCustom(isFormatted bool, rnd translations.RandSource, lang ...string) RG {
-	l := "pt_br"
-	if len(lang) > 0 && lang[0] != "" {
-		l = lang[0]
+// NewRGCustom generates a random RG (Brazilian Identity Card) using an injected random source and language.
+// Returns an error if generation fails, instead of silently returning an empty RG.
+func NewRGCustom(lang string, isFormatted bool, rnd translations.RandSource) (RG, error) {
+	if lang == "" {
+		lang = "ptbr"
 	}
-	rg, err := generateBrazilianNationalIDCustom(isFormatted, rnd, l)
+	rg, err := generateBrazilianNationalIDCustom(lang, isFormatted, rnd)
 	if err != nil {
-		return RG{}
+		return RG{}, err
 	}
-	return rg
+	return rg, nil
 }
 
-func generateBrazilianNationalIDCustom(formatted bool, rnd translations.RandSource, lang string) (RG, error) {
+func generateBrazilianNationalIDCustom(lang string, formatted bool, rnd translations.RandSource) (RG, error) {
 	rgNumber, err := calculateSPRGDigitCustom(rnd, lang)
 	if err != nil {
 		return RG{}, err
@@ -53,7 +58,7 @@ func calculateSPRGDigitCustom(rnd translations.RandSource, lang string) (string,
 	for i := range 8 {
 		val, err := strconv.Atoi(string(baseStr[i]))
 		if err != nil {
-			return "", fmt.Errorf("%s", translations.Get(lang, "error_converting_digit"))
+			return "", fmt.Errorf("%w: %s", ErrConvertingDigit, translations.Get(lang, "error_converting_digit"))
 		}
 		d[i] = val
 	}
