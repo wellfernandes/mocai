@@ -1,33 +1,41 @@
 package countries
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
-// BrazilianVoteRegistration represents a Brazilian vote registration
+// Sentinel errors for vote registration generation.
+var (
+	ErrInvalidVoteRegistration = errors.New("voteregistration: invalid vote registration")
+	ErrInvalidCheckDigit1      = errors.New("voteregistration: invalid check digit 1")
+	ErrInvalidCheckDigit2      = errors.New("voteregistration: invalid check digit 2")
+)
+
+// BrazilianVoteRegistration represents a Brazilian vote registration.
 type BrazilianVoteRegistration struct {
 	Section string
 	Zone    string
 	Number  string
 }
 
-// NewBrazilianVoteRegistration generates a new Brazilian vote registration with localized errors
+// NewBrazilianVoteRegistration generates a new Brazilian vote registration with localized errors.
 func NewBrazilianVoteRegistration(isFormatted bool) (*BrazilianVoteRegistration, error) {
 	return NewBrazilianVoteRegistrationCustom("ptbr", isFormatted, nil)
 }
 
 // calculateCheckDigit1 calculates the first check digit.
-// it depends on the sequence number.
+// It depends on the sequence number.
 func calculateCheckDigit1(sequenceNumber string) (string, error) {
 	sum := 0
 	weights := []int{2, 3, 4, 5, 6, 7, 8, 9}
 	for i := 0; i < len(sequenceNumber); i++ {
 		digit, err := strconv.Atoi(string(sequenceNumber[i]))
 		if err != nil {
-			return "", fmt.Errorf("%s", translations.Get("en_us", "invalid_check_digit_1"))
+			return "", fmt.Errorf("%w: %s", ErrInvalidCheckDigit1, translations.Get("en_us", "invalid_check_digit_1"))
 		}
 		sum += digit * weights[i]
 	}
@@ -40,21 +48,21 @@ func calculateCheckDigit1(sequenceNumber string) (string, error) {
 	return strconv.Itoa(checkDigit1), nil
 }
 
-// calculateCheckDigit2 calculates the second check digit
-// it depends on the state code and the first check digit
+// calculateCheckDigit2 calculates the second check digit.
+// It depends on the state code and the first check digit.
 func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (string, error) {
 	sum := 0
 	weights := []int{7, 8}
 	for i := 0; i < len(stateCode); i++ {
 		digit, err := strconv.Atoi(string(stateCode[i]))
 		if err != nil {
-			return "", fmt.Errorf("%s", translations.Get("en_us", "invalid_check_digit_2"))
+			return "", fmt.Errorf("%w: %s", ErrInvalidCheckDigit2, translations.Get("en_us", "invalid_check_digit_2"))
 		}
 		sum += digit * weights[i]
 	}
 	checkDigit1Int, err := strconv.Atoi(checkDigit1)
 	if err != nil {
-		return "", fmt.Errorf("%s", translations.Get("en_us", "invalid_check_digit_2"))
+		return "", fmt.Errorf("%w: %s", ErrInvalidCheckDigit2, translations.Get("en_us", "invalid_check_digit_2"))
 	}
 	sum += checkDigit1Int * 9
 
@@ -71,6 +79,7 @@ func calculateCheckDigit2(stateCode, checkDigit1 string, stateCodeInt int) (stri
 	return strconv.Itoa(checkDigit2), nil
 }
 
+// NewBrazilianVoteRegistrationCustom generates a Brazilian vote registration with custom language, formatting, and random source.
 func NewBrazilianVoteRegistrationCustom(lang string, isFormatted bool, rnd translations.RandSource) (*BrazilianVoteRegistration, error) {
 	if lang == "" {
 		lang = "en_us"
@@ -103,19 +112,19 @@ func NewBrazilianVoteRegistrationCustom(lang string, isFormatted bool, rnd trans
 	// calculate the first check digit
 	checkDigit1, err := calculateCheckDigit1(sequenceNumberStr)
 	if err != nil {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_check_digit_1"))
+		return nil, fmt.Errorf("%w: %s", ErrInvalidCheckDigit1, translations.Get(lang, "invalid_check_digit_1"))
 	}
 
 	// calculate the second check digit
 	checkDigit2, err := calculateCheckDigit2(stateCodeStr, checkDigit1, stateCode)
 	if err != nil {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_check_digit_2"))
+		return nil, fmt.Errorf("%w: %s", ErrInvalidCheckDigit2, translations.Get(lang, "invalid_check_digit_2"))
 	}
 
 	// combine everything to form the complete number
 	number := sequenceNumberStr + stateCodeStr + checkDigit1 + checkDigit2
 	if number == "" || len(number) != 12 {
-		return nil, fmt.Errorf("%s", translations.Get(lang, "invalid_vote_registration"))
+		return nil, fmt.Errorf("%w: %s", ErrInvalidVoteRegistration, translations.Get(lang, "invalid_vote_registration"))
 	}
 
 	if isFormatted {
