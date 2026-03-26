@@ -2,6 +2,8 @@
 
 ![mocai](../../.././img/mocai.svg)
 
+#### [README (English)](/README.md)
+
 Uma biblioteca Go para geração de dados de teste, permitindo criar mocks de entidades de forma simples e eficiente.
 
 ## 📖 Descrição
@@ -19,11 +21,11 @@ O nome Mocai é uma homenagem à iniciativa brasileira por trás da biblioteca. 
 
 ## 📦 Entidades Suportadas
 - Pessoa (com gênero, idade, CPF)
+- Gênero (geração independente)
 - Endereço (rua, número, cidade, estado, UF, CEP)
 - Telefone (DDD, número)
 - Empresa (nome, CNPJ)
 - CPF (Cadastro de Pessoa Física)
-- CNPJ (Cadastro Nacional de Pessoa Jurídica)
 - Certidões (Nascimento, Casamento, Óbito)
 - RG (Identidade)
 - Título de Eleitor
@@ -62,12 +64,14 @@ import (
 
 func main() {
     // Cria uma instância do Mocker para português do Brasil
-    mocker := mocai.NewMocker("ptbr", true, nil) // isFormatted: true para documentos formatados (ex: CPF/CNPJ)
+    mocker := mocai.NewMocker(
+        mocai.WithLanguage("ptbr"),
+        mocai.WithFormatted(true),
+    )
 
     // Gera um endereço fictício
     address, err := mocker.NewAddress()
     if err != nil {
-        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Endereço: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
@@ -75,7 +79,6 @@ func main() {
     // Gera uma pessoa fictícia
     person, err := mocker.NewPerson()
     if err != nil {
-        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Pessoa: %s %s, Gênero: %s, Idade: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
@@ -83,12 +86,10 @@ func main() {
     // Gera uma empresa fictícia
     company, err := mocker.NewCompany()
     if err != nil {
-        // As mensagens de erro são localizadas quando há chave de tradução disponível
         log.Fatal(err)
     }
     fmt.Printf("Empresa: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
-
 ```
 
 ### Mensagens de Erro e Localização
@@ -96,7 +97,6 @@ func main() {
 As mensagens de erro são localizadas quando há chave de tradução disponível. Quando ocorre um erro (ex: dados inválidos, idioma não suportado ou falha na geração), a mensagem será apresentada no idioma configurado para a instância do `Mocker`, se houver tradução. Em alguns casos, mensagens fixas podem aparecer caso a cobertura de traduções não seja completa.
 
 Não é necessário realizar nenhuma etapa extra para a localização das mensagens de erro — o Mocai faz isso automaticamente para todos os idiomas suportados onde há chave de tradução.
-```
 
 > **Nota:** Cada chamada de método como `NewPerson()` ou `NewAddress()` gera um novo mock com dados aleatórios. A instância do `Mocker` é imutável quanto à configuração (idioma, formatação, fonte de aleatoriedade).
 
@@ -104,12 +104,50 @@ Não é necessário realizar nenhuma etapa extra para a localização das mensag
 Atualmente, apenas "ptbr" está implementado. Para suportar outros idiomas, contribua com novos arquivos de tradução e mocks.
 
 #### Sobre Formatação
-O parâmetro `isFormatted` controla se documentos como CPF/CNPJ são retornados formatados (ex: `123.456.789-00`) ou apenas números (`12345678900`).
+A opção `WithFormatted` controla se documentos como CPF/CNPJ são retornados formatados (ex: `123.456.789-00`) ou apenas números (`12345678900`).
+
+### Uso Avançado
+
+#### Interface MockGenerator
+A interface `MockGenerator` define o contrato para geração de dados fictícios. Use-a para injeção de dependência nos seus testes:
+
+```go
+func CreateUser(generator mocai.MockGenerator) (*User, error) {
+    person, err := generator.NewPerson()
+    if err != nil {
+        return nil, err
+    }
+    return &User{Name: person.FirstNameMale + " " + person.LastName}, nil
+}
+```
+
+#### Providers Customizados
+Você pode injetar providers customizados para Address, Person e Company, integrando com APIs externas ou bancos de dados:
+
+```go
+mocker := mocai.NewMocker(
+    mocai.WithLanguage("ptbr"),
+    mocai.WithAddressProvider(meuProviderDeEndereco),
+    mocai.WithPersonProvider(meuProviderDePessoa),
+    mocai.WithCompanyProvider(meuProviderDeEmpresa),
+)
+```
+
+#### Geração Determinística
+Use `WithRandSource` para fornecer uma fonte de aleatoriedade customizada para dados reproduzíveis em testes:
+
+```go
+rnd := translations.NewSafeRandSource(meuRandFixo)
+mocker := mocai.NewMocker(
+    mocai.WithLanguage("ptbr"),
+    mocai.WithRandSource(rnd),
+)
+```
 
 ### Exemplos
 O diretório ***examples*** contém exemplos de uso:
 
-- `mocker/`: Exemplo usando o ponto de entrada principal `mocai.NewMocker(lang string, isFormatted bool, rnd RandSource)` para gerar mocks de maneira fluida e simplificada.
+- `mocker/`: Exemplo usando o ponto de entrada principal `mocai.NewMocker(opts ...Option)` com functional options para gerar mocks de maneira fluida e simplificada.
 
 Para executar um exemplo:
 ```sh
