@@ -5,17 +5,14 @@ import (
 	"github.com/brazzcore/mocai/pkg/mocai/translations"
 )
 
+// VoteRegistration represents a voter registration document.
 type VoteRegistration struct {
 	BrazilianVoteRegistration countries.BrazilianVoteRegistration
 }
 
-// NewVoteRegistration generates a Voter ID using a custom language and random source
+// NewVoteRegistration generates a Voter ID using a custom language and random source.
 func NewVoteRegistration(lang string, isFormatted bool, rnd translations.RandSource) (*VoteRegistration, error) {
-	reg, err := generateVoteRegistration(lang, isFormatted, rnd)
-	if err != nil {
-		return nil, err
-	}
-	return reg, nil
+	return generateVoteRegistration(lang, isFormatted, rnd)
 }
 
 func generateVoteRegistration(lang string, isFormatted bool, rnd translations.RandSource) (*VoteRegistration, error) {

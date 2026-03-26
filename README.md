@@ -21,11 +21,11 @@ The name Mocaí is a tribute to the Brazilian initiative behind the library. It 
 
 ## 📦 Supported Entities
 - Person (with gender, age, CPF)
+- Gender (standalone generation)
 - Address (street, number, city, state, UF, ZIP)
 - Phone (area code, number)
 - Company (name, CNPJ)
 - CPF (Brazilian individual taxpayer registry)
-- CNPJ (Brazilian company registry)
 - Certificates (Birth, Marriage, Death)
 - National ID (RG)
 - Voter Registration (Título de Eleitor)
@@ -64,12 +64,14 @@ import (
 
 func main() {
     // Create a Mocker instance for Brazilian Portuguese
-    mocker := mocai.NewMocker("ptbr", true, nil) // isFormatted: true for formatted docs (e.g., CPF/CNPJ)
+    mocker := mocai.NewMocker(
+        mocai.WithLanguage("ptbr"),
+        mocai.WithFormatted(true),
+    )
 
     // Generate a mock address
     address, err := mocker.NewAddress()
     if err != nil {
-        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Address: %s, %d - %s, %s (%s) - %s\n", address.Street, address.Number, address.City, address.State, address.UF, address.ZIP)
@@ -77,7 +79,6 @@ func main() {
     // Generate a mock person
     person, err := mocker.NewPerson()
     if err != nil {
-        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Person: %s %s, Gender: %s, Age: %d, CPF: %s\n", person.FirstNameMale, person.LastName, person.Gender.Identity, person.Age, person.CPF.Number)
@@ -85,12 +86,10 @@ func main() {
     // Generate a mock company
     company, err := mocker.NewCompany()
     if err != nil {
-        // Error messages are localized where translation keys are available
         log.Fatal(err)
     }
     fmt.Printf("Company: %s, CNPJ: %s\n", company.BrazilianCompany.Name, company.BrazilianCompany.CNPJ)
 }
-
 ```
 
 ### Error Messages & Localization
@@ -98,7 +97,6 @@ func main() {
 Error messages are localized where translation keys are available. When an error occurs (e.g., invalid data, unsupported language, or generation failure), the error message will be presented in the language configured for the `Mocker` instance, if a translation exists. In some cases, fallback or hardcoded errors may occur if translation coverage is incomplete.
 
 You do not need to perform any extra steps for error localization — Mocai handles this automatically for all supported languages where translation keys are present.
-```
 
 > **Note:** Each call to a method like `NewPerson()` or `NewAddress()` generates a new mock with random data. The `Mocker` instance is immutable regarding its configuration (language, formatting, random source).
 
@@ -106,12 +104,50 @@ You do not need to perform any extra steps for error localization — Mocai hand
 Currently, only "ptbr" is implemented. To support other languages, contribute with new translation and mock data files.
 
 #### About Formatting
-The `isFormatted` parameter controls whether documents like CPF/CNPJ are returned formatted (e.g., `123.456.789-00`) or as plain numbers (`12345678900`).
+The `WithFormatted` option controls whether documents like CPF/CNPJ are returned formatted (e.g., `123.456.789-00`) or as plain numbers (`12345678900`).
+
+### Advanced Usage
+
+#### MockGenerator Interface
+The `MockGenerator` interface defines the contract for generating mock data. Use it for dependency injection in your tests:
+
+```go
+func CreateUser(generator mocai.MockGenerator) (*User, error) {
+    person, err := generator.NewPerson()
+    if err != nil {
+        return nil, err
+    }
+    return &User{Name: person.FirstNameMale + " " + person.LastName}, nil
+}
+```
+
+#### Custom Providers
+You can inject custom providers for Address, Person, and Company to integrate with external APIs or databases:
+
+```go
+mocker := mocai.NewMocker(
+    mocai.WithLanguage("ptbr"),
+    mocai.WithAddressProvider(myCustomAddressProvider),
+    mocai.WithPersonProvider(myCustomPersonProvider),
+    mocai.WithCompanyProvider(myCustomCompanyProvider),
+)
+```
+
+#### Deterministic Generation
+Use `WithRandSource` to provide a custom random source for reproducible test data:
+
+```go
+rnd := translations.NewSafeRandSource(myFixedRand)
+mocker := mocai.NewMocker(
+    mocai.WithLanguage("ptbr"),
+    mocai.WithRandSource(rnd),
+)
+```
 
 ### Examples
 The ***examples*** folder contains usage samples:
 
-- `mocker/`: Example using the main entry point `mocai.NewMocker(lang string, isFormatted bool, rnd RandSource)` to generate mocks in a fluent and simplified way.
+- `mocker/`: Example using the main entry point `mocai.NewMocker(opts ...Option)` with functional options to generate mocks in a fluent and simplified way.
 
 To run an example:
 ```sh
