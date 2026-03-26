@@ -1,8 +1,6 @@
 package translations
 
 import (
-	"math/rand/v2"
-
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
 	company_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/company/mocks/ptbr"
 	gender_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/gender/mocks/ptbr"
@@ -44,36 +42,23 @@ func init() {
 		"phone_area_code": phone_mocks.AreaCodes,
 	})
 
-	// choose a random state
-	state := address_mocks.States[rand.IntN(len(address_mocks.States))]
-
-	// gets the UF corresponding to the selected state
-	uf := address_mocks.UFs[state]
-
 	Register("ptbr", map[string]string{
 		"brazilian_rg_state":        "SP",
 		"brazilian_rg_issuing_body": "SSP - Secretaria de Segurança Pública",
-		"person_first_name_male":    person_mocks.FirstNamesMale[rand.IntN(len(person_mocks.FirstNamesMale))],
-		"person_first_name_female":  person_mocks.FirstNamesFemale[rand.IntN(len(person_mocks.FirstNamesFemale))],
-		"person_last_name":          person_mocks.LastNames[rand.IntN(len(person_mocks.LastNames))],
-		"gender":                    gender_mocks.Genders[rand.IntN(len(gender_mocks.Genders))],
-		"address_street":            address_mocks.Streets[rand.IntN(len(address_mocks.Streets))],
-		"address_city":              address_mocks.Cities[rand.IntN(len(address_mocks.Cities))],
-		"address_state":             state,
-		"address_uf":                uf,
-		"address_zip":               address_mocks.ZIPCodes[rand.IntN(len(address_mocks.ZIPCodes))],
-		"company_name":              company_mocks.CompanyNames[rand.IntN(len(company_mocks.CompanyNames))],
 
 		// errors
 		"invalid_certificate":                  "certidão inválida",
 		"invalid_vital_records_office_number":  "número do cartório de registros civis inválido",
 		"invalid_archive_number":               "número do arquivo inválido",
-		"invalid_vital_records_service number": "número de serviço de registros vitais inválido",
+		"invalid_vital_records_service_number": "número de serviço de registros vitais inválido",
 		"invalid_birth_year":                   "ano de nascimento inválido",
 		"invalid_book_number":                  "número do livro inválido",
 		"invalid_page_number":                  "número da página inválida",
 		"invalid_term_number":                  "número do termo inválido",
 		"invalid_number_without_check_digits":  "número sem dígitos de verificação inválido",
+		"invalid_vote_registration":            "título de eleitor inválido",
+		"invalid_check_digit_1":                "dígito verificador 1 inválido",
+		"invalid_check_digit_2":                "dígito verificador 2 inválido",
 		"error_generating_brazilian_company":   "erro ao gerar empresa brasileira",
 		"invalid_cnpj":                         "cnpj inválido",
 		"no_company_names_available":           "nenhum nome de empresa disponível",
