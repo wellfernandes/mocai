@@ -1,7 +1,7 @@
 package translations
 
 import (
-	"math/rand"
+	"math/rand/v2"
 
 	address_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/address/mocks/ptbr"
 	company_mocks "github.com/brazzcore/mocai/pkg/mocai/entities/company/mocks/ptbr"
@@ -45,7 +45,7 @@ func init() {
 	})
 
 	// choose a random state
-	state := address_mocks.States[rand.Intn(len(address_mocks.States))]
+	state := address_mocks.States[rand.IntN(len(address_mocks.States))]
 
 	// gets the UF corresponding to the selected state
 	uf := address_mocks.UFs[state]
@@ -53,16 +53,16 @@ func init() {
 	Register("ptbr", map[string]string{
 		"brazilian_rg_state":        "SP",
 		"brazilian_rg_issuing_body": "SSP - Secretaria de Segurança Pública",
-		"person_first_name_male":    person_mocks.FirstNamesMale[rand.Intn(len(person_mocks.FirstNamesMale))],
-		"person_first_name_female":  person_mocks.FirstNamesFemale[rand.Intn(len(person_mocks.FirstNamesFemale))],
-		"person_last_name":          person_mocks.LastNames[rand.Intn(len(person_mocks.LastNames))],
-		"gender":                    gender_mocks.Genders[rand.Intn(len(gender_mocks.Genders))],
-		"address_street":            address_mocks.Streets[rand.Intn(len(address_mocks.Streets))],
-		"address_city":              address_mocks.Cities[rand.Intn(len(address_mocks.Cities))],
+		"person_first_name_male":    person_mocks.FirstNamesMale[rand.IntN(len(person_mocks.FirstNamesMale))],
+		"person_first_name_female":  person_mocks.FirstNamesFemale[rand.IntN(len(person_mocks.FirstNamesFemale))],
+		"person_last_name":          person_mocks.LastNames[rand.IntN(len(person_mocks.LastNames))],
+		"gender":                    gender_mocks.Genders[rand.IntN(len(gender_mocks.Genders))],
+		"address_street":            address_mocks.Streets[rand.IntN(len(address_mocks.Streets))],
+		"address_city":              address_mocks.Cities[rand.IntN(len(address_mocks.Cities))],
 		"address_state":             state,
 		"address_uf":                uf,
-		"address_zip":               address_mocks.ZIPCodes[rand.Intn(len(address_mocks.ZIPCodes))],
-		"company_name":              company_mocks.CompanyNames[rand.Intn(len(company_mocks.CompanyNames))],
+		"address_zip":               address_mocks.ZIPCodes[rand.IntN(len(address_mocks.ZIPCodes))],
+		"company_name":              company_mocks.CompanyNames[rand.IntN(len(company_mocks.CompanyNames))],
 
 		// errors
 		"invalid_certificate":                  "certidão inválida",
