@@ -1,53 +1,68 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Roadmap
-Welcome to the Mocaí Roadmap! This section outlines the future plans and upcoming features for Mocaí. Stay informed about what’s coming next and how you can contribute to the project's growth.
 
-## Overview
-The Mocaí project aims to provide a flexible library for generating example data (mocks), allowing developers to use static data (defined in constants) or connect to external APIs to obtain dynamic data. The focus is to create a useful tool for testing, development, and prototyping, with support for different languages and active community participation.
+This page summarizes the current direction of Mocaí based on the code and public API in the `develop` branch.
 
-## Principles
-**Simplicity:** Start with the simplest approach, focusing on static data and project structure.
+## Current Status
 
-**Flexibility:** Allow the choice between static mocks and external APIs, with clear configuration.
+Today, Mocaí already provides:
 
-**Collaboration:** Encourage community participation, considering all ideas and feedback.
+- A unified public entry point through `mocai.NewMocker(...)`
+- A `MockGenerator` interface for dependency injection
+- Support for realistic mock generation in Brazilian Portuguese (`ptbr`)
+- Generators for person, gender, address, phone, company, CPF, certificate, national ID, and voter registration
+- Functional options for formatting, language selection, random source control, and custom providers
 
-**Adaptability:** Be open to changes and improvements based on community feedback.
+## Direction of the Project
 
+The current architecture suggests three clear directions for evolution:
 
-## Development Phases
-#### Current Phase: 1
+### 1. Broader Language Support
 
-```
-Phase 1: Structure and Mocks in Portuguese (Brazil)
+The `Mocker` is configured by language, and the translation layer already isolates locale-specific behavior. The current implementation is focused on `ptbr`, but the design leaves room for new languages in the future.
 
-Objective: Establish the project's foundation and provide functional mocks in Brazilian Portuguese. 
-```
-```
-Phase 2: Support for English and Other Languages
+### 2. More Flexible Data Sources
 
-Objective: Expand support to other languages, starting with English.    
-```
+The library already supports custom providers for:
 
-```
-Phase 3: Integration with External APIs
+- Address
+- Person
+- Company
 
-Objective: Enable integration with external APIs to obtain dynamic data. 
-```
+This means Mocaí can evolve beyond static in-project data and integrate with external services or internal company fixtures without changing the public API.
 
-```
-Phase 4: Continuous Improvements and Community Feedback (Ongoing)
+### 3. Better Test Control
 
-Objective: Continuously improve the library based on community feedback. 
-```
+The option to inject a custom random source makes the library suitable for reproducible automated tests. This is an important direction for teams that need deterministic fixtures while keeping the same fluent API.
 
-## Important Notes
+## What Is Stable Today
 
-**Flexibility:**  This roadmap is a guide, not a rigid plan. Tasks may change based on community feedback and project needs.
+If you are adopting Mocaí now, these are the parts that should be considered the current usage model:
 
-**Community:** All ideas and observations are welcome and will be taken into consideration.
+- `mocai.NewMocker(opts ...Option)` as the main entry point
+- `WithLanguage("ptbr")` for locale selection
+- `WithFormatted(true|false)` for document formatting control
+- `MockGenerator` as the preferred interface boundary in application code
+- Provider injection for custom integrations
 
-**Participation:** Interested developers are invited to request an invitation to the Brazzcore organization and actively participate in the project.
+## What to Expect When Contributing
+
+The codebase is moving toward a more configurable and extensible mocking library rather than a collection of isolated generators. Contributions that align with this direction are especially relevant:
+
+- New entities with the same `Mocker`-based usage style
+- New language implementations
+- Better translation coverage for errors and messages
+- Additional provider-based integrations
+- More examples and real-world usage documentation
+
+## Practical Reading of the Roadmap
+
+Mocaí is already useful in its current state. The near-term value is not in redefining the API again, but in expanding the coverage around the architecture that already exists:
+
+- keep the API simple
+- extend supported data safely
+- preserve deterministic testing support
+- improve documentation and examples

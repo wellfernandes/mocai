@@ -4,29 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'User-Friendly Design',
+    title: 'Easy To Start',
     Svg: require('@site/static/img/user_friendly_design.svg').default,
     description: (
       <>
-        Mocaí is designed to be easy to install and use, allowing you to set up your environment quickly and efficiently.
+        Install Mocaí with <code>go get</code>, create a <code>Mocker</code>, and start generating realistic test data with a small and practical API.
       </>
     ),
   },
   {
-    title: 'Streamlined Efficiency',
+    title: 'Designed For Go Workflows',
     Svg: require('@site/static/img/streamlined_efficiency.svg').default,
     description: (
       <>
-        With Mocaí, you can focus on developing your project while we handle the repetitive tasks. Streamline your workflow and enhance productivity.
+        Use Mocaí in Go projects with dependency injection through <code>MockGenerator</code>, functional options, and deterministic generation when your tests need stable output.
       </>
     ),
   },
   {
-    title: 'Developed in Go',
+    title: 'Less Manual Fixture Work',
     Svg: require('@site/static/img/developed_in_go.svg').default,
     description: (
       <>
-        Mocaí is built using Go, a powerful and efficient programming language. Leverage the performance and reliability of Go for your projects.
+        Generate people, addresses, companies, CPF, certificates, national IDs, voter registration, and phone numbers without handcrafting repetitive mock data.
       </>
     ),
   },

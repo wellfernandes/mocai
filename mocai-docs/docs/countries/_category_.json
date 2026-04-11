@@ -1,0 +1,8 @@
+{
+  "label": "Countries",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Country-specific context for the entities and documents currently supported by Mocaí."
+  }
+}

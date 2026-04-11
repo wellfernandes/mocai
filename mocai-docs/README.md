@@ -2,6 +2,13 @@
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
+### Runtime
+
+- Node.js 20.x
+- Yarn 4.13.0
+
+This project pins `webpack` to `5.95.0` through Yarn `resolutions` because newer `webpack` releases can break the `webpackbar` version used by Docusaurus 3.7.0 during `yarn start`.
+
 ### Installation
 
 ```

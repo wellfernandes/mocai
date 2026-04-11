@@ -2,6 +2,7 @@
   "name": "mocai-docs",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "yarn@4.13.0",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -26,6 +27,9 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/types": "3.7.0",
     "gh-pages": "^6.3.0"
+  },
+  "resolutions": {
+    "webpack": "5.95.0"
   },
   "browserslist": {
     "production": [
